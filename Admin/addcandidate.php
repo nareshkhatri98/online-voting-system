@@ -35,7 +35,7 @@ if (isset($_POST['add_candidate'])) {
 
 if(isset($_GET['delete'])){
    $id = $_GET['delete'];
-   mysqli_query($conn, "DELETE FROM candidate_details WHERE candidate_id = $id");
+   mysqli_query($conn, "DELETE FROM candidate_details WHERE id = $id");
    header('location:addcandidate.php');
 };
 
@@ -119,7 +119,7 @@ if(isset($message)){
                $isAnyElectionAdded = mysqli_num_rows($fetchingElections);
                if ($isAnyElectionAdded > 0) {
                   while ($row = mysqli_fetch_assoc($fetchingElections)) {
-                     $election_id = $row['id'];
+                     $election_id = $row['election_id'];
                      $election_name = $row['election_topic'];
                      $allowed_candidates = $row['no_of_candidates'];
 
@@ -152,64 +152,63 @@ if(isset($message)){
 
 
 <?php
-
-      $select = mysqli_query($conn, "SELECT * FROM candidate_details");
-   
-   ?>
-   <div class="product-display">
-      <table class="product-display-table">
-         <thead>
+$select = mysqli_query($conn, "SELECT * FROM candidate_details");
+?>
+<div class="product-display">
+   <table class="product-display-table">
+      <thead>
          <tr>
-                     <th>Sn</th>
-                    <th >Photo</th>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Email</th>
-                    <th>Bio</th>
-                    <th>Election</th>
-                    <th>Action </th>
+            <th>Sn</th>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>Bio</th>
+            <th>Election topic</th>
+            <th>Action</th>
          </tr>
-         </thead>
-         <?php 
-    $fetchingData = mysqli_query($conn, "SELECT * FROM candidate_details") or die(mysqli_error($conn)); 
-    $isAnyCandidateAdded = mysqli_num_rows($fetchingData);
+      </thead>
+      <?php
+     $fetchingData = mysqli_query($conn, "SELECT candidate_details.id, candidate_details.candidate_photo, candidate_details.candidate_name, candidate_details.address, candidate_details.email, candidate_details.Bio, elections.election_topic FROM candidate_details JOIN elections ON candidate_details.election_id = elections.election_id") or die(mysqli_error($conn));
 
-    if ($isAnyCandidateAdded > 0) {
-        $sno = 1;
-        while ($row = mysqli_fetch_assoc($fetchingData)) {
-            if (isset($row['candidate_id'])) {
-                $candidate_id = $row['candidate_id'];
-            } else {
-                $candidate_id = "N/A";
-            }
-?>
-            <tr>
-                <td><?php echo $sno++; ?></td>
-                <td><img src="upload_image/<?php echo $row['candidate_photo']; ?>" height="100" border-radius="20"></td>
-                <td><?php echo $row['candidate_name']; ?></td>
-                <td><?php echo $row['address']; ?></td> 
+     $isAnyCandidateAdded = mysqli_num_rows($fetchingData);
+     
+     if ($isAnyCandidateAdded > 0) {
+         $sno = 1;
+         while ($row = mysqli_fetch_assoc($fetchingData)) {
+             if (isset($row['candidate_id'])) {
+                 $candidate_id = $row['candidate_id'];
+             } else {
+                 $candidate_id = "N/A";
+             }
+             ?>
+             <tr>
+                 <td><?php echo $sno++; ?></td>
+                 <td><img src="upload_image/<?php echo $row['candidate_photo']; ?>" height="100" style="border-radius: 20px;"></td>
+                 <td><?php echo $row['candidate_name']; ?></td>
+                 <td><?php echo $row['address']; ?></td>
+                 <td><?php echo $row['email']; ?></td>
+                 <td><?php echo $row['Bio']; ?></td>
+                 <td><?php echo $row['election_topic']; ?></td>
+                 <td>
+                     <a href="update.php?edit=<?php echo $row['id']; ?>" class="box-btn"><i class="fas fa-edit"></i> Edit</a>
+                     <a href="addcandidate.php?delete=<?php echo $row['id']; ?>" class="box-btn"><i class="fas fa-trash"></i> Delete</a>
+                 </td>
+             </tr>
+         <?php
+         }
+     } else {
+         ?>
+         <tr>
+             <td colspan="8">No candidates yet.</td>
+         </tr>
+     <?php
+     }
+     
+      ?>
+   </table>
+</div>
 
-                <td><?php echo $row['email']; ?></td>
-   
-                <td><?php echo $row['Bio']; ?></td>
-                <td><?php echo $row['election_id']; ?></td>
-                <td> 
-                    <a href="update.php?edit=<?php echo $candidate_id; ?>" class="box-btn"> <i class="fas fa-edit"></i> edit </a>
-                    <a href="addelection.php?delete=<?php echo $candidate_id; ?>" class="box-btn"> <i class="fas fa-trash"></i> delete </a>
-                </td>
-            </tr>
-<?php
-        }
-    } else {
-?>
-        <tr> 
-            <td colspan="7"> No candidates yet. </td>
-        </tr>
-<?php
-    }
-?>
-
-   </div>
 
 </div>
   </main>
