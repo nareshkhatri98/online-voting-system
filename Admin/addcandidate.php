@@ -211,7 +211,7 @@ if(isset($message)){
 
    </div>
 
-   <h1> this is first heading</h1>
+
 
 </div>
   </main>
