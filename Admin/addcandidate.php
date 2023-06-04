@@ -1,0 +1,224 @@
+
+<?php
+session_start();
+@include 'inc/connection.php';
+
+if (isset($_POST['add_candidate'])) {
+    $election_id = $_POST['election_id'];
+    $candidate_name = $_POST['candidate_name'];
+    $candidate_address = $_POST['candidate_address'];
+    $candidate_email = $_POST['candidate_email'];
+    $candidate_photo = $_FILES['candidate_photo']['name'];
+    $candidate_photo_tmp_name = $_FILES['candidate_photo']['tmp_name'];
+    $candidate_image_folder = 'upload_image/'.$candidate_photo;
+    $candidate_bio = $_POST['candidate_bio'];
+    $inserted_by = $_SESSION['fullname'];
+    $inserted_on = date("Y-m-d");
+
+    if (empty($candidate_name) || empty($candidate_address) || empty($candidate_email) || empty($candidate_photo) || empty($candidate_bio) || empty($election_id) || $election_id == '0') {
+        $message[] = 'Please fill out all fields and provide a valid election ID.';
+    } else {
+        $insert = "INSERT INTO candidate_details (election_id, candidate_name, address, email, candidate_photo, Bio, inserted_by, inserted_on) VALUES ('$election_id', '$candidate_name', '$candidate_address', '$candidate_email', '$candidate_photo', '$candidate_bio', '$inserted_by', '$inserted_on')";
+        $upload = mysqli_query($conn, $insert);
+        if ($upload) {
+            move_uploaded_file($candidate_photo_tmp_name, $candidate_image_folder);
+            $message[] = 'New candidate added successfully';
+        } else {
+            $message[] = 'Could not add the candidate';
+        }
+    }
+}
+
+
+
+   
+
+if(isset($_GET['delete'])){
+   $id = $_GET['delete'];
+   mysqli_query($conn, "DELETE FROM candidate_details WHERE candidate_id = $id");
+   header('location:addcandidate.php');
+};
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <title>dashboard</title> -->
+  <!-- custome css -->
+  <link rel="stylesheet" href="../dashboard/dashboard.css"">
+  <!-- For icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+  rel="stylesheet">
+  <link rel="stylesheet" href="../cssfolder/election.css">
+
+<body>
+<div class="grid-container">
+
+  <!-- header -->
+  <header class="header">
+    <div class="menu-icon" onclick="openSidebar()">
+      <span class="material-icons-outlined">menu</span>
+    </div>
+    <div class="class-left">
+      <span class="material-icons-outlined"> search </span> 
+    </div>
+    <div class="class-right">
+      <span class="material-icons-outlined" >account_circle </a></span>
+      
+    </div>
+  </header>
+  <!-- end header -->
+
+  <!-- slidebar -->
+   <aside id="sidebar">
+   <div class="sidebar-title">
+    <div class="sidebar-brand">
+   <a href="dashboard.php"> <span class="material-icons-outlined" style="color:#b0b2bd;">how_to_vote</span> </a> Go Vote
+    </div>
+    <span class="material-icons-outlined" onclick="closeSidebar()">close </span>
+   </div>
+
+   <ul class="sidebar-list">
+        <li class="sidebar-list-item">
+        <span class="material-icons-outlined">dashboard</span> Dashboard</li>
+
+      <li class="sidebar-list-item">
+       <a href="dashboard.php"><span class="material-icons-outlined">event_available</span> Election</li></a>
+      
+     <li class="sidebar-list-item"><span class="material-icons-outlined">groups</span> Candidates</li>
+     <li class="sidebar-list-item"><span class="material-icons-outlined">visibility</span> View Result</li>
+   
+    <li class="sidebar-list-item"> <span class="material-icons-outlined">settings </span> Setting</li>
+
+   </ul>
+  </aside>
+  <!-- Endsidebar -->
+  <main class="main-container">
+    
+<?php
+
+if(isset($message)){
+   foreach($message as $message){
+      echo '<span class="message">'.$message.'</span>';
+   }
+}
+
+?>
+   
+   <div class="form-container">
+   <div class="admin-product-form-container">
+      <form action="addcandidate.php" method="post" enctype="multipart/form-data">
+         <h3>Add Candidates</h3>
+         <select class="box" name="election_id" required>
+            <option value="">Select Election Topic</option>
+            <?php 
+               $fetchingElections = mysqli_query($conn, "SELECT * FROM elections") or die(mysqli_error($conn));
+               $isAnyElectionAdded = mysqli_num_rows($fetchingElections);
+               if ($isAnyElectionAdded > 0) {
+                  while ($row = mysqli_fetch_assoc($fetchingElections)) {
+                     $election_id = $row['id'];
+                     $election_name = $row['election_topic'];
+                     $allowed_candidates = $row['no_of_candidates'];
+
+                     // Now checking how many candidates are added in this election 
+                     $fetchingCandidate = mysqli_query($conn, "SELECT * FROM candidate_details WHERE election_id = '". $election_id ."'") or die(mysqli_error($conn));
+                     $added_candidates = mysqli_num_rows($fetchingCandidate);
+
+                     if ($added_candidates < $allowed_candidates) {
+            ?>
+            <option value="<?php echo $election_id; ?>"><?php echo $election_name; ?></option>
+            <?php
+                     }
+                  }
+               } else {
+            ?>
+            <option value="">Please add an election first</option>
+            <?php
+               }
+            ?>
+         </select>
+         <input type="text" placeholder="Enter candidate full name" name="candidate_name" class="box">
+         <input type="text" placeholder="Enter candidate address" name="candidate_address" class="box">
+         <input type="email" placeholder="Enter email" name="candidate_email" class="box">
+         <input type="file" accept="image/jpg, image/png, image/jpeg" placeholder="Upload the image" name="candidate_photo" class="box" required>
+         <textarea name="candidate_bio" placeholder="Short Bio" class="box" cols="0" rows="0"></textarea>
+         <input type="submit" class="btn" name="add_candidate" value="add_candidate">
+      </form>
+   </div>
+</div>
+
+
+<?php
+
+      $select = mysqli_query($conn, "SELECT * FROM candidate_details");
+   
+   ?>
+   <div class="product-display">
+      <table class="product-display-table">
+         <thead>
+         <tr>
+                     <th>Sn</th>
+                    <th >Photo</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Email</th>
+                    <th>Bio</th>
+                    <th>Election</th>
+                    <th>Action </th>
+         </tr>
+         </thead>
+         <?php 
+    $fetchingData = mysqli_query($conn, "SELECT * FROM candidate_details") or die(mysqli_error($conn)); 
+    $isAnyCandidateAdded = mysqli_num_rows($fetchingData);
+
+    if ($isAnyCandidateAdded > 0) {
+        $sno = 1;
+        while ($row = mysqli_fetch_assoc($fetchingData)) {
+            if (isset($row['candidate_id'])) {
+                $candidate_id = $row['candidate_id'];
+            } else {
+                $candidate_id = "N/A";
+            }
+?>
+            <tr>
+                <td><?php echo $sno++; ?></td>
+                <td><img src="upload_image/<?php echo $row['candidate_photo']; ?>" height="100" border-radius="20"></td>
+                <td><?php echo $row['candidate_name']; ?></td>
+                <td><?php echo $row['address']; ?></td> 
+
+                <td><?php echo $row['email']; ?></td>
+   
+                <td><?php echo $row['Bio']; ?></td>
+                <td><?php echo $row['election_id']; ?></td>
+                <td> 
+                    <a href="update.php?edit=<?php echo $candidate_id; ?>" class="box-btn"> <i class="fas fa-edit"></i> edit </a>
+                    <a href="addelection.php?delete=<?php echo $candidate_id; ?>" class="box-btn"> <i class="fas fa-trash"></i> delete </a>
+                </td>
+            </tr>
+<?php
+        }
+    } else {
+?>
+        <tr> 
+            <td colspan="7"> No candidates yet. </td>
+        </tr>
+<?php
+    }
+?>
+
+   </div>
+
+</div>
+  </main>
+  <!-- end main -->
+</div>
+<!-- custom js -->
+  <script src="../assets/js/dashobrd.js"></script>
+  <script src="../assets/js/first.js"></script>
+  <script src="../assets/js/drop_down.js"></script>
+</body>
+</body>
+</html>
