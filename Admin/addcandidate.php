@@ -211,8 +211,6 @@ if(isset($message)){
 
    </div>
 
-
-
 </div>
   </main>
   <!-- end main -->
