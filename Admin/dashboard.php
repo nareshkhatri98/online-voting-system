@@ -65,39 +65,8 @@
   <!-- Endsidebar -->
 
   <!-- main -->
-  <main class="main-container">
-    <div class="main-title">
-      <p class="font-weight-bold">DASHBOARD</p>
-    </div>
-
-    <div class="main-cards">
-
-      <div class="card">
-        <div class="card-inner"> 
-         <p class="text-primary">Add Election </p>
-         <a href="addelection.php"><span class="material-icons-outlined text-blue"> event_available</span></a>
-        </div>
-        <span class="text-primary font-weight-bold"></span>
-      </div>
-
-       <div class="card">
-        <div class="card-inner"> 
-         <p class="text-primary">candidates</p>
-        <a href="addcandidate.php"><span class="material-icons-outlined text-blue"> groups</span></a> 
-        </div>  
-        <span class="text-primary font-weight-bold"></span>
-       </div>
-       
-
-      <div class="card">
-        <div class="card-inner"> 
-         <p class="text-primary">View Result</p>
-         <span class="material-icons-outlined text-orange"> visibility</span>
-        </div>
-        <span class="text-primary font-weight-bold">On going</span>
-      </div>
-    </div>  
-  </main>
+ 
+    
   <!-- end main -->
 </div>
 

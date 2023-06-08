@@ -38,13 +38,14 @@
       <p>don't have an account? <a href="Register-page.php">register here</a></p>
    </form>
    </div>
-   </body>
+   
+</body>
    </html>
 
    <?php
   include"../Admin/inc/connection.php";
 session_start();
-
+  $_SESSION['fullname'] = 'name';   
 if(isset($_POST['submit'])){
 
    $phone = mysqli_real_escape_string($conn, $_POST['phone']);

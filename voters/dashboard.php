@@ -10,6 +10,7 @@ include"../Admin/inc/connection.php";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
   <!-- Custom CSS -->
+  <link rel="stylesheet" href="abd.css">
   <link rel="stylesheet" href="../cssfolder/dashboard.css">
   <!-- For icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
@@ -51,11 +52,11 @@ include"../Admin/inc/connection.php";
           <span class="material-icons-outlined">home</span> Home
         </li>
         <li class="sidebar-list-item">
-          <span class="material-icons-outlined">groups</span> Comment
-        </li>
+         <a href="" onclick="showForm('form1')"> <span class="material-icons-outlined">groups</span> Comment
+        </li></a>
         <li class="sidebar-list-item">
-          <span class="material-icons-outlined">visibility</span> View Result
-        </li>
+        <a href="#" onclick="showForm('form2')"><span class="material-icons-outlined">visibility</span> View Result
+        </li></a>
         <li class="sidebar-list-item">
           <a href="../hompage/home_page.html">
             <span class="material-icons-outlined">account_circle</span>
@@ -66,17 +67,15 @@ include"../Admin/inc/connection.php";
     </aside>
     <!-- End Sidebar -->
 
-    <!-- Main -->
-    <main class="main-container">
-      <div class="main-title"></div>
-      <div class="main-cards"></div>
-    </main>
+
+
     <!-- End Main -->
 
     <!-- Custom JS -->
     <script src="../assets/js/dashobrd.js"></script>
     <script src="../assets/js/first.js"></script>
     <script src="../assets/js/drop_down.js"></script>
+    <script src = "abcd.js"></script>
   </div>
 </body>
 </html>
