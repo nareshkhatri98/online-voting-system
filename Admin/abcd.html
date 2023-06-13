@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!-- Created By CodingLab - www.codinglabweb.com -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Profile Cards | CodingLab</title>
+    <link rel="stylesheet" href="../hompage/abcd.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+  </head>
+  <body>
+    <div class="container">
+      <div class="box">
+      <div class="image">
+        <img src="upload_image/<?php echo $row['candidate_photo']; ?>" alt="">  
+        </div>
+        <div class="name_job"> <?php echo $row['candidate_name'] ?></div>
+        <div class="rating">
+          <?php echo"election topic  : " .$row['election_topic'] ?>
+          
+        </div>
+        <p><?php echo $row['Bio'] ?>.</p>
+        <div class="btns">
+          <button>Read More</button>
+          <button>Subscribe</button>
+        </div>
+      </div>
+      <a href="../cssfolder/candidateshow.css"></a>
+     
+    </div>
+      </body>
+</html>
+
+
+
+<?php
+while ($row = mysqli_fetch_assoc($all_product)) {
+
+?>
+  <div class="container">
+  <div class="cart">
+  <img src="upload_image/<?php echo $row['candidate_photo']; ?>" alt="">  
+    <div class="containt">
+      <h1> <?php echo $row['candidate_name'] ?></h1>
+      <p>
+      <?php echo $row['Bio'] ?>.
+      </p>
+      <button class="btn">vote now</button>
+    </div>
+  </div>
+  
+
+<?php
+}
+  ?>
+   
+  <a href="../hompage/login_page.php"></a>

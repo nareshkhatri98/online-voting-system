@@ -19,7 +19,7 @@ include"../Admin/inc/connection.php";
     <div>
       <ul id="navbar">
         <li><a href="../hompage/home_page.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
+        <li><a href="about.html">About us</a></li>
         <li><a href="" id="user-icon"><i class="fas fa-user"></i></a> </li>
       </ul>
    </div>

@@ -34,6 +34,7 @@ if(isset($_POST['add_election'])){
          $upload= mysqli_query($conn, $insert);
          if($upload){
             $message[] = 'new election added successfully';
+            header('location:addelection.php');
          }else{
             $message[] = 'could not add the election';
           }
@@ -108,7 +109,15 @@ if(isset($_GET['delete'])){
   <!-- Endsidebar -->
   <main class="main-container">
     
-<?php
+
+<div class="form-container">
+
+   <div class="admin-product-form-container">
+
+   <form action="addelection.php" method="post" enctype="multipart/form-data">
+
+            <h3>add a new election</h3>
+            <?php
 
 if(isset($message)){
    foreach($message as $message){
@@ -118,13 +127,6 @@ if(isset($message)){
 
 ?>
    
-<div class="form-container">
-
-   <div class="admin-product-form-container">
-
-   <form action="addelection.php" method="post" enctype="multipart/form-data">
-
-            <h3>add a new election</h3>
             <input type="text" placeholder="enter election topic" name="election_topic" class="box">
             <input type="number" placeholder="Number of candidates" name="number_of_candidates" class="box">
             <input type="date" placeholder="starting date" name="starting_date" class="box">
