@@ -87,7 +87,7 @@ CREATE TABLE `users` (
   `user_role` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
---
+--hh
 -- Dumping data for table `users`
 --
 
