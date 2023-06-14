@@ -1,0 +1,45 @@
+<a href="../Admin/upload_image/"></a>
+<?php 
+$fetchingActiveElections = mysqli_query($conn, "SELECT * FROM elections WHERE status = 'Active'") or die(mysqli_error($conn));
+$totalActiveElections = mysqli_num_rows($fetchingActiveElections);
+
+if($totalActiveElections > 0) 
+{
+    while($data = mysqli_fetch_assoc($fetchingActiveElections))
+    {
+        $election_id = $data['id'];
+        $election_topic = $data['election_topic'];    
+?>
+
+
+<section class="voting">
+  <div class="candidate_list">
+  <h1>Candidates list</h1>
+
+<table class="table">
+ <thead>
+   <tr>
+    <a href="votenow.php"></a>
+    <a href="./inc/ajaxCalss.php"></a>
+  
+     <th>Photo</th>
+     <th>Name</th>
+     <th>Address</th>
+     <th>Email</th>
+     <th>Details</th>
+     <th>Election topic</th>
+     <th># of Votes</th>
+     <th>Action</th>
+   </tr>
+ </thead>
+
+         </tbody>
+       </table>
+     </div>
+
+   </section>
+   <a href="../images/online1.jpg"></a>
+   <a href="inc/jquery.min.js"></a>
+   <a href="inc/ajaxcall.php"></a>
+   <a href="inc/ajaxcall.php"></a>
+   <a href="../assets/image/vote.png"></a>

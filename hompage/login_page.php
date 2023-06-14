@@ -41,36 +41,34 @@
    
 </body>
    </html>
-
    <?php
-  include"../Admin/inc/connection.php";
+   include "../Admin/inc/connection.php";
 session_start();
-  $_SESSION['fullname'] = 'name';   
-if(isset($_POST['submit'])){
 
-   $phone = mysqli_real_escape_string($conn, $_POST['phone']);
-   $password = md5($_POST['password']);
-   $select = " SELECT * FROM users WHERE phone = '$phone' && password = '$password' ";
+if (isset($_POST['submit'])) {
+    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
+    $password = md5($_POST['password']);
 
-   $result = mysqli_query($conn, $select);
+    // Select Query  
+    $select = "SELECT * FROM users WHERE phone = '$phone' && password = '$password' ";
+    $result = mysqli_query($conn, $select);
 
-   if(mysqli_num_rows($result) > 0){
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_array($result);
 
-      $row = mysqli_fetch_array($result);
-
-      if($row['user_role'] == 'admin'){
-         $_SESSION['fullname'] = $row['name'];
-         header('location:../Admin/dashboard.php');
-     }
-     elseif($row['user_role'] == 'User'){
-         $_SESSION['fullname'] = $row['name'];
-         header('location:../voters/dashboard.php');
-     }
-     
-     
-   }else{
-      $error[] = 'incorrect email or password!';
-   }
-
-};
+        if ($row['user_role'] == 'admin') {
+            $_SESSION['fullname'] = $row['name'];
+            $_SESSION['id'] = $row['id']; // Add this line to store the user's ID in the session
+            header('location:../Admin/dashboard.php');
+            exit(); // Add this line to stop further execution
+        } elseif ($row['user_role'] == 'User') {
+            $_SESSION['fullname'] = $row['name'];
+            $_SESSION['id'] = $row['id']; // Add this line to store the user's ID in the session
+            header('location:../voters/dashboard.php');
+            exit(); // Add this line to stop further execution
+        }
+    } else {
+        $error[] = 'Incorrect phone or password!';
+    }
+}
 ?>

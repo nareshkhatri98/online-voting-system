@@ -41,7 +41,7 @@ include"../Admin/inc/connection.php";
   <input type="password" name="password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$" required placeholder="enter your password">
   <input type="password" name="cpassword" required placeholder="confirm your password">
      
-  <input type="submit" name="submit" value="register now" class="form-btn">
+  <input type="submit" name="submit" onclick="Register();" value="register now" class="form-btn">
 <a href="login_page.php"></a>
   <p>already have an account? <a href="login_page.php">login here</a></p>
 </form>
