@@ -53,7 +53,8 @@ include"../Admin/inc/connection.php";
         </li>
         <li class="sidebar-list-item">
          <a href="votenow.php" > <span class="material-icons-outlined">event</span> election Avaliable
-        </li></a>
+        </a>
+        </li>
         
         <li class="sidebar-list-item">
           <a href="../hompage/home_page.html">
