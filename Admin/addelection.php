@@ -96,13 +96,13 @@ if(isset($_GET['delete'])){
         <a href="dashboard.php"><span class="material-icons-outlined">dashboard</span> Dashboard</li></a>
 
       <li class="sidebar-list-item">
-       <a href="dashboard.php"><span class="material-icons-outlined">event_available</span> Election</li></a>
+       <a href="dashboard.php"><span class="material-icons-outlined">event_available</span> Elections</li></a>
       
      <li class="sidebar-list-item">
      <a href="dashboard.php"><span class="material-icons-outlined">groups</span> Candidates</li></a>
-     <li class="sidebar-list-item"><span class="material-icons-outlined">visibility</span> View Result</li>
+     <li class="sidebar-list-item"><a href="viewresult.php"></a><span class="material-icons-outlined">visibility</span> View Result </a></li>
    
-    <li class="sidebar-list-item"> <span class="material-icons-outlined">settings </span> Setting</li>
+    <li class="sidebar-list-item"> <span class="material-icons-outlined">settings </span> Notify</li>
 
    </ul>
   </aside>

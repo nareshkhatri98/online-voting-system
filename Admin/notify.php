@@ -67,8 +67,8 @@
   <!-- Endsidebar -->
 
   <!-- main -->
- 
-    
+
+ <h1>This is notify page</h1>
   <!-- end main -->
 </div>
 
