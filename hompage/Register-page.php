@@ -29,13 +29,7 @@ include"../Admin/inc/connection.php";
 <div class="form-container">
 <form action="Register-page.php" method="post" class="form-only">
   <h3>register</h3>
-  <?php
-  if(isset($error)){
-    foreach($error as $error){
-      echo '<span class="error-msg">'.$error.'</span>';
-    };
-  };
-  ?>
+ 
   <input type="text" name="name" pattern="^[a-zA-Z]+ [a-zA-Z]+$" required placeholder="enter your name">
   <input type="tel" name="phone" pattern="^[0-9]{10}$" required placeholder="enter your phone">
   <input type="password" name="password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$" required placeholder="enter your password">
@@ -51,38 +45,38 @@ include"../Admin/inc/connection.php";
 </body>
 </html>
 <?php
+if (isset($_POST['submit'])) {
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
+    $password = md5($_POST['password']);
+    $cpassword = md5($_POST['cpassword']);
+    $user_role = "User";
 
-if(isset($_POST['submit'])){
-   
-   $name = mysqli_real_escape_string($conn, $_POST['name']);
-  
-   $phone = mysqli_real_escape_string($conn, $_POST['phone']);
-   $password = md5($_POST['password']);
-   $cpassword = md5($_POST['cpassword']);
-   $user_role = "User";
-
-   $select = " SELECT * FROM users WHERE phone = $phone || password = '$password' ";
-  
-
-   $result = mysqli_query($conn, $select);
-
-   if(mysqli_num_rows($result) > 0){
-
-      echo 'sucessful registered  ';
-
-   }else{
-
-      if($password != $cpassword){
-         $error[] = 'password not matched!';
-         echo "$error";
-      }else{
-         $insert = "INSERT INTO users(fullname, phone, password, user_role) VALUES('$name','$phone','$password','$user_role')";
-         mysqli_query($conn, $insert);
-         header('location:login_page.php');
-      }
-   }
-
-};
-
-
+    if ($password == $cpassword) {
+        $insert = "INSERT INTO users(fullname, phone, password, user_role) VALUES('$name','$phone','$password','$user_role')";
+        mysqli_query($conn, $insert);
+        if ($insert) {
+            echo '
+            <script>
+                alert("Registration successful");
+                window.location = "login_page.php";
+            </script>
+            ';
+        } else {
+            echo '
+            <script>
+                alert("Something went wrong");
+                window.location = "Register-page.php";
+            </script>
+            ';
+        }
+    } else {
+        echo '
+        <script>
+            alert("Password and confirm password do not match");
+            window.location = "Register-page.php";
+        </script>
+        ';
+    }
+}
 ?>
