@@ -25,13 +25,7 @@
 
    <form action="login_page.php" method="post" class="form-only">
       <h3>login</h3>
-      <?php
-      if(isset($error)){
-         foreach($error as $error){
-            echo '<span class="error-msg">'.$error.'</span>';
-         };
-      };
-      ?>
+     
       <input type="text" name="phone" pattern="[0-9]{10}$" required placeholder="enter your phone">
       <input type="password" name="password" required placeholder="enter your password">
       <input type="submit" name="submit" value="login now" class="form-btn">
@@ -49,6 +43,7 @@ if (isset($_POST['submit'])) {
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $password = md5($_POST['password']);
 
+
     // Select Query  
     $select = "SELECT * FROM users WHERE phone = '$phone' && password = '$password' ";
     $result = mysqli_query($conn, $select);
@@ -57,18 +52,33 @@ if (isset($_POST['submit'])) {
         $row = mysqli_fetch_array($result);
 
         if ($row['user_role'] == 'admin') {
-            $_SESSION['fullname'] = $row['name'];
+            $_SESSION['admin'] = $row['fullname'];
             $_SESSION['id'] = $row['id']; 
-            header('location:../Admin/dashboard.php');
-            exit(); 
+            echo '
+            <script>
+                alert("login sucessfull");
+                window.location ="../Admin/dashboard.php";
+            </script>
+            ';
+            
         } elseif ($row['user_role'] == 'User') {
-            $_SESSION['fullname'] = $row['name'];
+            $_SESSION['User'] = $row['fullname'];
             $_SESSION['id'] = $row['id']; 
-            header('location:../voters/dashboard.php');
-            exit(); 
+            echo '
+            <script>
+                alert("login sucessfull");
+                window.location ="../voters/dashboard.php";
+            </script>
+            ';
+            
         }
     } else {
-        $error[] = 'Incorrect phone or password!';
+      echo '
+      <script>
+          alert("Invalide username and password");
+          window.location = "login_page.php";
+      </script>
+      ';
     }
 }
 ?>

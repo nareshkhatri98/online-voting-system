@@ -1,6 +1,14 @@
 <?php
 include"../Admin/inc/connection.php";
+session_start();
+if(!isset( $_SESSION['User']))
+{
+  header('location:../hompage/login_page.php');
+}
+
+
 ?>
+  
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,15 +32,10 @@ include"../Admin/inc/connection.php";
         <span class="material-icons-outlined">menu</span>
       </div>
 
-      <?php
-      $sel = " SELECT * FROM users WHERE  user_role = 'User'";
-      $query = mysqli_query($conn, $sel);
-      $result= mysqli_fetch_assoc($query);
-
-       ?>
+     
       <div class="class-right">
         
-          <h1>Welcome- <smaLL> <?php echo $result['fullname']; ?></smaLL></h1>
+          <h1>Welcome- <smaLL> <?php echo  $_SESSION['User'] ?></smaLL></h1>
       
       </div>
     </header>

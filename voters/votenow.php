@@ -29,16 +29,11 @@ session_start();
         <span class="material-icons-outlined">menu</span>
       </div>
 
-      <?php
-      $sel = " SELECT * FROM users WHERE  user_role = 'User'";
-      $query = mysqli_query($conn, $sel);
-      $result = mysqli_fetch_assoc($query);
-
-      ?>
+      
       <div class="class-right">
 
         <h1>Welcome- <smaLL>
-            <?php echo $result['fullname']; ?>
+     
           </smaLL></h1>
 
       </div>
@@ -130,7 +125,7 @@ if ($totalActiveElections > 0) {
                             <td><?php echo isset($totalVotes) ? $totalVotes : 0; ?></td>
                             <td>
                               <?php
-                                  $checkIfVoteCasted = mysqli_query($conn, "SELECT * FROM votings WHERE voters_id = '". $result['id'] ."' AND election_id = '". $election_id ."'") or die(mysqli_error($conn));    
+                                  $checkIfVoteCasted = mysqli_query($conn, "SELECT * FROM votings WHERE voters_id = '". $_SESSION['id'] ."' AND election_id = '". $election_id ."'") or die(mysqli_error($conn));    
                                   $isVoteCasted = mysqli_num_rows($checkIfVoteCasted);
                                 
 
@@ -148,7 +143,7 @@ if ($totalActiveElections > 0) {
                           <?php
                                       }
                                   }else {
-                          ?><button onclick="CastVote(<?php echo $election_id; ?>, <?php echo $candidate_id; ?>, <?php echo $result['id']; ?>)"> Vote </button>
+                          ?><button onclick="CastVote(<?php echo $election_id; ?>, <?php echo $candidate_id; ?>, <?php echo $_SESSION['id']; ?>)"> Vote </button>
                           <?php
                                   }
 

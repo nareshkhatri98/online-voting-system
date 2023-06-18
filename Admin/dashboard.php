@@ -1,8 +1,10 @@
 <?php
   include"inc/connection.php";
- $sel = " SELECT * FROM users WHERE user_role = 'admin'";
- $query = mysqli_query($conn, $sel);
- $result= mysqli_fetch_assoc($query);
+session_start();
+if(!isset($_SESSION['admin']))
+{
+  header('location:../hompage/login_page.php');
+}
 
 
 ?>
@@ -29,7 +31,7 @@
       <span class="material-icons-outlined">menu</span>
     </div>
     <div class="class-left">
-    <h3>Welcome- <smaLL> <?php echo $result['fullname']; ?></smaLL></h3>
+    <h3>Welcome- <smaLL> <?php echo $_SESSION['admin'] ?></smaLL></h3>
       
     </div>
     <div class="class-right">

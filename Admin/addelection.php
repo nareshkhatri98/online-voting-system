@@ -25,7 +25,13 @@ if(isset($_POST['add_election'])){
             $status = "Active";
         }
         if(empty($election_topic) || empty($number_of_candidates) || empty($starting_date) || empty($ending_date)){
-         $message[] = 'please fill out all';
+         
+          echo'   <script>
+            alert("please fill out all");
+            window.location = "addelection.php";
+        </script>
+        ';
+        
         }
         // inserting into db
        else{ 
@@ -33,8 +39,12 @@ if(isset($_POST['add_election'])){
        ". $starting_date ."', '". $ending_date ."', '". $status ."', '". $inserted_by ."', '". $inserted_on ."')" ;
          $upload= mysqli_query($conn, $insert);
          if($upload){
-            $message[] = 'new election added successfully';
-            header('location:addelection.php');
+          echo'   <script>
+          alert("New Election added successfully.");
+          window.location = "addelection.php";
+      </script>
+      ';
+    
          }else{
             $message[] = 'could not add the election';
           }
@@ -117,17 +127,9 @@ if(isset($_GET['delete'])){
    <form action="addelection.php" method="post" enctype="multipart/form-data">
 
             <h3>add a new election</h3>
-            <?php
-
-if(isset($message)){
-   foreach($message as $message){
-      echo '<span class="message">'.$message.'</span>';
-   }
-}
-
-?>
    
             <input type="text" placeholder="enter election topic" name="election_topic" class="box">
+            
             <input type="number" placeholder="Number of candidates" name="number_of_candidates" class="box">
             <input type="date" placeholder="starting date" name="starting_date" class="box">
            <input type="date" placeholder="ending date" name="ending_date" class="box">

@@ -16,15 +16,31 @@ if (isset($_POST['add_candidate'])) {
     $inserted_on = date("Y-m-d");
 
     if (empty($candidate_name) || empty($candidate_address) || empty($candidate_email) || empty($candidate_photo) || empty($candidate_bio) || empty($election_id) || $election_id == '0') {
-        $message[] = 'Please fill out all fields and provide a valid election ID.';
+      echo'   <script>
+      alert("Please fill out all fields and provide a valid election ID.");
+      window.location = "addcandidate.php";
+  </script>
+  ';
+      
+      ;
     } else {
         $insert = "INSERT INTO candidate_details (election_id, candidate_name, address, email, candidate_photo, Bio, inserted_by, inserted_on) VALUES ('$election_id', '$candidate_name', '$candidate_address', '$candidate_email', '$candidate_photo', '$candidate_bio', '$inserted_by', '$inserted_on')";
         $upload = mysqli_query($conn, $insert);
         if ($upload) {
             move_uploaded_file($candidate_photo_tmp_name, $candidate_image_folder);
-            $message[] = 'New candidate added successfully';
+         echo'   <script>
+            alert("new candidate added successfull.");
+            window.location = "addcandidate.php";
+        </script>
+        ';
+          
         } else {
-            $message[] = 'Could not add the candidate';
+         echo'   <script>
+            alert("Could not add");
+            window.location = "addcandidate.php";
+        </script>
+        ';
+          
         }
     }
 }
@@ -98,16 +114,6 @@ if(isset($_GET['delete'])){
   </aside>
   <!-- Endsidebar -->
   <main class="main-container">
-    
-<?php
-
-if(isset($message)){
-   foreach($message as $message){
-      echo '<span class="message">'.$message.'</span>';
-   }
-}
-
-?>
    
    <div class="form-container">
    <div class="admin-product-form-container">
