@@ -57,7 +57,7 @@ include"../Admin/inc/connection.php";
         </li>
         
         <li class="sidebar-list-item">
-          <a href="../hompage/home_page.html">
+          <a href="logut.php">
             <span class="material-icons-outlined">account_circle</span>
           </a>
           Logout

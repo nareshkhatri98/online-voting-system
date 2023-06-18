@@ -58,14 +58,14 @@ if (isset($_POST['submit'])) {
 
         if ($row['user_role'] == 'admin') {
             $_SESSION['fullname'] = $row['name'];
-            $_SESSION['id'] = $row['id']; // Add this line to store the user's ID in the session
+            $_SESSION['id'] = $row['id']; 
             header('location:../Admin/dashboard.php');
-            exit(); // Add this line to stop further execution
+            exit(); 
         } elseif ($row['user_role'] == 'User') {
             $_SESSION['fullname'] = $row['name'];
-            $_SESSION['id'] = $row['id']; // Add this line to store the user's ID in the session
+            $_SESSION['id'] = $row['id']; 
             header('location:../voters/dashboard.php');
-            exit(); // Add this line to stop further execution
+            exit(); 
         }
     } else {
         $error[] = 'Incorrect phone or password!';

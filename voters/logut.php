@@ -5,6 +5,6 @@ session_start();
 session_unset();
 session_destroy();
 
-header('location:../hompage/home_page.html  ');
+header('location:../hompage/login_page.php  ');
 
 ?>
