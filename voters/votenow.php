@@ -51,8 +51,9 @@ session_start();
 
       <ul class="sidebar-list">
         <li class="sidebar-list-item">
+        <a href="dashboard.php">
           <span class="material-icons-outlined">home</span> Home
-        </li>
+        </li></a>
         <li class="sidebar-list-item">
           <a href="dashboard.php" > <span class="material-icons-outlined">event</span> election Avaliable
         </li></a>

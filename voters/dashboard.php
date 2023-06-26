@@ -1,12 +1,17 @@
 <?php
-include"../Admin/inc/connection.php";
+include "../Admin/inc/connection.php";
 session_start();
-if(!isset( $_SESSION['User']))
-{
+if (!isset($_SESSION['User'])) {
   header('location:../hompage/login_page.php');
 }
 
-
+$select = "SELECT fullname, phone FROM users WHERE id = " . $_SESSION['id']; // 'id' is the column name in users table
+$result = mysqli_query($conn, $select);
+if ($result) {
+  $row = mysqli_fetch_assoc($result);
+  $fullname = $row['fullname'];
+  $phone = $row['phone'];
+}
 ?>
   
 
@@ -52,8 +57,9 @@ if(!isset( $_SESSION['User']))
 
       <ul class="sidebar-list">
         <li class="sidebar-list-item">
+          <a href="dashboard.php">
           <span class="material-icons-outlined">home</span> Home
-        </li>
+        </li></a>
         <li class="sidebar-list-item">
          <a href="votenow.php" > <span class="material-icons-outlined">event</span> election Avaliable
         </a>
@@ -68,10 +74,34 @@ if(!isset( $_SESSION['User']))
       </ul>
     </aside>
     <!-- End Sidebar -->
+    <main class="main-container">
+     
+
+      <div class="main-cards" style="margin-left: 130px;">
+
+        <div class="card">
+          <div class="card-inner">
+            <h2 class="text-primary font-weight-bold">Your details</h2>
+            <span class="material-icons-outlined text-blue" >groups</span>
+          </div>
+          <span class="text-primary font-weight-bold">
+          Fullanme: <?php echo $fullname; ?>
+          </span>
+          <span class="text-primary font-weight-bold" style="margin-top: 12px;">phone:  <?php echo $phone; ?></span>
+        </div>
+
+
+
+
+      </div>
+
+    </main>
 
  <div>
-    
- </div>
+
+<div>
+
+
 
     <!-- End Main -->
 

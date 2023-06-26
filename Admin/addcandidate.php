@@ -147,10 +147,15 @@ if(isset($_GET['delete'])){
                }
             ?>
          </select>
+         <label for="">Fullname</label>
          <input type="text" placeholder="Enter candidate full name" name="candidate_name" class="box">
+         <label for="">Address</label>
          <input type="text" placeholder="Enter candidate address" name="candidate_address" class="box">
+         <label for="">Email</label>
          <input type="email" placeholder="Enter email" name="candidate_email" class="box">
+         <label for="">Photo</label>
          <input type="file" accept="image/jpg, image/png, image/jpeg" placeholder="Upload the image" name="candidate_photo" class="box" required>
+         <label for="">Bio</label>
          <textarea name="candidate_bio" placeholder="Short Bio" class="box" cols="0" rows="0"></textarea>
          <input type="submit" class="btn" name="add_candidate" value="add_candidate">
       </form>

@@ -25,6 +25,7 @@ if (isset($_POST['submit'])) {
             $_SESSION['User'] = $row['fullname'];
             $_SESSION['id'] = $row['id']; 
            
+           
             header("location: ../voters/dashboard.php");
             exit();
         }

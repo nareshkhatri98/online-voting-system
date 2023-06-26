@@ -11,19 +11,21 @@ if(isset($_POST['add_election'])){
         $ending_date = mysqli_real_escape_string($conn, $_POST['ending_date']);
         $inserted_by = $_SESSION['fullname'];
         $inserted_on = date("Y-m-d");
+        $current_date = date("Y-m-d"); // Get the current date
 
-
-        $date1=date_create($inserted_on);
-        $date2=date_create($starting_date);
-        $diff=date_diff($date1,$date2);
+        $date1 = date_create($starting_date);
+        $date2 = date_create($ending_date);
+        $diff = date_diff($date1, $date2);
         
-        
-        if((int)$diff->format("%R%a") > 0)
-        {
-            $status = "InActive";
-        }else {
-            $status = "Active";
+        // Compare the starting date with the current date
+        if ($starting_date !== $current_date) {
+            $status = "Invalid: Starting date should be the current date";
+        } elseif ((int)$diff->format("%R%a") <= 0) {
+            $status = "Invalid: Ending date should be a future date";
+        } else {
+            $status = "active";
         }
+        
         if(empty($election_topic) || empty($number_of_candidates) || empty($starting_date) || empty($ending_date)){
          
           echo'   <script>
@@ -109,10 +111,10 @@ if(isset($_GET['delete'])){
        <a href="dashboard.php"><span class="material-icons-outlined">event_available</span> Elections</li></a>
       
      <li class="sidebar-list-item">
-     <a href="dashboard.php"><span class="material-icons-outlined">groups</span> Candidates</li></a>
-     <li class="sidebar-list-item"><a href="viewresult.php"></a><span class="material-icons-outlined">visibility</span> View Result </a></li>
+     <a href="addcandidates.php"><span class="material-icons-outlined">groups</span> Candidates</li></a>
+     <li class="sidebar-list-item"><a href="viewresult.php"><span class="material-icons-outlined">visibility</span> View Result </a></li>
    
-    <li class="sidebar-list-item"> <span class="material-icons-outlined">settings </span> Notify</li>
+    <li class="sidebar-list-item"> <span class="material-icons-outlined">settings </span> Notify</li></a>
 
    </ul>
   </aside>
@@ -127,14 +129,14 @@ if(isset($_GET['delete'])){
    <form action="addelection.php" method="post" enctype="multipart/form-data">
 
             <h3>add a new election</h3>
-           <label for="">ElectioN_topic</label>
+           <label for="">ElectioN topic</label>
             <input type="text" name="election_topic" class="box">
-            <label for="">No_Of_Candiadtes</label>
+            <label for="">No Of Candiadtes</label>
             <input type="number" placeholder="Number of candidates" name="number_of_candidates" class="box">
-            <label for="">starting_date</label>
+            <label for="">starting-date</label>
 
             <input type="date" placeholder="starting date" name="starting_date" class="box">
-            <label for="">Ending_date</label>
+            <label for="">Ending-date</label>
            <input type="date" placeholder="ending date" name="ending_date" class="box">
          
             <input type="submit" class="btn" name="add_election" value="add_election">

@@ -62,7 +62,7 @@ $result = mysqli_fetch_assoc($query);
         <li class="sidebar-list-item">
           <span class="material-icons-outlined"><a href="addcandidate.php">groups</a></span>
           Candidates
-        </li>
+         </li></a>
         <li class="sidebar-list-item">
           <span class="material-icons-outlined">visibility</span> View Result
         </li>

@@ -205,6 +205,11 @@ padding: 20px 20px 20px 20px;
 .card-inner > span{
   font-size: 35px;
 }
+.userlist>h1{
+ display: flex;
+ justify-content: center;
+  
+}
   /* submenu */
 
 
@@ -237,7 +242,9 @@ padding: 20px 20px 20px 20px;
     grid-template-columns: 1fr;
     gap:10;
     margin-bottom: 0;
+
    }
+
 }
 
 /* --Extra large <= 576px --*/

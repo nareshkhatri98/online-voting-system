@@ -62,12 +62,12 @@ if(isset($_POST['add_candidate']))
         <span class="material-icons-outlined">dashboard</span> Dashboard</li>
 
       <li class="sidebar-list-item">
-       <a href="dashboard.php"><span class="material-icons-outlined">event_available</span> Election</li></a>
+       <a href="addelection.php"><span class="material-icons-outlined">event_available</span> Election</li></a>
       
-     <li class="sidebar-list-item"><span class="material-icons-outlined">groups</span> Candidates</li>
+     <li class="sidebar-list-item"> <a href="dashboard.php"><span class="material-icons-outlined">groups</span> Candidates</li></a>
      <li class="sidebar-list-item"><span class="material-icons-outlined">visibility</span> View Result</li>
    
-    <li class="sidebar-list-item"> <span class="material-icons-outlined">settings </span> Setting</li>
+    <li class="sidebar-list-item"> <a href="viewresult.php"> <span class="material-icons-outlined">settings </span> Setting</li></a>
 
    </ul>
   </aside>
@@ -111,13 +111,15 @@ if(isset($_POST['add_candidate']))
            
          </select>
          <label for="">Fullname</label>
-         <input type="text" placeholder="Enter candidate full name" name="candidate_name" class="box">
+         <input type="text"  name="candidate_name" class="box">
          <label for="">Address</label>
-         <input type="text" placeholder="Enter candidate address" name="candidate_address" class="box">
+         <input type="text" name="candidate_address" class="box">
          <Label>Email</Label>
-         <input type="email" placeholder="Enter email" name="candidate_email" class="box">
+         <input type="email"  name="candidate_email" class="box">
+         <label for="">Uploade Image</label>
          <input type="file" accept="image/jpg, image/png, image/jpeg" placeholder="Upload the image" name="candidate_photo" class="box" required>
-         <textarea name="candidate_bio" placeholder="Short Bio" class="box" cols="0" rows="0"></textarea>
+         <label>Short BIO </label>
+         <textarea name="candidate_bio"  class="box" cols="0" rows="0"></textarea>
          <input type="submit" class="btn" name="add_candidate" value="add_candidate">
       </form>
    </div>
