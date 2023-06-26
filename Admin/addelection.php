@@ -127,11 +127,14 @@ if(isset($_GET['delete'])){
    <form action="addelection.php" method="post" enctype="multipart/form-data">
 
             <h3>add a new election</h3>
-   
-            <input type="text" placeholder="enter election topic" name="election_topic" class="box">
-            
+           <label for="">ElectioN_topic</label>
+            <input type="text" name="election_topic" class="box">
+            <label for="">No_Of_Candiadtes</label>
             <input type="number" placeholder="Number of candidates" name="number_of_candidates" class="box">
+            <label for="">starting_date</label>
+
             <input type="date" placeholder="starting date" name="starting_date" class="box">
+            <label for="">Ending_date</label>
            <input type="date" placeholder="ending date" name="ending_date" class="box">
          
             <input type="submit" class="btn" name="add_election" value="add_election">

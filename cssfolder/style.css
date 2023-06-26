@@ -99,7 +99,11 @@
    border-radius: 5px;
 }
 
-
+.form-container .form-only >label{
+   font-size: 20px;
+   text-align: left;
+   margin-right: 100%;
+}
 
 .form-container form select option{
    background: #fff;

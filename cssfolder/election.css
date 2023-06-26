@@ -30,6 +30,11 @@
    color:var(--white);
    text-align: center;
 }
+.admin-product-form-container>label
+{
+   font-weight: bold;
+   font-style: var(--black);
+}
 
 .btn:hover{
    background: var(--black);
@@ -141,6 +146,10 @@
 .box-btn:hover{
    background: var(--black);
 }
+.admin-product-form-container form label{
+   font-weight: bold;
+}
+
 @media (max-width:880px){
 
    html{

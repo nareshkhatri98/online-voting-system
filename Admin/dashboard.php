@@ -69,6 +69,9 @@ if(!isset($_SESSION['admin']))
   <!-- Endsidebar -->
 
   <!-- main -->
+  <?php
+  $sql = "SELECT Count(*) AS total_users FROM user WHERE user_role='User'" ;
+  ?>
  
     
   <!-- end main -->

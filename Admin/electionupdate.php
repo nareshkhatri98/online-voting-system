@@ -19,7 +19,7 @@ if(isset($_POST['update_product'])){
 
       if($upload){
          move_uploaded_file($product_image_tmp_name, $product_image_folder);
-         header('location:abcd.php');
+         header('location:addelection.php');
       }else{
          $$message[] = 'please fill out all!'; 
       }
@@ -61,10 +61,14 @@ if(isset($_POST['update_product'])){
    
    <form action="" method="post" enctype="multipart/form-data">
       <h3 class="title">update the product</h3>
+      <label for="">Election_Topic</label>
           <input type="text" placeholder="enter election topic" name="election_topic" class="box">
+          <label for="">Number of Candidate</label>
             <input type="number" placeholder="Number of candidates" name="number_of_candidates" class="box">
+            <label for="">Starting_Date</label>
             <input type="date" placeholder="starting date" name="starting_date" class="box">
            <input type="date" placeholder="ending date" name="ending_date" class="box">
+           <label for="">Ending_Date</label>
       <input type="submit" value="update product" name="update_product" class="btn">
       <a href="addelection.php" class="btn">go back!</a>
    </form>
