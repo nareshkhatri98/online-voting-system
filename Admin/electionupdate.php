@@ -9,11 +9,24 @@ if (isset($_POST['update_product'])) {
   $number_of_candidates = mysqli_real_escape_string($conn, $_POST['number_of_candidates']);
   $starting_date = mysqli_real_escape_string($conn, $_POST['starting_date']);
   $ending_date = mysqli_real_escape_string($conn, $_POST['ending_date']);
+  $date1 = date_create($starting_date);
+  $date2 = date_create($ending_date);
+  $diff = date_diff($date1, $date2);
+  
+  // Compare the starting date with the current date
+  $current_date = date("Y-m-d");
+  if ($starting_date !== $current_date) {
+      $status = "Inactive";
+  } elseif ((int)$diff->format("%R%a") <= 0) {
+      $status = "Inactive";
+  } else {
+      $status = "active";
+  }
 
   if (empty($election_topic) || empty($number_of_candidates) || empty($starting_date) || empty($ending_date)) {
     $message[] = 'Please fill out all fields.';
   } else {
-    $update_data = "UPDATE elections SET  election_topic='$election_topic', no_of_candidates='$number_of_candidates', starting_date='$starting_date', ending_date='$ending_date'  WHERE election_id = '$id'";
+    $update_data = "UPDATE elections SET election_topic='$election_topic', no_of_candidates='$number_of_candidates', starting_date='$starting_date', ending_date='$ending_date', status='$status' WHERE election_id='$id'";
     $upload = mysqli_query($conn, $update_data);
 
     if ($upload) {
@@ -25,7 +38,7 @@ if (isset($_POST['update_product'])) {
   }
 }
 
-$select = mysqli_query($conn, "SELECT * FROM elections WHERE election_id = '$id'");
+$select = mysqli_query($conn, "SELECT * FROM elections WHERE election_id='$id'");
 $row = mysqli_fetch_assoc($select);
 
 ?>
@@ -63,6 +76,9 @@ $row = mysqli_fetch_assoc($select);
       
       <label for="">Ending Date</label>
       <input type="date" placeholder="Ending date" name="ending_date" class="box" value="<?php echo $row['ending_date']; ?>">
+      
+      <label for="">Status</label>
+      <input type="text" placeholder="Status" name="status" class="box" value="<?php echo $row['status']; ?>">
       
       <input type="submit" value="Update Product" name="update_product" class="btn">
       <a href="addelection.php" class="btn">Go back!</a>
