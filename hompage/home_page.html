@@ -9,6 +9,7 @@
   <title>Home</title>
   <link rel="stylesheet" href="../cssfolder/first.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+ 
 
 <body>
   <section id="header">
@@ -16,31 +17,45 @@
       <h1 class="logo">Go Vote</h1>
     </a>
     <div>
-      <ul id="navbar">
-        <li><a href="home_page.html">Home</a></li>
-        <li><a href="../Admin/candidate.php">Candidates</a></li>
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="#">Notice</a></li>
-        <li> <a href="login_page.php" id="user-icon"><i class="fas fa-user"></i></a></li>
-      </ul>
+      <nav>
+        <ul id="navbar">
+          <li><a href="home_page.html">Home</a></li>
+          <li><a href="../Admin/candidate.php">Candidates</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="#">Notice</a></li>
+          <li> <a href="login_page.php" id="user-icon"><i class="fas fa-user"></i></a></li>
+          <img src="../images/menu.png" class="menu-icon" onclick="menutoggle()">
+        </ul>
+        
+      </nav>
+    
     </div>
   </section>
 
-
   <section class="hero">
     <div class="text-box">
-      <h1> online voting system</h1>
+      <h1>Online Voting System</h1>
       <p>An online voting system is a software platform that allows groups to securely conduct votes and elections.<br>
         High-quality online voting systems balance ballot security, accessibility, and the overall requirements of<br>
         an organization's voting event.</p>
       <a href="login_page.php" class="hero-btn">Vote Now</a>
-
-      <p></p>
     </div>
- 
   </section>
+<script>
+  var MenuItems=document.getElementById("MenuItems");
+MenuItems.style.maxHeight ="0px";
 
-  <script src="../assets/js/formshow.js"></script>
+function menutoggle(){
+  if(MenuItems.style.maxHeight =="0px" ){
+    MenuItems.style.maxHeight ="200px";
+  }
+  else{
+    MenuItems.style.maxHeight ="0px";
+
+  }
+}
+</script>
 </body>
 
 </html>
+

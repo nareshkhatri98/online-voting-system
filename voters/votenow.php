@@ -32,7 +32,7 @@ session_start();
       
       <div class="class-right">
 
-        <h1>Welcome- <smaLL>
+        <h1>Welcome-<?php echo  $_SESSION['User'] ?> <smaLL>
      
           </smaLL></h1>
 
@@ -117,7 +117,7 @@ if ($totalActiveElections > 0) {
                         }
                         ?>
                         <tr>
-                            <td><img src="../Admin/upload_image/<?php echo $row['candidate_photo']; ?>" height="100" style="border-radius: 20px;"></td>
+                            <td><img src="../Admin/upload_image/<?php echo $row['candidate_photo']; ?>" height="100"></td>
                             <td><?php echo $row['candidate_name']; ?></td>
                             <td><?php echo $row['address']; ?></td>
                             <td><?php echo $row['email']; ?></td>
