@@ -149,35 +149,47 @@ a{
   transition: 1s;
  }
  
- #navbar .menu-icon{
+ .activeBar .menu-icon{
   width: 28px;
   margin-left: 20px;
+  display: none;
  }
 
  /* =======media query for menu===== */
 @media only screen and (max-width:875px){
-  nav ul{
+  #navbar{
+    display: flex;
     position: absolute;
-    top: 70px;
-    left: 0;
-    background: #333;
+    right: 0;
+    top:14vh;
+    background: #b7adad;
     width: 100%;
+    height:0%;
     overflow: hidden;
-    transition: max-height 0.5s;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.2s ease;
   }
- #navbar ul li{
-    display: block;
-    margin-right: 50px;
-    margin-top:10px ;
-    margin-bottom: 10px;
-
-  }
+ #navbar{
+  flex-direction: column;
+  justify-content: flex-start;
+  row-gap: 2vh;
+ }
   #navbar ul li a{
     color: #fff;
-
+  }
+  #navbar.menuOpen{
+    opacity: 1;
+    visibility: visible;
+    height: 25%;
   }
   #navbar.menu-icon{
     display:block;
     cursor: pointer;
+  }
+ 
+
+  .activeBar .menu-icon{
+    display: block;
   }
 }

@@ -20,13 +20,13 @@
       <nav>
         <ul id="navbar">
           <li><a href="home_page.html">Home</a></li>
-          <li><a href="../Admin/candidate.php">Candidates</a></li>
-          <li><a href="about.html">About Us</a></li>
+          <li><a href="../Admin/candidate.php">Candidates</a></li>        
           <li><a href="#">Notice</a></li>
           <li> <a href="login_page.php" id="user-icon"><i class="fas fa-user"></i></a></li>
-          <img src="../images/menu.png" class="menu-icon" onclick="menutoggle()">
         </ul>
-        
+        <div class="activeBar">
+          <img src="../images/menu.png" class="menu-icon">
+        </div>
       </nav>
     
     </div>
@@ -42,18 +42,12 @@
     </div>
   </section>
 <script>
-  var MenuItems=document.getElementById("MenuItems");
-MenuItems.style.maxHeight ="0px";
-
-function menutoggle(){
-  if(MenuItems.style.maxHeight =="0px" ){
-    MenuItems.style.maxHeight ="200px";
-  }
-  else{
-    MenuItems.style.maxHeight ="0px";
-
-  }
-}
+  var MenuItems=document.getElementById("navbar");
+// MenuItems.style.maxHeight ="0px";
+  var MenuTog = document.querySelector(".activeBar");
+  MenuTog.addEventListener("click",function(){
+    MenuItems.classList.toggle("menuOpen")
+  })
 </script>
 </body>
 

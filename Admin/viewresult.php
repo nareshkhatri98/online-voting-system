@@ -94,7 +94,7 @@ $result = mysqli_fetch_assoc($query);
               <th>Name of candidate</th>
               <th>Details</th>
               <th>Election topic</th>
-              <th># of Votes</th>
+              <th>Total of Votes</th>
             </tr>
           </thead>
           <tbody>
