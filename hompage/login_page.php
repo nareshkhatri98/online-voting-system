@@ -53,8 +53,9 @@ if (isset($_POST['submit'])) {
     <div>
       <ul id="navbar">
         <li><a href="../hompage/home_page.html">Home</a></li>
-        <li><a href="about.html">About us</a></li>
-        <li><a href="" id="user-icon"><i class="fas fa-user"></i></a> </li>
+        <li><a href="about.html">Candidates</a></li>
+        <li><a href="#">Notice</a></li>
+        <li><a href="" id="user-icon">Account</a> </li>
       </ul>
    </div>
    </section>

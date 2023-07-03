@@ -1,177 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap');
+
+:root{
+   --green:#27ae60;
+   --black:#040404;
+   --white:#fff;
+   --bg-color:#eee;
+   --box-shadow:0 .5rem 1rem rgba(0,0,0,.1);
+   --border:.1rem solid var(--black);
+}
+
 *{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins',sans-serif;
+   font-family: 'Poppins', sans-serif;
+   margin:0; padding:0;
+   box-sizing: border-box;
+   outline: none; border:none;
+   text-decoration: none;
+   text-transform: capitalize;
 }
-body{
-  background-color: #d6d5dc;
+.btn{
+   display: block;
+   width: 100%;
+   cursor: pointer;
+   font-size: 12px;
+   border-radius: .5rem;
+   margin-top: 1rem;
+   font-size: 1 rem;
+   padding:1rem 3rem;
+   background: var(--green);
+   color:var(--white);
+   text-align: center;
 }
-.container{
-  width: 700px;
-  height: auto;
-  background-color: #fff;
-  border-radius: 10px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  display: flex;
-  justify-content: center;
-}
-.box{
-  width: 500px;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-h3{
-  font-size: 35px;
-  margin: 15px;
-}
-.name{
-  width: 100%;
-  position: relative;
-  margin-bottom: 15px;
-}
-.name i{
-  position: absolute;
-  top: 50%;
-  left: 30px;
-  transform: translateY(-50%);
-  font-size: 20px;
-  color: #bbb;
-}
-.name input{
-  width: 100%;
-  padding: 20px 60px;
-  border: none;
-  outline: none;
-  font-size: 18px;
-  background-color: #eee;
-  border-radius: 40px;
-}
-.name input::placeholder{
-  color: #bbb;
-  font-weight: 500;
-}
-.email{
-  width: 100%;
-  position: relative;
-  margin-bottom: 15px;
-}
-.email i{
-  position: absolute;
-  top: 50%;
-  left: 30px;
-  transform: translateY(-50%);
-  font-size: 20px;
-  color: #bbb;
-}
-.email input{
-  width: 100%;
-  padding: 20px 60px;
-  border: none;
-  outline: none;
-  font-size: 18px;
-  background-color: #eee;
-  border-radius: 40px;
-}
-.email input::placeholder{
-  color: #bbb;
-  font-weight: 500;
-}
-.message-box{
-  width: 100%;
-  position: relative;
-  margin-bottom: 15px;
-}
-.message-box i{
-  position: absolute;
-  top: 50%;
-  left: 30px;
-  transform: translateY(-50%);
-  font-size: 20px;
-  color: #bbb;
-}
-.message-box textarea{
-  width: 100%;
-  padding: 20px 60px;
-  border: none;
-  outline: none;
-  font-size: 18px;
-  background-color: #eee;
-  border-radius: 40px;
-}
-.message-box textarea::placeholder{
-  color: #bbb;
-  font-weight: 500;
+.admin-product-form-container>
+{
+   font-weight: bold;
+   font-style: var(--black);
 }
 
-.button{
-  width: 100%;
-  cursor: pointer;
-  margin-bottom: 20px;
+.btn:hover{
+   background: var(--black);
 }
-.button button{
-  width: 100%;
-  padding: 10px;
-  font-size: 20px;
-  color: #fff;
-  background-color: #806bcd;
-  border: none;
-  outline: none;
-  border-radius: 40px;
-  cursor: pointer;
-}
+
 .message{
+   display: block;
+   background: var(--bg-color);
+   padding:1.5rem 1rem;
+   font-size: 1rem;
+   color:var(--black);
+   margin-bottom: 2rem;
+   text-align: center;
+}
+
+.container{
+   max-width: 1000px;
+   padding:2rem;
+   margin:0 auto;
+}
+
+.admin-product-form-container.centered{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   min-height: 100vh;
+   
+}
+
+
+.admin-product-form-container form{
+   max-width: 50rem;
+   margin:0 auto;
+   padding:2rem;
+   border-radius: .5rem;
+   background: var(--bg-color);
+}
+
+.admin-product-form-container form h3{
+   text-transform: uppercase;
+   color:var(--black);
+   margin-bottom: 1rem;
+   text-align: center;
+   font-size: 1rem;
+}
+
+.admin-product-form-container form lable{
+  color: var(--black);
+}
+
+.admin-product-form-container form .box{
+   width: 100%;
+   border-radius: .5rem;
+   padding:1.2rem 1.5rem;
+   font-size: 20px;
+   margin:1rem 0;
+   background: var(--white);
+   text-transform: none;
+}
+
+.product-display{
+   margin:2rem 0;
+}
+
+.product-display .product-display-table{
+   width: 100%;
+   text-align: center;
+}
+
+.product-display .product-display-table thead{
+   background: var(--bg-color);
+}
+
+.product-display .product-display-table th{
+   padding:1%;
+   font-size: 1rem;;
+   background: #0dc36b;
+   color: #040404;
+}
+
+
+.product-display .product-display-table td{
+   padding:1rem;
+   font-size: 1rem;
+   border-bottom: var(--border);
+   color: #040404;
+   font-size: 18px;
+}
+
+.product-display .product-display-table .btn:first-child{
+   margin-top: 0;
+}
+
+.product-display .product-display-table .btn:last-child{
+   background: crimson;
+}
+
+.product-display .product-display-table .btn:last-child:hover{
+   background: var(--black);
+}
+.admin-product-form-container form > textarea{
   width: 100%;
-  position: relative;
-  margin-bottom: 60px;
-  display: flex;
-  justify-content: center;
-}
-.message .success{
-  font-size: 20px;
-  color: green;
-  position: absolute;
-  animation: buttons .3s linear;
-  display: none;
-}
-label{
-  font-size: 20px;
-  font-weight: 800;
-  padding: 10px;
-  
+  padding: 20px 60px;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  background-color: #fbf8f8;
+  border-radius: 40px;
 }
 
-.message .danger{
-  font-size: 20px;
-  color: red;
-  position: absolute;
-  transition: .3s;
-  animation: buttons .3s linear;
-  display: none;
-}
-@keyframes buttons{
-  0%{
-      transform: scale(0.1);
 
-  }
-  50%{
-      transform: scale(1.5);
-  }
-  100%{
-      transform: scale(1);
-  }
-  
+.box-btn{
+   display: inline;
+   width: 10%;
+
+   background: var(--green);
+   color: var(--white);
+   cursor: pointer;
+   font-size: 12px;
+   border-radius: .5rem;
+   margin-top: 1rem;
+   margin-left: 2px;
+   font-size: 1 rem;
+   padding:1rem 3rem;
 }
 
-@media (max-width: 768px) {
-  .box {
-    width: 100%;
-    padding: 20px;
-  }
+.box-btn:hover{
+   background: var(--black);
+}
+.admin-product-form-container form label{
+   font-weight: bold;
+}
+
+@media (max-width:880px){
+
+   html{
+      font-size: 55%;
+   }
+
+}
+
+@media (max-width:768px){
+
+   .product-display{
+      overflow-y:scroll;
+   }
+
+   .product-display .product-display-table{
+      width: 80rem;
+   }
+
+}
+
+@media (max-width:450px){
+
+   html{
+      font-size: 50%;
+   }
+
 }

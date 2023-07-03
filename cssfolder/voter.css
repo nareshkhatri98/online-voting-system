@@ -31,7 +31,7 @@ table thead tr{
 .table th,
 .table td{
   padding: 12px 15px;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 800;
 }
 .table tbody tr{
@@ -52,6 +52,7 @@ table thead tr{
   padding: 6px 20px;
   border-radius: 10px;
   cursor:pointer ;
+  font-size: 18px;
   background: transparent;
   border: 1px solid #4ad489;
 }

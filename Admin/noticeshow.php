@@ -1,10 +1,7 @@
 <?php
 include_once('inc/connection.php');
 
-$sql = "SELECT * FROM candidate_details JOIN elections ON candidate_details.election_id = elections.election_id WHERE elections.status = 'Active'";
-$details = $conn->query($sql);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,10 +12,25 @@ $details = $conn->query($sql);
 
   <title>Home</title>
   <link rel="stylesheet" href="../cssfolder/first.css">
+  <link rel="stylesheet" href="../cssfolder/dashboard.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
   <link rel="stylesheet" href="../cssfolder/candidateshow.css">
+  <style>
+  .main{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .main >p{
+    font-size: 18px;
+    color: black;
+  }
+  </style>
 </head>
+
 
 <body>
   <section id="header">
@@ -34,38 +46,23 @@ $details = $conn->query($sql);
       </ul>
     </div>
   </section>
-  
-
-  <div class="small-container">
-  <div class="row">
-    <?php
-    if(mysqli_num_rows($details) > 0) {
-      while ($row = mysqli_fetch_assoc($details)) {
-        ?>
-        <div class="col-4">
-          <img src="upload_image/<?php echo $row['candidate_photo']; ?>" alt="" height="100px">
-          <h4>
-            <?php echo "Name: " . $row['candidate_name']; ?>
-          </h4>
-          <div class="rating">
-            <p>
-              <?php echo "Election Topic: " . $row['election_topic']; ?>
-            </p>
-          </div>
-          <p>
-            <?php echo 'Bio: '.$row['Bio']; ?>
-          </p>
-          <a href="../hompage/login_page.php"><button>Vote Now</button></a>
-        </div>
-      <?php
-      }
-    } else {
+  <div class="main">
+  <?php
+  $sql = "SELECT * FROM notice";
+  $details = $conn->query($sql);
+  if(mysqli_num_rows($details) > 0) {
+    while ($row = mysqli_fetch_assoc($details)) {
       ?>
-      <h3 style="margin-top:100px;">No candidates available.</h3>
+    
+      <p >
+        
+        <?php echo $row['content'] ; }?>
+        </p>
+        </div>
+  
     <?php
-    } ?>
+}?>
   </div>
-</div>
 
 </body>
 

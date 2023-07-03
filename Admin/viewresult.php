@@ -44,7 +44,7 @@ $result = mysqli_fetch_assoc($query);
         <div class="sidebar-brand">
           <a href="dashboard.php">
             <span class="material-icons-outlined">how_to_vote</span>  </a >Go Vote
-      
+
         </div>
         <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
       </div>
@@ -62,7 +62,7 @@ $result = mysqli_fetch_assoc($query);
         <li class="sidebar-list-item">
           <span class="material-icons-outlined"><a href="addcandidate.php">groups</a></span>
           Candidates
-         </li></a>
+        </li>
         <li class="sidebar-list-item">
           <span class="material-icons-outlined">visibility</span> View Result
         </li>
@@ -82,50 +82,77 @@ $result = mysqli_fetch_assoc($query);
         $totalActiveElections = mysqli_num_rows($fetchingActiveElections);
 
         if ($totalActiveElections > 0) {
-            while ($row = mysqli_fetch_assoc($fetchingActiveElections)) {
-                $election_id = $row['election_id'];
-                $election_topic = $row['election_topic'];
-        ?>
+          while ($row = mysqli_fetch_assoc($fetchingActiveElections)) {
+            $election_id = $row['election_id'];
+            $election_topic = $row['election_topic'];
+            $election_status = $row['status']; // Get the status of the election
 
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Photo</th>
-              <th>Name of candidate</th>
-              <th>Details</th>
-              <th>Election topic</th>
-              <th>Total of Votes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php 
-            $fetchingCandidates = mysqli_query($conn, "SELECT * FROM candidate_details WHERE election_id = '". $election_id ."'") or die(mysqli_error($conn));
+            if ($election_status === 'completed') { // Check if the election is completed
+              ?>
 
-            while ($candidateData = mysqli_fetch_assoc($fetchingCandidates)) {
-                $candidate_id = $candidateData['id'];
-                $candidate_photo = $candidateData['candidate_photo'];
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Photo</th>
+                    <th>Name of candidate</th>
+                    <th>Details</th>
+                    <th>Election topic</th>
+                    <th>Total of Votes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php 
+                  $fetchingCandidates = mysqli_query($conn, "SELECT * FROM candidate_details WHERE election_id = '". $election_id ."'") or die(mysqli_error($conn));
 
-                // Fetching Candidate Votes 
-                $fetchingVotes = mysqli_query($conn, "SELECT * FROM votings WHERE candidate_id = '". $candidate_id . "'") or die(mysqli_error($conn));
-                $totalVotes = mysqli_num_rows($fetchingVotes);
-            ?>
-                   <tr>
-                           <td><img src="upload_image/<?php echo $candidate_photo; ?>" height="100" style="border-radius: 20px;"></td>
-                           <td><?php echo $candidateData['candidate_name']; ?></td>
-                            <td><?php echo $candidateData['Bio']; ?></td>
-                           <td><?php echo $election_topic; ?></td>
-                           <td><?php echo $totalVotes; ?></td>
-                 </tr>
+                  $winner = null; // Variable to store the winner
 
-            <?php
+                  while ($candidateData = mysqli_fetch_assoc($fetchingCandidates)) {
+                    $candidate_id = $candidateData['id'];
+                    $candidate_photo = $candidateData['candidate_photo'];
+
+                    // Fetching Candidate Votes 
+                    $fetchingVotes = mysqli_query($conn, "SELECT * FROM votings WHERE candidate_id = '". $candidate_id . "'") or die(mysqli_error($conn));
+                    $totalVotes = mysqli_num_rows($fetchingVotes);
+
+                    // Check if this candidate has the highest number of votes
+                    if ($totalVotes > 0) {
+                      if (!isset($winner) || $totalVotes > $winner['votes']) {
+                        $winner = [
+                          'candidate_id' => $candidate_id,
+                          'candidate_name' => $candidateData['candidate_name'],
+                          'candidate_photo' => $candidate_photo,
+                          'votes' => $totalVotes
+                        ];
+                      }
+                    }
+                    ?>
+                    <tr>
+                      <td><img src="upload_image/<?php echo $candidate_photo; ?>" height="100" style="border-radius: 20px;"></td>
+                      <td><?php echo $candidateData['candidate_name']; ?></td>
+                      <td><?php echo $candidateData['Bio']; ?></td>
+                      <td><?php echo $election_topic; ?></td>
+                      <td><?php echo $totalVotes; ?></td>
+                    </tr>
+                    <?php
+                  }
+                  ?>
+                </tbody>
+              </table>
+
+              <?php
+              // Display the winner if there is one
+              if (isset($winner)) {
+                echo '<h4>The winner is ' . $winner['candidate_name'] . ' with ' . $winner['votes'] . ' votes!</h4>';
+              } else {
+                echo '<h4>No winner declared yet.</h4>';
+              }
+
+            } else {
+              echo '<p>Election is still ongoing.</p>';
             }
-            ?>
-          </tbody>
-        </table>
-        <?php
-            }
+          }
         } else {
-            
+          echo '<p>No active elections found.</p>';
         }
         ?>
       </div>

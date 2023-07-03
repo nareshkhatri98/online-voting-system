@@ -70,6 +70,7 @@ if (isset($_POST['submit'])) {
                 echo '<span class="error-msg">' . implode("<br>", $error) . '</span>';
             }
             ?>
+             <p id="success-message" style="color: green;"></p>
 
             <label for="">Fullname</label>
             <input type="text" name="name" pattern="^[a-zA-Z]+ [a-zA-Z]+$" required placeholder="enter your name">
@@ -162,6 +163,7 @@ if (isset($_POST['submit'])) {
                 document.getElementById("messages").innerHTML = "** passwrod and confirm password not match";
                 return false;
             }
+            
         }
     </script>
 </body>
