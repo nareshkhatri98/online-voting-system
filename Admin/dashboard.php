@@ -64,8 +64,11 @@ if (!isset($_SESSION['admin'])) {
 
         <li class="sidebar-list-item"><span class="material-icons-outlined"> <a href="addcandidate.php">groups</span>
           Candidates</li></a>
+          <li class="sidebar-list-item"><span class="material-icons-outlined"> <a href="votersdetails.php">groups</span>
+          Voterlist</li></a>
         <li class="sidebar-list-item"> <a href="viewresult.php">
             <span class="material-icons-outlined">visibility</span> View Result</a></li>
+
         <li class="sidebar-list-item"><a href="notify.php"> <span class="material-icons-outlined">settings </span>
             Notify</a></li>
       </ul>

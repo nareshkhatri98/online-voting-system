@@ -29,7 +29,7 @@ $details = $conn->query($sql);
       <ul id="navbar">
         <li><a href="../hompage/home_page.html">Home</a></li>
         <li><a href="../Admin/candidate.php">Candidates</a></li>
-        <li><a href="#">Notice</a></li>
+        <li><a href="noticeshow.php">Notice</a></li>
         <li><a href="../hompage/login_page.php" id="user-icon">Account</a></li>
       </ul>
     </div>

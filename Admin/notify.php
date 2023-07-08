@@ -50,9 +50,7 @@ if (isset($_POST['submit'])) {
             <?php echo $_SESSION['admin']; ?>
           </small></h3>
       </div>
-      <div class="class-right">
-        <a href="logout.php"><span class="material-icons-outlined">account_circle</span></a>
-      </div>
+
     </header>
     <!-- end header -->
 
@@ -70,7 +68,8 @@ if (isset($_POST['submit'])) {
 
       <ul class="sidebar-list">
         <li class="sidebar-list-item">
-          <span class="material-icons-outlined">dashboard</span> Dashboard
+          <a href="dashboard.php">
+          <span class="material-icons-outlined">dashboard</span> Dashboard</a>
         </li>
         <li class="sidebar-list-item">
           <a href="addelection.php">
@@ -82,6 +81,8 @@ if (isset($_POST['submit'])) {
             <span class="material-icons-outlined">groups</span> Candidates
           </a>
         </li>
+        <li class="sidebar-list-item"><a href="votersdetails.php"><span class="material-icons-outlined"> groups</span>
+            Voterlist</a></li>
         <li class="sidebar-list-item">
           <a href="viewresult.php">
             <span class="material-icons-outlined">visibility</span> View Result
@@ -104,14 +105,14 @@ if (isset($_POST['submit'])) {
 
         <div class="admin-product-form-container">
 
-          <form  method="post" enctype="multipart/form-data">
+          <form method="post" enctype="multipart/form-data">
 
             <h3>Notice Form</h3>
             <label for="">Title</label>
             <input type="text" name="Title" class="box">
             <label for="">Content</label>
             <textarea name="content" id="" cols="30" rows="10"></textarea>
-        <input type="submit" class="btn" name="submit" value="submit">
+            <input type="submit" class="btn" name="submit" value="submit">
           </form>
 
           <div class="product-display">
@@ -145,7 +146,7 @@ if (isset($_POST['submit'])) {
         <td>
           <?php echo $noticeData['content']; ?>
         </td>
-      
+
         <td>
           <a href="?edit=<?php echo $row['id']; ?>" class="box-btn">edit </a>
           <a href="addelection.php?delete=<?php echo $row['id']; ?>" class="box-btn"> delete </a>
@@ -169,5 +170,3 @@ if (isset($_POST['submit'])) {
 </body>
 
 </html>
-
-
