@@ -14,6 +14,7 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  gap: 100px;
   justify-content: space-around;
  
 }
@@ -21,7 +22,7 @@
   margin-top: 20px;
   flex-basis: 25%;
   padding: 10px;
-  min-width: 200px;
+  min-width: 250px;
   margin-bottom: 50px;
   transition: transform 0.5s;
   box-shadow: 5px 10px 8px 10px #888888
@@ -62,7 +63,7 @@ margin-left: 10%;
   transform: translateY(5px);
 } 
 button{
-  margin-left:50px ;
+  margin-left:45px ;
   background: #7d2ae8;
   outline: none;
   border: none;

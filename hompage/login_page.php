@@ -35,31 +35,46 @@ if (isset($_POST['submit'])) {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Home</title>
-  <link rel="stylesheet" href="../cssfolder/first.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+  <title>My website</title>
   <link rel="stylesheet" href="../cssfolder/style.css">
+  <link rel="stylesheet" href="../cssfolder/optinola.css">
 </head>
 <body>
-  <section id="header">
-    <a href="../hompage/home_page.html"><h1 class="logo">Go Vote</h1></a>
-    <div>
-      <ul id="navbar">
-        <li><a href="../hompage/home_page.html">Home</a></li>
-        <li><a href="../Admin/candidate.php">Candidates</a></li>
-        <li><a href="../Admin/noticeshow.php">Notice</a></li>
-        <li><a href="" id="user-icon">Account</a> </li>
-      </ul>
-   </div>
-   </section>
-   <div class="form-container">
+  <!-- Top banner -->
+<div class="top-banner">
+  <div class="container">
+
+    <div class="small-bold-text banner-text">Cast your vote from anywhere, anytime with our secure and convenient online voting system."</div>
+  </div>  
+</div>
+<!-- Navbar -->
+<nav>
+  <div class="container main-nav flex">
+    <a href="optionalhome.html" class="company-logo">
+      <h1>Govote</h1>
+    </a>
+    <div class="nav-links">
+     <ul class="flex">
+      <li><a href="optionalhome.html" class="hover-links">Home</a></li>
+      <li><a href="../Admin/candidate.php" class="hover-links">Candidates</a></li>
+      <li><a href="../admin/noticeshow.php" class="hover-links">Notice</a></li>
+      <li><a href="login_page.php" class="hover-links secondary-btn">Login</a></li>
+      <li><a href="Register-page.php" class="hover-links primary-btn">Register</a></li>
+     </ul>
+    </div>
+  </div>
+</nav>
+<!-- header section -->
+<header>
+ <div class="container header-section flex">
+  <div class="header-left">
+  <div class="form-container">
    <form action="login_page.php" method="post" class="form-only" >
       <h3>login</h3>
       <?php
@@ -76,6 +91,12 @@ if (isset($_POST['submit'])) {
       <p>don't have an account? <a href="Register-page.php">register here</a></p>
    </form>
    </div>
-   
+  </div>
+  
+ </div>
+</header>
+
+
+
 </body>
 </html>

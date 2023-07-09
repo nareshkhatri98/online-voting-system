@@ -2,22 +2,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,700;1,300&family=Roboto+Slab:wght@400;500;600&display=swap');
 
-*{
-   font-family: 'Poppins', sans-serif;
-   margin:0; padding:0;
-   box-sizing: border-box;
-   outline: none; border:none;
-   text-decoration: none;
-}
 
-.container{
-   min-height: 150vh;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   padding:20px;
-   padding-bottom: 60px;
-}
 
 .container .content{
    text-align: center;
@@ -41,7 +26,7 @@
 }
 
 .container .content h1 span{
-   color:crimson;
+   color:rgb(187, 91, 110);
 }
 
 .container .content p{
@@ -64,7 +49,7 @@
 }
 
 .form-container{
-   min-height: 100vh;
+   
    display: flex;
    align-items: center;
    justify-content: center;
@@ -86,7 +71,7 @@
    font-size: 30px;
    text-transform: uppercase;
    margin-bottom: 10px;
-   color:#333;
+   color:#000000;
 }
 
 .form-container form input,
@@ -95,7 +80,8 @@
    padding:10px 15px;
    font-size: 17px;
    margin:8px 0;
-   background: #eee;
+   background:white;
+   border: 2px solid #ccc;
    border-radius: 5px;
 }
 
@@ -103,6 +89,8 @@
    font-size: 20px;
    text-align: left;
    margin-right: 100%;
+   font-weight: 600;
+   color: #383636;
 }
 
 .form-container form select option{
@@ -141,6 +129,4 @@
    font-size: 20px;
    padding:10px;
 }
-.form-only{
-   margin-top: -20%;
-}
+

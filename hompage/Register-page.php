@@ -17,9 +17,10 @@ if (isset($_POST['submit'])) {
     $error[] = "Phone number already exists";
   }
 
+  // Check if the password matches
   if ($password == $cpassword) {
-    // Proceed with registration if the password matches
     if (empty($error)) {
+      // Insert the data into the database
       $insert = "INSERT INTO users(fullname, phone, password, user_role) VALUES('$name','$phone','$password','$user_role')";
       mysqli_query($conn, $insert);
       if ($insert) {
@@ -30,143 +31,151 @@ if (isset($_POST['submit'])) {
         header("location:Register-page.php");
       }
     }
+  } else {
+    $error[] = "Passwords do not match";
   }
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Home</title>
-  <link rel="stylesheet" href="../cssfolder/first.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+  <title>My website</title>
   <link rel="stylesheet" href="../cssfolder/style.css">
+  <link rel="stylesheet" href="../cssfolder/optinola.css">
 </head>
 
 <body>
-  <section id="header">
-    <h1 class="logo">Go Vote</h1>
-    <div>
-      <ul id="navbar">
-        <li><a href="../hompage/home_page.html">Home</a></li>
-        <li><a href="../Admin/candidate.php">Candidates</a></li>
-        <li><a href="../Admin/noticeshow.php">Notice</a></li>
-        <li><a href="" id="user-icon">Account</a> </li>
-      </ul>
+  <!-- Top banner -->
+  <div class="top-banner">
+    <div class="container">
+      <div class="small-bold-text banner-text">"Cast your vote from anywhere, anytime with our secure and convenient online voting system."</div>
     </div>
-  </section>
-
-  <div class="form-container">
-    <form action="Register-page.php" method="post" class="form-only" style=" margin-bottom: -10%;"
-      onsubmit="return myfun()">
-      <h3>register</h3>
-      <?php
-      if (!empty($error)) {
-        echo '<span class="error-msg">' . implode("<br>", $error) . '</span>';
-      }
-      ?>
-      <p id="success-message" style="color: green;"></p>
-
-      <label for="">Fullname</label>
-      <input type="text" name="name" pattern="^[a-zA-Z]+ [a-zA-Z]+$" required placeholder="enter your name">
-      <label for="">Phone</label>
-      <input type="text" name="phone" id="phonenumber"> <span id="message" style="color:red;"></span>
-
-      <label for="">Password</label>
-      <span id="messages" style="color:red;"></span>
-      <input type="password" name="password" id="password">
-      <label for="">Confirm_Password</label>
-      <span id="messages" style="color:red;"></span>
-      <input type="password" name="cpassword" id="passwords">
-
-      <input type="submit" name="submit" value="register now" class="form-btn">
-      <a href="login_page.php"></a>
-      <p>already have an account? <a href="login_page.php">login here</a></p>
-    </form>
   </div>
+  <!-- Navbar -->
+  <nav>
+    <div class="container main-nav flex">
+      <a href="optionalhome.html" class="company-logo">
+        <h1>Govote</h1>
+      </a>
+      <div class="nav-links">
+        <ul class="flex">
+          <li><a href="optionalhome.html" class="hover-links">Home</a></li>
+          <li><a href="../Admin/candidate.php" class="hover-links">Candidates</a></li>
+          <li><a href="../Admin/noticeshow.php" class="hover-links">Notice</a></li>
+          <li><a href="login_page.php" class="hover-links secondary-btn">Login</a></li>
+          <li><a href="Register-page.php" class="hover-links primary-btn">Register</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- header section -->
+  <header>
+    <div class="container header-section flex">
+      <div class="header-left">
+        <div class="form-container">
+          <form action="Register-page.php" method="post" class="form-only" style=" margin-bottom: -10%; " onsubmit=" return myfun()">
+            <h3>Register</h3>
+            <?php
+            if (!empty($error)) {
+              echo '<span class="error-msg">' . implode("<br>", $error) . '</span>';
+            }
+            ?>
+            <p id="success-message" style="color: green;"></p>
+
+            <label for="">Fullname</label>
+            <input type="text" name="name" pattern="^[a-zA-Z]+ [a-zA-Z]+$" required placeholder="Enter your name">
+            <label for="">Phone</label>
+            <input type="text" name="phone" id="phonenumber"> <span id="message" style="color:red;"></span>
+
+            <label for="">Password</label>
+            <span id="messages" style="color:red;"></span>
+            <input type="password" name="password" id="password">
+            <label for="">Confirm_Password</label>
+            <span id="messages" style="color:red;"></span>
+            <input type="password" name="cpassword" id="passwords">
+
+            <input type="submit" name="submit" value="Register now" class="form-btn">
+            <p>Already have an account? <a href="login_page.php">Login here</a></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>
 
   <script>
     function myfun() {
       var mobile = document.getElementById("phonenumber").value;
       if (mobile == "") {
-        document.getElementById("message").innerHTML = "*please fill the number";
+        document.getElementById("message").innerHTML = "*Please fill in the number";
         return false;
       }
       if (isNaN(mobile)) {
-        document.getElementById("message").innerHTML = "** Only Number are allowed";
-        return false;
-
-      }
-      if (mobile.length < 10) {
-        document.getElementById("message").innerHTML = "** mobile Number must be 10 digit allowed";
+        document.getElementById("message").innerHTML = "**Only numbers are allowed";
         return false;
       }
-      if (mobile.length > 10) {
-        document.getElementById("message").innerHTML = "** mobile Number must be 10 digit allowed";
+      if (mobile.length !== 10) {
+        document.getElementById("message").innerHTML = "**Mobile number must be 10 digits";
         return false;
       }
       if (mobile.charAt(0) != '9') {
-        document.getElementById("message").innerHTML = "** mobile Number must be start with 9";
+        document.getElementById("message").innerHTML = "**Mobile number must start with 9";
         return false;
       }
+
       var password = document.getElementById("password").value;
-
       if (password == "") {
-        document.getElementById("messages").innerHTML = "* please fill the password";
+        document.getElementById("messages").innerHTML = "*Please fill in the password";
         return false;
       }
-
-      if (password.length < 5) {
-        document.getElementById("messages").innerHTML = "** password must be greater than 5 characters";
+      if (password.length <= 5) {
+        document.getElementById("messages").innerHTML = "**Password must be at least 5 characters long";
         return false;
       }
-
       if (password.length > 10) {
-        document.getElementById("messages").innerHTML = "** password must be less than 10 characters";
+        document.getElementById("messages").innerHTML = "**Password must be less than 10 characters long";
         return false;
       }
 
       var uppercaseRegex = /[A-Z]/;
       if (!uppercaseRegex.test(password)) {
-        document.getElementById("messages").innerHTML = "** password must include at least one capital letter";
+        document.getElementById("messages").innerHTML = "**Password must include at least one capital letter";
         return false;
       }
 
       var lowercaseRegex = /[a-z]/;
       if (!lowercaseRegex.test(password)) {
-        document.getElementById("messages").innerHTML = "** password must include at least one lowercase letter";
+        document.getElementById("messages").innerHTML = "**Password must include at least one lowercase letter";
         return false;
       }
 
       var numberRegex = /[0-9]/;
       if (!numberRegex.test(password)) {
-        document.getElementById("messages").innerHTML = "** password must include at least one number";
+        document.getElementById("messages").innerHTML = "**Password must include at least one number";
         return false;
       }
 
       var specialCharRegex = /[!@#$%^&*]/;
       if (!specialCharRegex.test(password)) {
-        document.getElementById("messages").innerHTML = "** password must include at least one special character (!, @, #, $, %, ^, &, *)";
+        document.getElementById("messages").innerHTML = "**Password must include at least one special character (!, @, #, $, %, ^, &, *)";
         return false;
       }
-
-      // The password is valid
-      return true;
 
       var cpassword = document.getElementById("passwords").value;
       if (password != cpassword) {
-        document.getElementById("messages").innerHTML = "** passwrod and confirm password not match";
+        document.getElementById("messages").innerHTML = "**Passwords do not match";
         return false;
       }
 
+      // The form is valid
+      return true;
     }
   </script>
+
 </body>
 
 </html>

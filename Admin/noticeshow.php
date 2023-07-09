@@ -4,49 +4,44 @@ include_once('inc/connection.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Home</title>
-  <link rel="stylesheet" href="../cssfolder/first.css">
-  <link rel="stylesheet" href="../cssfolder/dashboard.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
-  <link rel="stylesheet" href="../cssfolder/candidateshow.css">
-  <style>
-  .main{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .main >p{
-    font-size: 18px;
-    color: black;
-  }
-  </style>
+  <title>My website</title>
+  <link rel="stylesheet" href="../cssfolder/optinola.css">
 </head>
-
-
 <body>
-  <section id="header">
-    <a href="home_page.html">
-      <h1 class="logo">Go Vote</h1>
+  <!-- Top banner -->
+<div class="top-banner">
+  <div class="container">
+
+    <div class="small-bold-text banner-text">Cast your vote from anywhere, anytime with our secure and convenient online voting system."</div>
+  </div>  
+</div>
+<!-- Navbar -->
+<nav>
+  <div class="container main-nav flex">
+    <a href="../hompage/optionalhome.html" class="company-logo">
+      <h1>Govote</h1>
     </a>
-    <div>
-      <ul id="navbar">
-        <li><a href="../hompage/home_page.html">Home</a></li>
-        <li><a href="../Admin/candidate.php">Candidates</a></li>
-        <li><a href="#">Notice</a></li>
-        <li><a href="../hompage/login_page.php" id="user-icon">Account</a></li>
-      </ul>
+    <div class="nav-links">
+     <ul class="flex">
+      <li><a href="../hompage/optionalhome.html" class="hover-links">Home</a></li>
+      <li><a href="" class="hover-links">Candidates</a></li>
+      <li><a href="noticeshow.php" class="hover-links">Notice</a></li>
+      <li><a href="../hompage/login_page.php" class="hover-links secondary-btn">Login</a></li>
+      <li><a href="../hompage/Register-page.php" class="hover-links primary-btn">Register</a></li>
+     </ul>
     </div>
-  </section>
-  <div class="main">
+  </div>
+</nav>
+<!-- header section -->
+<header>
+ <div class="container header-section flex">
+  <div class="header-left">
+    
+
+<div class="main">
   <?php
   $sql = "SELECT * FROM notice";
   $details = $conn->query($sql);
@@ -54,7 +49,7 @@ include_once('inc/connection.php');
     while ($row = mysqli_fetch_assoc($details)) {
       ?>
     
-      <p >
+      <p style="margin-top:100px">
         
         <?php echo $row['content'] ; }?>
         </p>
@@ -62,8 +57,27 @@ include_once('inc/connection.php');
   
     <?php
 }?>
-  </div>
+</div>
+  
+ </div>
+</header>
+
+
 
 </body>
-
 </html>
+ 
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
