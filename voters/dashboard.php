@@ -13,10 +13,11 @@ if ($result) {
   $phone = $row['phone'];
 }
 ?>
-  
+
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -37,12 +38,16 @@ if ($result) {
         <span class="material-icons-outlined">menu</span>
       </div>
 
-     
+
       <div class="class-right">
-        
-          <h1>Welcome- <smaLL> <?php echo  $_SESSION['User'] ?></smaLL></h1>
-      
+
+        <h1>Welcome- <smaLL>
+            <?php echo $_SESSION['User'] ?>
+          </smaLL></h1>
+
       </div>
+      <div class="class-left">
+    
     </header>
     <!-- End Header -->
 
@@ -58,13 +63,13 @@ if ($result) {
       <ul class="sidebar-list">
         <li class="sidebar-list-item">
           <a href="dashboard.php">
-          <span class="material-icons-outlined">home</span> Home
+            <span class="material-icons-outlined">home</span> Home
         </li></a>
         <li class="sidebar-list-item">
-         <a href="votenow.php" > <span class="material-icons-outlined">event</span> election Avaliable
-        </a>
+          <a href="votenow.php"> <span class="material-icons-outlined">event</span> election Avaliable
+          </a>
         </li>
-        
+
         <li class="sidebar-list-item">
           <a href="logut.php">
             <span class="material-icons-outlined">account_circle</span>
@@ -75,19 +80,22 @@ if ($result) {
     </aside>
     <!-- End Sidebar -->
     <main class="main-container">
-     
+
 
       <div class="main-cards" style="margin-left: 130px;">
 
         <div class="card">
           <div class="card-inner">
             <h2 class="text-primary font-weight-bold">Your details</h2>
-            <span class="material-icons-outlined text-blue" >groups</span>
+            <span class="material-icons-outlined text-blue">groups</span>
           </div>
           <span class="text-primary font-weight-bold">
-          Fullanme: <?php echo $fullname; ?>
+            Fullanme:
+            <?php echo $fullname; ?>
           </span>
-          <span class="text-primary font-weight-bold" style="margin-top: 12px;">phone:  <?php echo $phone; ?></span>
+          <span class="text-primary font-weight-bold" style="margin-top: 12px;">phone:
+            <?php echo $phone; ?>
+          </span>
         </div>
 
 
@@ -97,19 +105,20 @@ if ($result) {
 
     </main>
 
- <div>
+    <div>
 
-<div>
+      <div>
 
 
 
-    <!-- End Main -->
+        <!-- End Main -->
 
-    <!-- Custom JS -->
-    <script src="../assets/js/dashobrd.js"></script>
-    <script src="../assets/js/first.js"></script>
-    <script src="../assets/js/drop_down.js"></script>
-    <script src = "abcd.js"></script>
-  </div>
+        <!-- Custom JS -->
+        <script src="../assets/js/dashobrd.js"></script>
+        <script src="../assets/js/first.js"></script>
+        <script src="../assets/js/drop_down.js"></script>
+        <script src="abcd.js"></script>
+      </div>
 </body>
+
 </html>
