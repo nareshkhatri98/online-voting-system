@@ -112,14 +112,14 @@ if (isset($_GET['delete'])) {
         </li></a>
 
         <li class="sidebar-list-item">
-          <a href="addcandidates.php"><span class="material-icons-outlined">groups</span> Candidates
+          <a href="addcandidate.php"><span class="material-icons-outlined">groups</span> Candidates
         </li></a>
         <li class="sidebar-list-item"><a href="votersdetails.php"><span class="material-icons-outlined"> groups</span>
           Voterlist</li></a>
         <li class="sidebar-list-item"><a href="viewresult.php"><span class="material-icons-outlined">visibility</span>
             View Result </a></li>
 
-        <li class="sidebar-list-item"> <span class="material-icons-outlined">settings </span> Notify</li></a>
+        <li class="sidebar-list-item"> <a href="notify.php"><span class="material-icons-outlined">settings </span> Notify</a></li>
 
       </ul>
     </aside>
@@ -137,12 +137,12 @@ if (isset($_GET['delete'])) {
             <label for="">ElectioN topic</label>
             <input type="text" name="election_topic" class="box">
             <label for="">No Of Candiadtes</label>
-            <input type="number" placeholder="Number of candidates" name="number_of_candidates" class="box">
+            <input type="number" name="number_of_candidates" class="box">
             <label for="">starting-date</label>
 
-            <input type="date" placeholder="starting date" name="starting_date" class="box">
+            <input type="date"  name="starting_date" class="box">
             <label for="">Ending-date</label>
-            <input type="date" placeholder="ending date" name="ending_date" class="box">
+            <input type="date"name="ending_date" class="box">
 
             <input type="submit" class="btn" name="add_election" value="add_election">
           </form>
@@ -291,3 +291,8 @@ $fetchingElections = mysqli_query($conn, "SELECT * FROM elections") OR die(mysql
 
     }
 ?>
+
+
+
+
+

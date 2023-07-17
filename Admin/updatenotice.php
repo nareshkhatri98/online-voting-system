@@ -1,13 +1,14 @@
 <?php
 include "inc/connection.php";
 session_start();
+$id = $_GET['edit'];
 if (!isset($_SESSION['admin'])) {
   header('location:../hompage/login_page.php');
 }
 ?>
 <!-- # for data collection -->
 <?php
-if (isset($_POST['submit'])) {
+if (isset($_POST['update_notice'])) {
   $title = $_POST['Title'];
   $content = $_POST['content'];
   $admin = $_SESSION['admin'];
@@ -15,23 +16,20 @@ if (isset($_POST['submit'])) {
   if (empty($title) || empty($content)) {
     echo '<div class="danger" id="danger">Fields cannot be empty!</div>';
   } else {
-    $sql = "INSERT INTO notice (Title, content, inserted_by) VALUES ('$title', '$content', '$admin')";
-    $result = $conn->query($sql);
+    $update = "UPDATE notice SET Title ='$title', content ='$content', inserted_by ='$admin' where Notice_id = '$id'";
+    $result = $conn->query($update);
     if ($result) {
       header('location: notify.php');
     }
   }
 }
 ?>
-    <?php
-    //delte Query
-    if (isset($_GET['delete'])) {
-   $id = $_GET['delete'];
-   mysqli_query($conn, "DELETE FROM notice WHERE Notice_id  = $id");
-   header('location:notify.php');
-}
-
-?>
+<?php
+//to diapya the content of notice....
+ 
+ $dispay = mysqli_query($conn, "SELECT *FROM notice where Notice_id='$id'");
+ $row =mysqli_fetch_assoc($dispay); 
+  ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -79,7 +77,7 @@ if (isset($_POST['submit'])) {
       <ul class="sidebar-list">
         <li class="sidebar-list-item">
           <a href="dashboard.php">
-          <span class="material-icons-outlined">dashboard</span> Dashboard</a>
+            <span class="material-icons-outlined">dashboard</span> Dashboard</a>
         </li>
         <li class="sidebar-list-item">
           <a href="addelection.php">
@@ -106,7 +104,7 @@ if (isset($_POST['submit'])) {
       </ul>
     </aside>
     <!-- end sidebar -->
-    
+
 
     <!-- main -->
     <main class="main-container">
@@ -120,58 +118,16 @@ if (isset($_POST['submit'])) {
 
             <h3>Notice Form</h3>
             <label for="">Title</label>
-            <input type="text" name="Title" class="box">
+            <input type="text" name="Title" class="box" value="<?php echo $row['Title'];?>">
             <label for="">Content</label>
-            <textarea name="content" id="" cols="30" rows="10"></textarea>
-            <input type="submit" class="btn" name="submit" value="submit">
+            <textarea name="content"" id="" cols="30" rows="10" ><?php echo $row['content']; ?></textarea>
+            <input type="submit" class="btn" name="update_notice" value="update notice">
           </form>
-
-          <div class="product-display">
-            <table class="product-display-table">
-              <thead>
-                <tr>
-                  <th>S.N</th>
-                  <th>Title</th>
-                  <th>Content</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-
-          </div>
-
+          <!-- end main -->
+        </div>
         </div>
     </main>
     <!-- end main -->
-    <?php
-    $noticeQuery = mysqli_query($conn, "SELECT * FROM notice") or die(mysqli_error($conn));
-    $sn = 1;
-    while ($noticeData = mysqli_fetch_assoc($noticeQuery)) {
-      ?>
-      <tr>
-        <td>
-          <?php echo $sn++; ?>
-        </td>
-        <td>
-          <?php echo $noticeData['Title']; ?>
-        </td>
-        <td>
-          <?php echo $noticeData['content']; ?>
-        </td>
-
-        <td>
-          <a href="updatenotice.php?edit=<?php echo $noticeData['Notice_id']; ?>" class="box-btn">edit </a>
-          <a href="notify.php?delete=<?php echo $noticeData['Notice_id']; ?>" class="box-btn"> delete </a>
-        </td>
-        </td>
-      </tr>
-      <?php
-    }
-    ?>
-    </tbody>
-    </table>
-  </div>
-  </main>
-  <!-- end main -->
   </div>
 
   <!-- custom js -->
