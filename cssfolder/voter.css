@@ -62,3 +62,21 @@ table thead tr{
   transition: 0.5s;
 }
 
+.winners-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1px;
+  justify-content: space-around;
+ 
+}
+
+.winner {
+  margin: 10px;
+  text-align: center;
+}
+.winners-container .winner >p{
+  font-weight: 500;
+  font-size: 1rem;
+
+}

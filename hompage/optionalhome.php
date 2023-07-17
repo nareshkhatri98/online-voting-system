@@ -1,3 +1,47 @@
+<?php 
+    include "../Admin/inc/connection.php";
+
+    $fetchingElections = mysqli_query($conn, "SELECT * FROM elections") OR die(mysqli_error($conn));
+    while($data = mysqli_fetch_assoc($fetchingElections))
+    {
+        $stating_date = $data['starting_date'];
+        $ending_date = $data['ending_date'];
+        $curr_date = date("Y-m-d");
+        $election_id = $data['election_id'];
+        $status = $data['status'];
+
+        // Active = Expire = Ending Date
+        // InActive = Active = Starting Date
+
+        if($status == "Active")
+        {
+            $date1=date_create($curr_date);
+            $date2=date_create($ending_date);
+            $diff=date_diff($date1,$date2);
+            
+            if((int)$diff->format("%R%a") < 0)
+            {
+                // Update! 
+                mysqli_query($conn, "UPDATE elections SET status = 'Expired' WHERE election_id = '". $election_id ."'") OR die(mysqli_error($conn));
+            }
+        }else if($status == "InActive")
+        {
+            $date1=date_create($curr_date);
+            $date2=date_create($stating_date);
+            $diff=date_diff($date1,$date2);
+            
+
+            if((int)$diff->format("%R%a") <= 0)
+            {
+                // Update! 
+                mysqli_query($conn, "UPDATE elections SET status = 'Active' WHERE id = '". $election_id ."'") OR die(mysqli_error($conn));
+            }
+        }
+        
+
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +68,7 @@
     </a>  
     <div class="nav-links">
      <ul class="flex" id="navbar">
-      <li><a href="optionalhome.html" class="hover-links">Home</a></li>
+      <li><a href="optionalhome.php" class="hover-links">Home</a></li>
       <li><a href="../Admin/candidate.php" class="hover-links">Candidates</a></li>
       <li><a href="../Admin/noticeshow.php" class="hover-links">Notice</a></li>
       <li><a href="login_page.php" class="hover-links secondary-btn">Sign in</a></li>

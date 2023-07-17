@@ -6,9 +6,6 @@ $sel = "SELECT * FROM users WHERE user_role = 'admin'";
 $query = mysqli_query($conn, $sel);
 $result = mysqli_fetch_assoc($query);
 
-// Retrieve the active elections
-$fetchingActiveElections = mysqli_query($conn, "SELECT * FROM elections WHERE status = 'active'") or die(mysqli_error($conn));
-$totalActiveElections = mysqli_num_rows($fetchingActiveElections);
 ?>
 
 <!DOCTYPE html>
@@ -86,6 +83,9 @@ $totalActiveElections = mysqli_num_rows($fetchingActiveElections);
         <h3 style="text-align: center;">Election Results</h3>
 
         <?php
+        $fetchingActiveElections = mysqli_query($conn, "SELECT * FROM elections WHERE status = 'active'") or die(mysqli_error($conn));
+        $totalActiveElections = mysqli_num_rows($fetchingActiveElections);
+
         if ($totalActiveElections > 0) {
           while ($row = mysqli_fetch_assoc($fetchingActiveElections)) {
             $election_id = $row['election_id'];
@@ -142,11 +142,44 @@ $totalActiveElections = mysqli_num_rows($fetchingActiveElections);
               echo '</tbody>';
               echo '</table>';
 
-              // Declare the winner
+              // Declare the winner(s)
               if ($winner) {
-                echo '<h4>Winner: ' . $winner['candidate_name'] . '</h4>';
-                echo '<img src="upload_image/' . $winner['candidate_photo'] . '" height="100" style="border-radius: 20px;">';
-                echo '<p>Total Votes: ' . $winner['votes'] . '</p>';
+                $winners = [$winner]; // Initialize an array to store the winners
+                $maxVotes = $winner['votes']; // Store the maximum number of votes
+
+                // Check for ties and add all candidates with equal votes to the winners array
+                mysqli_data_seek($fetchingCandidates, 0); // Reset the candidates fetch pointer
+                while ($candidateData = mysqli_fetch_assoc($fetchingCandidates)) {
+                  $candidate_id = $candidateData['id'];
+                  $candidate_photo = $candidateData['candidate_photo'];
+
+                  // Fetching Candidate Votes 
+                  $fetchingVotes = mysqli_query($conn, "SELECT * FROM votings WHERE candidate_id = '$candidate_id'") or die(mysqli_error($conn));
+                  $totalVotes = mysqli_num_rows($fetchingVotes);
+
+                  if ($totalVotes === $maxVotes && $candidate_id !== $winner['candidate_id']) {
+                    $winners[] = [
+                      'candidate_id' => $candidate_id,
+                      'candidate_name' => $candidateData['candidate_name'],
+                      'candidate_photo' => $candidate_photo,
+                      'votes' => $totalVotes
+                    ];
+                  }
+                }
+
+                // Display the winner(s)
+                echo '<h4 style="text-align:center">Winner</h4>';
+                echo '<div class="winners-container">'; // Flex container for winners
+
+                foreach ($winners as $winner) {
+                  echo '<div class="winner">';
+                  echo '<p>' . $winner['candidate_name'] . '</p>';
+                  echo '<img src="upload_image/' . $winner['candidate_photo'] . '" height="100" style="border-radius: 20px;">';
+                  echo '<p>Total Votes: ' . $winner['votes'] . '</p>';
+                  echo '</div>';
+                }
+
+                echo '</div>'; // Close flex container
               } else {
                 echo '<p>No winner declared yet.</p>';
               }

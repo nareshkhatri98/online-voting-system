@@ -26,7 +26,7 @@ include_once('inc/connection.php');
     </a>
     <div class="nav-links">
      <ul class="flex">
-      <li><a href="../hompage/optionalhome.html" class="hover-links">Home</a></li>
+      <li><a href="../hompage/optionalhome.php" class="hover-links">Home</a></li>
       <li><a href="" class="hover-links">Candidates</a></li>
       <li><a href="noticeshow.php" class="hover-links">Notice</a></li>
       <li><a href="../hompage/login_page.php" class="hover-links secondary-btn">Login</a></li>

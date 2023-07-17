@@ -61,7 +61,7 @@ if (isset($_POST['submit'])) {
     </a>
     <div class="nav-links">
      <ul class="flex">
-      <li><a href="optionalhome.html" class="hover-links">Home</a></li>
+      <li><a href="optionalhome.php" class="hover-links">Home</a></li>
       <li><a href="../Admin/candidate.php" class="hover-links">Candidates</a></li>
       <li><a href="../admin/noticeshow.php" class="hover-links">Notice</a></li>
       <li><a href="login_page.php" class="hover-links secondary-btn">Login</a></li>
