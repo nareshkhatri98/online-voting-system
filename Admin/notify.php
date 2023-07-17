@@ -123,7 +123,7 @@ if (isset($_POST['submit'])) {
             <input type="text" name="Title" class="box">
             <label for="">Content</label>
             <textarea name="content" id="" cols="30" rows="10"></textarea>
-            <input type="submit" class="btn" name="submit" value="submit">
+            <button type="submit" class="submit-box" name="submit" value="submit"> Submit</button>
           </form>
 
           <div class="product-display">

@@ -105,11 +105,14 @@ transition:all 0.5s;
 }
 .sidebar-list-item{
 padding: 20px 20px 20px 20px;
+font-size:1.1rem;
+font-weight: 600;
 
 }
 .sidebar-list-item >a{
   text-decoration: none;
   color: #b0b2bd;
+  font-size:1.1rem;
 }
 .sidebar-list-item:hover{
   background-color: rgba(225, 225, 225, 0.2);

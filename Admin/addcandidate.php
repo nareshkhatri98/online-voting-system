@@ -225,10 +225,8 @@ if (isset($_GET['delete'])) {
                            <?php echo $row['election_topic']; ?>
                         </td>
                         <td>
-                           <a href="updatecandidate.php?edit=<?php echo $row['id']; ?>" class="box-btn"><i class="fas fa-edit"></i>
-                              Edit</a>
-                           <a href="addcandidate.php?delete=<?php echo $row['id']; ?>" class="box-btn"><i
-                                 class="fas fa-trash"></i> Delete</a>
+                           <a href="updatecandidate.php?edit=<?php echo $row['id']; ?>" class="box-btn"> Edit</a>
+                           <a href="addcandidate.php?delete=<?php echo $row['id']; ?>" class="box-btn"> Delete</a>
                         </td>
                      </tr>
                      <?php

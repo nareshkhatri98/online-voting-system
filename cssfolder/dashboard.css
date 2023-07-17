@@ -134,6 +134,8 @@ transition:all 0.5s;
 }
 .sidebar-list-item{
 padding: 20px 20px 20px 20px;
+font-size: 1.1rem;
+font-weight: 600;
 
 }
 .sidebar-list-item >span >a{

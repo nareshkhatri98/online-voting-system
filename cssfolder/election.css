@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap');
 
 :root{
-   --green:#27ae60;
-   --black:#333;
+   --green:#163724;
+   --black:#666363;
    --white:#fff;
    --bg-color:#eee;
    --box-shadow:0 .5rem 1rem rgba(0,0,0,.1);
@@ -20,8 +20,9 @@
 .btn{
    display: block;
    width: 100%;
+   font-weight: 600;
    cursor: pointer;
-   font-size: 12px;
+   font-size: 1rem;
    border-radius: .5rem;
    margin-top: 1rem;
    font-size: 1 rem;
@@ -30,11 +31,14 @@
    color:var(--white);
    text-align: center;
 }
-.admin-product-form-container>label
+.admin-product-form-container.form-only.lable
 {
    font-weight: bold;
    font-style: var(--black);
 }
+
+
+
 
 .btn:hover{
    background: var(--black);
@@ -78,9 +82,15 @@
    color:var(--black);
    margin-bottom: 1rem;
    text-align: center;
-   font-size: 1rem;
+   font-size: 1.1rem;
 }
-
+.admin-product-form-container form label{
+   text-transform: uppercase;
+   color:var(--black);
+   margin-bottom: 1rem;
+   text-align: center;
+   font-size: 1.1rem;
+}
 .admin-product-form-container form .box{
    width: 100%;
    border-radius: .5rem;
@@ -106,25 +116,29 @@
 
 .product-display .product-display-table th{
    padding:1%;
-   font-size: 1rem;;
+   font-weight: 900;
+  color: var(--black);
+   font-size: 1.1rem;;
 }
 
 
 .product-display .product-display-table td{
    padding:1rem;
    font-size: 1rem;
+   font-weight: 500;
+   color: var(--black);
    border-bottom: var(--border);
 }
 
-.product-display .product-display-table .btn:first-child{
+.product-display .product-display-table .box-btn:first-child{
    margin-top: 0;
 }
 
-.product-display .product-display-table .btn:last-child{
+.product-display .product-display-table .box-btn:last-child{
    background: crimson;
 }
 
-.product-display .product-display-table .btn:last-child:hover{
+.product-display .product-display-table .box-btn:last-child:hover{
    background: var(--black);
 }
 
@@ -132,10 +146,11 @@
    display: inline;
    width: 10%;
 
+   font-weight: 600;
    background: var(--green);
    color: var(--white);
    cursor: pointer;
-   font-size: 12px;
+   font-size: 0.98rem;
    border-radius: .5rem;
    margin-top: 1rem;
    margin-left: 2px;
@@ -147,7 +162,7 @@
    background: var(--black);
 }
 .admin-product-form-container form label{
-   font-weight: bold;
+   font-weight: 600;
 }
 
 @media (max-width:880px){

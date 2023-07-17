@@ -4,7 +4,7 @@ session_start();
 if (!isset($_SESSION['User'])) {
   header('location:../hompage/login_page.php');
 }
-
+//user details..
 $select = "SELECT fullname, phone FROM users WHERE id = " . $_SESSION['id']; // 'id' is the column name in users table
 $result = mysqli_query($conn, $select);
 if ($result) {
@@ -13,6 +13,20 @@ if ($result) {
   $phone = $row['phone'];
 }
 ?>
+
+
+<?php
+// election avaliable....
+$election = "SELECT COUNT(*) AS total_election From elections";
+$counteElection = mysqli_query($conn, $election);
+if ($counteElection) {
+  $Data = mysqli_fetch_assoc($counteElection);
+  $Totalelection = $Data['total_election'];
+} else {
+  echo "No election avaliable.";
+}
+?>
+
 
 
 <!DOCTYPE html>
@@ -47,7 +61,7 @@ if ($result) {
 
       </div>
       <div class="class-left">
-    
+
     </header>
     <!-- End Header -->
 
@@ -73,8 +87,8 @@ if ($result) {
         <li class="sidebar-list-item">
           <a href="logut.php">
             <span class="material-icons-outlined">account_circle</span>
+            Logout
           </a>
-          Logout
         </li>
       </ul>
     </aside>
@@ -98,16 +112,20 @@ if ($result) {
           </span>
         </div>
 
+        <div class="card">
+          <div class="card-inner">
+            <h2 class="text-primary font-weight-bold">Elections</h2>
+            <span class="material-icons-outlined text-blue">event</span>
+          </div>
+          <span class="text-primary font-weight-bold">
+            Avaliable election:
+            <?php echo $Totalelection; ?>
+          </span>
 
-
-
+        </div>
       </div>
 
     </main>
-
-    <div>
-
-      <div>
 
 
 

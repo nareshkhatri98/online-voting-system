@@ -41,7 +41,7 @@ if (isset($_POST['update_notice'])) {
   <title>dashboard</title>
   <!-- custom css -->
   <link rel="stylesheet" href="../cssfolder/dashboard.css">
-  <link rel="stylesheet" href="../cssfolder/notice.css">
+  <link rel="stylesheet" href="../dashboard/dashboard.css">
   <!-- For icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 </head>

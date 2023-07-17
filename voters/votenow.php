@@ -1,8 +1,10 @@
 <?php
 include "../Admin/inc/connection.php";
 session_start();
+if (!isset($_SESSION['User'])) {
+  header('location:../hompage/login_page.php');
+}
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +35,7 @@ session_start();
       <div class="class-right">
 
         <h1>Welcome-
-          <?php echo $_SESSION['User'] ?> <smaLL>
+          <?php echo  $_SESSION['User'];?> <smaLL>
 
           </smaLL>
         </h1>
@@ -61,7 +63,7 @@ session_start();
         </li></a>
 
         <li class="sidebar-list-item">
-          <a href="../hompage/home_page.html">
+          <a href="logut.php">
             <span class="material-icons-outlined">account_circle</span>
           </a>
           Logout

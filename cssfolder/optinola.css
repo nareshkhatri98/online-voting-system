@@ -118,7 +118,8 @@ margin-top: 20px;
 
 }
 .hover-links{
-  font-weight: 500;
+  font-weight: 900;
+  font-size: 1.3rem;
   color: var(--primary-text-color);
    transition: 0,2s ease;
 }
