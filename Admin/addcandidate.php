@@ -11,7 +11,7 @@ if (isset($_POST['add_candidate'])) {
    $candidate_photo_tmp_name = $_FILES['candidate_photo']['tmp_name'];
    $candidate_image_folder = 'upload_image/' . $candidate_photo;
    $candidate_bio = $_POST['candidate_bio'];
-   $inserted_by = $_SESSION['fullname'];
+   $inserted_by = $_SESSION['admin'];
    $inserted_on = date("Y-m-d");
 
    if (empty($candidate_name) || empty($candidate_address) || empty($candidate_email) || empty($candidate_photo) || empty($candidate_bio) || empty($election_id) || $election_id == '0') {

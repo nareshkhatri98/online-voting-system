@@ -17,7 +17,7 @@ if ($result) {
 
 <?php
 // election avaliable....
-$election = "SELECT COUNT(*) AS total_election From elections";
+$election = "SELECT COUNT(*) AS total_election From elections WHERE status ='active'";
 $counteElection = mysqli_query($conn, $election);
 if ($counteElection) {
   $Data = mysqli_fetch_assoc($counteElection);
@@ -69,7 +69,7 @@ if ($counteElection) {
     <aside id="sidebar">
       <div class="sidebar-title">
         <div class="sidebar-brand">
-          <span class="material-icons-outlined"><a href="dashboard.html">how_to_vote</a></span> Go Vote
+          <span class="material-icons-outlined"><a href="dashboard.php">how_to_vote</a></span> Go Vote
         </div>
         <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
       </div>

@@ -41,7 +41,7 @@ if (isset($_POST['update_notice'])) {
   <title>dashboard</title>
   <!-- custom css -->
   <link rel="stylesheet" href="../cssfolder/dashboard.css">
-  <link rel="stylesheet" href="../dashboard/dashboard.css">
+  <link rel="stylesheet" href="../cssfolder/notice.css">
   <!-- For icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 </head>
@@ -121,7 +121,7 @@ if (isset($_POST['update_notice'])) {
             <input type="text" name="Title" class="box" value="<?php echo $row['Title'];?>">
             <label for="">Content</label>
             <textarea name="content"" id="" cols="30" rows="10" ><?php echo $row['content']; ?></textarea>
-            <input type="submit" class="btn" name="update_notice" value="update notice">
+            <input type="submit" class="box-btn" style="padding:20px; width:100%; height:50%; font-size:1rem"name="update_notice" value="update notice">
           </form>
           <!-- end main -->
         </div>

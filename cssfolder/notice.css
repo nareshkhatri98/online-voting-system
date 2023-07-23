@@ -155,9 +155,10 @@
 }
 
 
+
 .box-btn{
    display: inline;
-   width: 10%;
+   width: 100%;
 
    background: var(--green);
    color: var(--white);

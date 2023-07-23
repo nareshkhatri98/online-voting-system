@@ -90,10 +90,12 @@
     <p>An online voting system is a software platform that allows groups to securely conduct votes and elections.
       High-quality online voting systems balance ballot security, accessibility, and the overall requirements of
       an organization's voting event.</p>
-      <a href="#" class="primary-btn get-start-btn">Get Started</a>
+      <a href="login_page.php" class="primary-btn get-start-btn">Get Started</a>
   </div>
+  <div class="img-slider">
   <div class="header-right">
     <img src="../images/bb.jpg" alt="" id="slider" class="main_slider">
+  </div>
   </div>
  </div>
  <div id="popupContainer">

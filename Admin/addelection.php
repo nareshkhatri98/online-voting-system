@@ -2,297 +2,203 @@
 @include 'inc/connection.php';
 session_start();
 
-if (isset($_POST['add_election'])) {
+function getElectionStatus($starting_date, $ending_date)
+{
+    $current_date = new DateTime();
+    $start_date = new DateTime($starting_date);
+    $end_date = new DateTime($ending_date);
 
+    // We need to add 1 day to the end date to include the entire ending date in the comparison
+    $end_date->add(new DateInterval('P1D'));
 
-  $election_topic = mysqli_real_escape_string($conn, $_POST['election_topic']);
-  $number_of_candidates = mysqli_real_escape_string($conn, $_POST['number_of_candidates']);
-  $starting_date = mysqli_real_escape_string($conn, $_POST['starting_date']);
-  $ending_date = mysqli_real_escape_string($conn, $_POST['ending_date']);
-  $inserted_by = $_SESSION['fullname'];
-  $inserted_on = date("Y-m-d");
-  $current_date = date("Y-m-d"); // Get the current date
-
-  $date1 = date_create($starting_date);
-  $date2 = date_create($ending_date);
-  $diff = date_diff($date1, $date2);
-
-  // Compare the starting date with the current date
-  if ($starting_date !== $current_date) {
-    $status = "Invalid: Starting date should be the current date";
-  } elseif ((int) $diff->format("%R%a") <= 0) {
-    $status = "Invalid: Ending date should be a future date";
-  } else {
-    $status = "active";
-  }
-
-  if (empty($election_topic) || empty($number_of_candidates) || empty($starting_date) || empty($ending_date)) {
-
-    echo '   <script>
-            alert("please fill out all");
-            window.location = "addelection.php";
-        </script>
-        ';
-
-  }
-  // inserting into db
-  else {
-    $insert = "INSERT INTO elections(election_topic, no_of_candidates, starting_date, ending_date, status, inserted_by, inserted_on) VALUES('" . $election_topic . "', '" . $number_of_candidates . "', ' 
-       " . $starting_date . "', '" . $ending_date . "', '" . $status . "', '" . $inserted_by . "', '" . $inserted_on . "')";
-    $upload = mysqli_query($conn, $insert);
-    if ($upload) {
-      echo '   <script>
-          alert("New Election added successfully.");
-          window.location = "addelection.php";
-      </script>
-      ';
-
+    if ($start_date <= $current_date && $end_date > $current_date) {
+        return "Active";
+    } elseif ($end_date < $current_date) {
+        return "Expired";
     } else {
-      $message[] = 'could not add the election';
+        return "Inactive";
     }
-  }
 }
 
+if (isset($_POST['add_election'])) {
+    $election_topic = mysqli_real_escape_string($conn, $_POST['election_topic']);
+    $number_of_candidates = mysqli_real_escape_string($conn, $_POST['number_of_candidates']);
+    $starting_date = mysqli_real_escape_string($conn, $_POST['starting_date']);
+    $ending_date = mysqli_real_escape_string($conn, $_POST['ending_date']);
+    $inserted_by = $_SESSION['admin'];
+    $inserted_on = date("Y-m-d");
+ 
 
+    $status = getElectionStatus($starting_date, $ending_date);
+
+    if (empty($election_topic) || empty($number_of_candidates) || empty($starting_date) || empty($ending_date)) {
+        echo '<script>
+            alert("Please fill out all fields.");
+            window.location = "addelection.php";
+        </script>';
+    } else {
+        $insert = "INSERT INTO elections (election_topic, no_of_candidates, starting_date, ending_date, status, inserted_by, inserted_on) 
+        VALUES ('$election_topic', '$number_of_candidates', '$starting_date', '$ending_date', '$status', '$inserted_by', '$inserted_on')";
+        $upload = mysqli_query($conn, $insert);
+        if ($upload) {
+            echo '<script>
+                alert("New Election added successfully.");
+                window.location = "addelection.php";
+            </script>';
+        } else {
+            $message[] = 'Could not add the election.';
+        }
+    }
+}
 
 if (isset($_GET['delete'])) {
-  $id = $_GET['delete'];
-  mysqli_query($conn, "DELETE FROM elections WHERE election_id = $id");
-  header('location:addelection.php');
+    $id = $_GET['delete'];
+    mysqli_query($conn, "DELETE FROM elections WHERE election_id = $id");
+    header('location:addelection.php');
 }
-;
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- <title>dashboard</title> -->
-  <!-- custome css -->
-  <link rel="stylesheet" href="../dashboard/dashboard.css"">
-  <!-- For icons -->
-  <link href=" https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-  <link rel="stylesheet" href="../cssfolder/election.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <title>dashboard</title> -->
+    <!-- custom css -->
+    <link rel="stylesheet" href="../dashboard/dashboard.css">
+    <!-- For icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="../cssfolder/election.css">
+</head>
 
 <body>
-  <div class="grid-container">
+    <div class="grid-container">
 
-    <!-- header -->
-    <header class="header">
-      <div class="menu-icon" onclick="openSidebar()">
-        <span class="material-icons-outlined">menu</span>
-      </div>
-      <div class="class-left">
-        <span class="material-icons-outlined"> search </span>
-      </div>
+        <!-- header -->
+        <header class="header">
+            <div class="menu-icon" onclick="openSidebar()">
+                <span class="material-icons-outlined">menu</span>
+            </div>
+            <div class="class-left">
+                <span class="material-icons-outlined"> search </span>
+            </div>
+        </header>
+        <!-- end header -->
 
-    </header>
-    <!-- end header -->
+        <!-- slidebar -->
+        <aside id="sidebar">
+            <div class="sidebar-title">
+                <div class="sidebar-brand">
+                    <a href="dashboard.php"> <span class="material-icons-outlined"
+                            style="color:#b0b2bd;">how_to_vote</span> </a>
+                    Go Vote
+                </div>
+                <span class="material-icons-outlined" onclick="closeSidebar()">close </span>
+            </div>
 
-    <!-- slidebar -->
-    <aside id="sidebar">
-      <div class="sidebar-title">
-        <div class="sidebar-brand">
-          <a href="dashboard.php"> <span class="material-icons-outlined" style="color:#b0b2bd;">how_to_vote</span> </a>
-          Go Vote
-        </div>
-        <span class="material-icons-outlined" onclick="closeSidebar()">close </span>
-      </div>
+            <ul class="sidebar-list">
+                <li class="sidebar-list-item">
+                    <a href="dashboard.php"><span class="material-icons-outlined">dashboard</span> Dashboard
+                </li></a>
 
-      <ul class="sidebar-list">
-        <li class="sidebar-list-item">
-          <a href="dashboard.php"><span class="material-icons-outlined">dashboard</span> Dashboard
-        </li></a>
+                <li class="sidebar-list-item">
+                    <a href="dashboard.php"><span class="material-icons-outlined">event_available</span> Elections
+                </li></a>
 
-        <li class="sidebar-list-item">
-          <a href="dashboard.php"><span class="material-icons-outlined">event_available</span> Elections
-        </li></a>
+                <li class="sidebar-list-item">
+                    <a href="addcandidate.php"><span class="material-icons-outlined">groups</span> Candidates
+                </li></a>
+                <li class="sidebar-list-item"><a href="votersdetails.php"><span
+                            class="material-icons-outlined">groups</span> Voterlist</li></a>
+                <li class="sidebar-list-item"><a href="viewresult.php"><span
+                            class="material-icons-outlined">visibility</span> View Result </a></li>
 
-        <li class="sidebar-list-item">
-          <a href="addcandidate.php"><span class="material-icons-outlined">groups</span> Candidates
-        </li></a>
-        <li class="sidebar-list-item"><a href="votersdetails.php"><span class="material-icons-outlined"> groups</span>
-          Voterlist</li></a>
-        <li class="sidebar-list-item"><a href="viewresult.php"><span class="material-icons-outlined">visibility</span>
-            View Result </a></li>
+                <li class="sidebar-list-item"> <a href="notify.php"><span class="material-icons-outlined">settings </span>
+                        Notify</a></li>
 
-        <li class="sidebar-list-item"> <a href="notify.php"><span class="material-icons-outlined">settings </span> Notify</a></li>
+            </ul>
+        </aside>
+        <!-- Endsidebar -->
 
-      </ul>
-    </aside>
-    <!-- Endsidebar -->
-    <main class="main-container">
+        <main class="main-container">
+            <div class="form-container">
+                <div class="admin-product-form-container">
+                    <form action="addelection.php" method="post" enctype="multipart/form-data">
+                        <h3>add a new election</h3>
+                        <label for="">Election Topic</label>
+                        <input type="text" name="election_topic" class="box">
+                        <label for="">No Of Candidates</label>
+                        <input type="number" name="number_of_candidates" class="box">
+                        <label for="">Starting Date</label>
+                        <input type="date" name="starting_date" class="box">
+                        <label for="">Ending Date</label>
+                        <input type="date" name="ending_date" class="box">
+                        <input type="submit" class="btn" name="add_election" value="Add Election">
+                    </form>
 
+                    <?php
+                    $fetchingData = mysqli_query($conn, "SELECT * FROM elections") or die(mysqli_error($conn));
+                    $isAnyElectionAdded = mysqli_num_rows($fetchingData);
 
-      <div class="form-container">
+                    if ($isAnyElectionAdded > 0) {
+                        ?>
+                        <div class="product-display">
+                            <table class="product-display-table">
+                                <thead>
+                                    <tr>
+                                        <th>S.N</th>
+                                        <th>Election Name</th>
+                                        <th>Candidates</th>
+                                        <th>Starting Date</th>
+                                        <th>Ending Date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $sno = 1;
+                                    while ($row = mysqli_fetch_assoc($fetchingData)) {
+                                        $election_id = $row['election_id'];
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $sno++; ?></td>
+                                            <td><?php echo $row['election_topic']; ?></td>
+                                            <td><?php echo $row['no_of_candidates']; ?></td>
+                                            <td><?php echo $row['starting_date']; ?></td>
+                                            <td><?php echo $row['ending_date']; ?></td>
+                                            <td><?php echo $row['status']; ?></td>
+                                            <td>
+                                                <a href="electionupdate.php?edit=<?php echo $row['election_id']; ?>"
+                                                    class="box-btn"> <i class="fas fa-edit"></i> Edit </a>
+                                                <a href="addelection.php?delete=<?php echo $row['election_id']; ?>"
+                                                    class="box-btn"> <i class="fas fa-trash"></i> Delete </a>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php
+                    } else {
+                        ?>
+                        <div style="text-align:center; margin-top:100px;">No any election is added yet.</div>
+                    <?php
+                    }
+                    ?>
+                </div>
+            </div>
+        </main>
+    </div>
 
-        <div class="admin-product-form-container">
-
-          <form action="addelection.php" method="post" enctype="multipart/form-data">
-
-            <h3>add a new election</h3>
-            <label for="">ElectioN topic</label>
-            <input type="text" name="election_topic" class="box">
-            <label for="">No Of Candiadtes</label>
-            <input type="number" name="number_of_candidates" class="box">
-            <label for="">starting-date</label>
-
-            <input type="date"  name="starting_date" class="box">
-            <label for="">Ending-date</label>
-            <input type="date"name="ending_date" class="box">
-
-            <input type="submit" class="btn" name="add_election" value="add_election">
-          </form>
-
-          <?php
-
-          $select = mysqli_query($conn, "SELECT * FROM elections");
-
-          ?>
-          <div class="product-display">
-            <table class="product-display-table">
-              <thead>
-                <tr>
-                  <th>S.N</th>
-                  <th>Election name</th>
-                  <th>Candidates</th>
-                  <th>Starting date</th>
-                  <th>Ending date</th>
-                  <th>Status</th>
-                  <th>action</th>
-                </tr>
-              </thead>
-              <?php
-              $fetchingData = mysqli_query($conn, "SELECT * FROM elections") or die(mysqli_error($conn));
-              $isAnyElectionAdded = mysqli_num_rows($fetchingData);
-
-              if ($isAnyElectionAdded > 0) {
-                $sno = 1;
-                while ($row = mysqli_fetch_assoc($fetchingData)) {
-                  $election_id = $row['election_id'];
-                  ?>
-                  <tr>
-                    <td>
-                      <?php echo $sno++; ?>
-                    </td>
-                    <td>
-                      <?php echo $row['election_topic']; ?>
-                    </td>
-                    <td>
-                      <?php echo $row['no_of_candidates']; ?>
-                    </td>
-                    <td>
-                      <?php echo $row['starting_date']; ?>
-                    </td>
-                    <td>
-                      <?php echo $row['ending_date']; ?>
-                    </td>
-                    <td>
-                      <?php echo $row['status']; ?>
-                    </td>
-                    <td>
-                      <a href="electionupdate.php?edit=<?php echo $row['election_id']; ?>" class="box-btn"> <i
-                          class="fas fa-edit"></i> edit </a>
-                      <a href="addelection.php?delete=<?php echo $row['election_id']; ?>" class="box-btn"> <i
-                          class="fas fa-trash"></i> delete </a>
-                    </td>
-                  </tr>
-                  <?php
-                }
-              } else {
-                ?>
-              <tr>
-                <td colspan="7"> No any election is added yet. </td>
-              </tr>
-              <?php
-              }
-              ?>
-          </div>
-
-        </div>
-
-
-
-
-
-
-    </main>
-    <!-- end main -->
-
-
-
-
-
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <!-- custom js -->
-  <script src="../assets/js/dashobrd.js"></script>
-  <script src="../assets/js/first.js"></script>
-  <script src="../assets/js/drop_down.js"></script>
-</body>
+    <!-- custom js -->
+    <script src="../assets/js/dashobrd.js"></script>
+    <script src="../assets/js/first.js"></script>
+    <script src="../assets/js/drop_down.js"></script>
 </body>
 
 </html>
-<?php
-$fetchingElections = mysqli_query($conn, "SELECT * FROM elections") OR die(mysqli_error($conn));
-    while($data = mysqli_fetch_assoc($fetchingElections))
-    {
-        $stating_date = $data['starting_date'];
-        $ending_date = $data['ending_date'];
-        $curr_date = date("Y-m-d");
-        $election_id = $data['election_id'];
-        $status = $data['status'];
-
-        // Active = Expire = Ending Date
-        // InActive = Active = Starting Date
-
-        if($status == "Active")
-        {
-            $date1=date_create($curr_date);
-            $date2=date_create($ending_date);
-            $diff=date_diff($date1,$date2);
-            
-            if((int)$diff->format("%R%a") < 0)
-            {
-                // Update! 
-                mysqli_query($conn, "UPDATE elections SET status = 'Expired' WHERE election_id = '". $election_id ."'") OR die(mysqli_error($conn));
-            }
-        }else if($status == "InActive")
-        {
-            $date1=date_create($curr_date);
-            $date2=date_create($stating_date);
-            $diff=date_diff($date1,$date2);
-            
-
-            if((int)$diff->format("%R%a") <= 0)
-            {
-                // Update! 
-                mysqli_query($conn, "UPDATE elections SET status = 'Active' WHERE election_id = '". $election_id ."'") OR die(mysqli_error($conn));
-            }
-        }
-        
-
-    }
-?>
-
-
-
-
-
