@@ -39,7 +39,7 @@ if (!isset($_SESSION['admin'])) {
 
       </div>
       <div class="class-right">
-        <span class="material-icons-outlined"><a href="logout.php" onclick="logout(event`)">account_circle </a></span>
+        <span class="material-icons-outlined"><a href="logout.php" onclick="logout(event)">account_circle </a></span>
 
       </div>
     </header>
@@ -137,7 +137,6 @@ if (!isset($_SESSION['admin'])) {
       var urlToRedirect = ev.currentTarget.getAttribute('href');
       swal({
         title: "Are you sure to logout?",
-        text: "You won't be able to revert this delete",
         icon: "warning",
         buttons: true,
         dangerMode: true,
