@@ -15,35 +15,23 @@ if (isset($_POST['add_candidate'])) {
    $inserted_on = date("Y-m-d");
 
    if (empty($candidate_name) || empty($candidate_address) || empty($candidate_email) || empty($candidate_photo) || empty($candidate_bio) || empty($election_id) || $election_id == '0') {
-      echo '   <script>
-      alert("Please fill out all fields and provide a valid election ID.");
-      window.location = "addcandidate.php";
-  </script>
-  ';
-
-      ;
+      header('location:addcandidate.php');
+      exit; // Always exit after redirect
    } else {
       $insert = "INSERT INTO candidate_details (election_id, candidate_name, address, email, candidate_photo, Bio, inserted_by, inserted_on) VALUES ('$election_id', '$candidate_name', '$candidate_address', '$candidate_email', '$candidate_photo', '$candidate_bio', '$inserted_by', '$inserted_on')";
       $upload = mysqli_query($conn, $insert);
       if ($upload) {
          move_uploaded_file($candidate_photo_tmp_name, $candidate_image_folder);
-         echo '   <script>
-            alert("new candidate added successfull.");
-            window.location = "addcandidate.php";
-        </script>
-        ';
-
+         $_SESSION['success_message'] = "Candidate added successfully!";
+         header('location:addcandidate.php');
+         exit; // Always exit after redirect
       } else {
-         echo '   <script>
-            alert("Could not add");
-            window.location = "addcandidate.php";
-        </script>
-        ';
-
+         $_SESSION['error_message'] = "Failed to add candidate.";
+         header('location:addcandidate.php');
+         exit; // Always exit after redirect
       }
    }
 }
-
 
 
 
@@ -69,7 +57,7 @@ if (isset($_GET['delete'])) {
   <!-- For icons -->
   <link href=" https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
    <link rel="stylesheet" href="../cssfolder/election.css">
-
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <body>
    <div class="grid-container">
 
@@ -226,7 +214,7 @@ if (isset($_GET['delete'])) {
                         </td>
                         <td>
                            <a href="updatecandidate.php?edit=<?php echo $row['id']; ?>" class="box-btn"> Edit</a>
-                           <a href="addcandidate.php?delete=<?php echo $row['id']; ?>" class="box-btn"> Delete</a>
+                           <a href="addcandidate.php?delete=<?php echo $row['id']; ?>" class="box-btn" id="delete" onclick="conformation(event)"> Delete</a>
                         </td>
                      </tr>
                      <?php
@@ -252,7 +240,28 @@ if (isset($_GET['delete'])) {
    <script src="../assets/js/dashobrd.js"></script>
    <script src="../assets/js/first.js"></script>
    <script src="../assets/js/drop_down.js"></script>
-</body>
-</body>
 
+   <!-- for delete conform -->
+   <script>
+    function conformation(ev) {
+        ev.preventDefault();
+
+        var urlToRedirect = ev.currentTarget.getAttribute('href');
+        swal({
+            title: "Are you sure to delete this?",
+            text: "You won't be able to revert this delete",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willCancel) => {
+            if (willCancel) {
+                window.location.href = urlToRedirect;
+            }
+        });
+    }
+
+
+    
+</script>
+</body>
 </html>

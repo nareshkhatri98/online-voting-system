@@ -2,38 +2,40 @@
 include "../Admin/inc/connection.php";
 $error = array();
 session_start();
+// ... (existing code)
 
 if (isset($_POST['submit'])) {
-    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
-    $password = md5($_POST['password']);
+  $phone = mysqli_real_escape_string($conn, $_POST['phone']);
+  $password = md5($_POST['password']);
 
-    // Select Query  
-    $select = "SELECT * FROM users WHERE phone = '$phone' && password = '$password' ";
-    $result = mysqli_query($conn, $select);
+  // Select Query  
+  $select = "SELECT * FROM users WHERE phone = '$phone' && password = '$password' ";
+  $result = mysqli_query($conn, $select);
 
-    if (mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_array($result);
+  if (mysqli_num_rows($result) > 0) {
+      $row = mysqli_fetch_array($result);
 
-        if ($row['user_role'] == 'admin') {
-            $_SESSION['admin'] = $row['fullname'];
-            $_SESSION['id'] = $row['id']; 
-           
-            $error[] = "login successful";
-            header("location: ../Admin/dashboard.php");
-            exit();
-        } elseif ($row['user_role'] == 'User') {
-            $_SESSION['User'] = $row['fullname'];
-            $_SESSION['id'] = $row['id']; 
-           
-           
-            header("location: ../voters/dashboard.php");
-            exit();
-        }
-    } else {
-        $error[] = "Invalid username and password";
-    }
+      if ($row['user_role'] == 'admin') {
+          $_SESSION['admin'] = $row['fullname'];
+          $_SESSION['id'] = $row['id']; 
+         
+          $error[] = "login successful";
+          header("location: ../Admin/dashboard.php");
+          exit();
+      } elseif ($row['user_role'] == 'User') {
+          $_SESSION['User'] = $row['fullname'];
+          $_SESSION['id'] = $row['id']; 
+         
+          header("location: ../voters/dashboard.php");
+          exit();
+      }
+  } else {
+      $error[] = "Invalid username and password";
+  }
 }
 ?>
+
+
 
 
 <!DOCTYPE html>
@@ -44,6 +46,7 @@ if (isset($_POST['submit'])) {
   <title>My website</title>
   <link rel="stylesheet" href="../cssfolder/style.css">
   <link rel="stylesheet" href="../cssfolder/optinola.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
   <!-- Top banner -->
@@ -83,11 +86,11 @@ if (isset($_POST['submit'])) {
             }
       ?>
       <label for="">Phone</label>
-      <input type="text" name="phone" pattern="[0-9]{10}$">
+      <input type="text" name="phone" pattern="[0-9]{10}$" id="phone">
       
      <label for="">Password</label>
-      <input type="password" name="password">
-      <input type="submit" name="submit" value="login now" class="form-btn">
+      <input type="password" name="password" id="password">
+      <input type="submit" name="submit" value="login now" class="form-btn" id="log-btn">
       <p>don't have an account? <a href="Register-page.php">register here</a></p>
    </form>
    </div>
@@ -100,8 +103,6 @@ if (isset($_POST['submit'])) {
   </svg>
 </div>
 </header>
-
-
 
 </body>
 </html>

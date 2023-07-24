@@ -181,12 +181,12 @@ $result = mysqli_fetch_assoc($query);
 
                 echo '</div>'; // Close flex container
               } else {
-                echo '<p>No winner declared yet.</p>';
+                echo '<p style="text-align: center;">No winner declared yet.</p>';
               }
             }
           }
         } else {
-          echo '<p>No active elections found.</p>';
+          echo '<p style="text-align: center>No active elections found.</p>';
         }
         ?>
 

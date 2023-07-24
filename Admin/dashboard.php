@@ -20,6 +20,9 @@ if (!isset($_SESSION['admin'])) {
   <link rel="stylesheet" href="../cssfolder/dashboard.css">
   <!-- For icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+    integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <body>
   <div class="grid-container">
@@ -36,7 +39,7 @@ if (!isset($_SESSION['admin'])) {
 
       </div>
       <div class="class-right">
-        <span class="material-icons-outlined"><a href="logout.php">account_circle </a></span>
+        <span class="material-icons-outlined"><a href="logout.php" onclick="logout(event`)">account_circle </a></span>
 
       </div>
     </header>
@@ -64,7 +67,7 @@ if (!isset($_SESSION['admin'])) {
 
         <li class="sidebar-list-item"><span class="material-icons-outlined"> <a href="addcandidate.php">groups</span>
           Candidates</li></a>
-          <li class="sidebar-list-item"><span class="material-icons-outlined"> <a href="votersdetails.php">groups</span>
+        <li class="sidebar-list-item"><span class="material-icons-outlined"> <a href="votersdetails.php">groups</span>
           Voterlist</li></a>
         <li class="sidebar-list-item"> <a href="viewresult.php">
             <span class="material-icons-outlined">visibility</span> View Result</a></li>
@@ -122,13 +125,30 @@ if (!isset($_SESSION['admin'])) {
 
 
 
-
-
-
   <!-- custom js -->
   <script src="../assets/js/dashobrd.js"></script>
   <script src="../assets/js/first.js"></script>
   <script src="../assets/js/drop_down.js"></script>
+  <script>
+
+    function logout(ev) {
+      ev.preventDefault();
+
+      var urlToRedirect = ev.currentTarget.getAttribute('href');
+      swal({
+        title: "Are you sure to logout?",
+        text: "You won't be able to revert this delete",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willCancel) => {
+        if (willCancel) {
+          window.location.href = urlToRedirect;
+        }
+      });
+    }
+  </script>
+
 </body>
 </body>
 

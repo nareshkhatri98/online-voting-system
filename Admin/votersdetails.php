@@ -32,18 +32,21 @@ if (isset($_GET['delete'])) {
   <!-- For icons -->
   <link rel="stylesheet" href="../cssfolder/voter.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+    integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
-    .box-btn{
+    .box-btn {
       display: block;
-     width: 50%;
-   cursor: pointer;
-   font-size: 1rem;
-   border-radius: .5rem;
-   margin-top: 1rem;
-   font-size: 1 rem;
-   padding:1rem 3rem;
-   background: red;
-   text-align: center;
+      width: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      border-radius: .5rem;
+      margin-top: 1rem;
+      font-size: 1 rem;
+      padding: 1rem 3rem;
+      background: red;
+      text-align: center;
     }
   </style>
 </head>
@@ -122,8 +125,10 @@ if (isset($_GET['delete'])) {
 
           if ($number_of_votes > 0) {
             $sno = 1;
-        ?>
-            <h4 style="text-align: center;">Election: <?php echo $activeElection['election_topic']; ?></h4>
+            ?>
+            <h4 style="text-align: center;">Election:
+              <?php echo $activeElection['election_topic']; ?>
+            </h4>
             <table class="table">
               <thead>
                 <tr>
@@ -159,25 +164,38 @@ if (isset($_GET['delete'])) {
                 } else {
                   $candidate_name = "Not Voted";
                 }
-              ?>
+                ?>
                 <tr>
-                  <td><?php echo $sno++; ?></td>
-                  <td><?php echo $username; ?></td>
-                  <td><?php echo $contact_no; ?></td>
-                  <td><?php echo $candidate_name; ?></td>
-                  <td><?php echo $data['vote_date']; ?></td>
-                  <td><?php echo $data['vote_time']; ?></td>
                   <td>
-                  <a href="votersdetails.php?delete=<?php echo $data['id']; ?>" class="box-btn" style="text-decoration: none; color:white;"> delete </a>
-                    </td>
+                    <?php echo $sno++; ?>
+                  </td>
+                  <td>
+                    <?php echo $username; ?>
+                  </td>
+                  <td>
+                    <?php echo $contact_no; ?>
+                  </td>
+                  <td>
+                    <?php echo $candidate_name; ?>
+                  </td>
+                  <td>
+                    <?php echo $data['vote_date']; ?>
+                  </td>
+                  <td>
+                    <?php echo $data['vote_time']; ?>
+                  </td>
+                  <td>
+                    <a href="votersdetails.php?delete=<?php echo $data['id']; ?>" onclick="conformation(event)"
+                      class="box-btn" style="text-decoration: none; color:white;"> delete </a>
+                  </td>
                 </tr>
-              <?php
+                <?php
               }
               ?>
             </table>
-        <?php
+            <?php
           } else {
-            echo "<p>No any voter detail is available for the election: " . $activeElection['election_topic'] . "!</p>";
+            echo "<p style='text-align: center'>No any voter detail is available for the election: " . $activeElection['election_topic'] . "!</p>";
           }
         }
         ?>
@@ -192,5 +210,24 @@ if (isset($_GET['delete'])) {
     <script src="../assets/js/drop_down.js"></script>
   </div>
 </body>
+<script>
+  function conformation(ev) {
+    ev.preventDefault();
+
+    var urlToRedirect = ev.currentTarget.getAttribute('href');
+    swal({
+      title: "Are you sure to delete this?",
+      text: "You won't be able to revert this delete",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willCancel) => {
+      if (willCancel) {
+        window.location.href = urlToRedirect;
+      }
+    });
+  }
+
+</script>
 
 </html>

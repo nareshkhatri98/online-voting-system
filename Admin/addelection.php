@@ -71,6 +71,7 @@ if (isset($_GET['delete'])) {
     <!-- For icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="../cssfolder/election.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
@@ -172,9 +173,9 @@ if (isset($_GET['delete'])) {
                                             <td><?php echo $row['status']; ?></td>
                                             <td>
                                                 <a href="electionupdate.php?edit=<?php echo $row['election_id']; ?>"
-                                                    class="box-btn"> <i class="fas fa-edit"></i> Edit </a>
+                                                    class="box-btn"> Edit </a>
                                                 <a href="addelection.php?delete=<?php echo $row['election_id']; ?>"
-                                                    class="box-btn"> <i class="fas fa-trash"></i> Delete </a>
+                                                    class="box-btn" id="delete" onclick="conformation(event)"> Delete </a>
                                             </td>
                                         </tr>
                                         <?php
@@ -199,6 +200,26 @@ if (isset($_GET['delete'])) {
     <script src="../assets/js/dashobrd.js"></script>
     <script src="../assets/js/first.js"></script>
     <script src="../assets/js/drop_down.js"></script>
+    
+    <script>
+    function conformation(ev) {
+        ev.preventDefault();
+
+        var urlToRedirect = ev.currentTarget.getAttribute('href');
+        swal({
+            title: "Are you sure to delete this?",
+            text: "You won't be able to revert this delete",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willCancel) => {
+            if (willCancel) {
+                window.location.href = urlToRedirect;
+            }
+        });
+    }
+</script>
+</script>
 </body>
 
 </html>

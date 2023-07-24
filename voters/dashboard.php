@@ -42,6 +42,9 @@ if ($counteElection) {
   <link rel="stylesheet" href="../cssfolder/dashboard.css">
   <!-- For icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+    integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
@@ -85,7 +88,7 @@ if ($counteElection) {
         </li>
 
         <li class="sidebar-list-item">
-          <a href="logut.php">
+          <a href="logut.php" onclick="logout(event)">
             <span class="material-icons-outlined">account_circle</span>
             Logout
           </a>
@@ -129,14 +132,34 @@ if ($counteElection) {
 
 
 
-        <!-- End Main -->
+    <!-- End Main -->
 
-        <!-- Custom JS -->
-        <script src="../assets/js/dashobrd.js"></script>
-        <script src="../assets/js/first.js"></script>
-        <script src="../assets/js/drop_down.js"></script>
-        <script src="abcd.js"></script>
-      </div>
+    <!-- Custom JS -->
+    <script src="../assets/js/dashobrd.js"></script>
+    <script src="../assets/js/first.js"></script>
+    <script src="../assets/js/drop_down.js"></script>
+    <script src="abcd.js"></script>
+
+    <script>
+
+    function logout(ev) {
+    ev.preventDefault();
+
+    var urlToRedirect = ev.currentTarget.getAttribute('href');
+    swal({
+      position: 'top',
+      title: "Are you sure to logout?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willCancel) => {
+      if (willCancel) {
+        window.location.href = urlToRedirect;
+      }
+    });
+  }
+  </script>
+  </div>
 </body>
 
 </html>
