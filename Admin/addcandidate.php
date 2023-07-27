@@ -57,7 +57,10 @@ if (isset($_GET['delete'])) {
   <!-- For icons -->
   <link href=" https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
    <link rel="stylesheet" href="../cssfolder/election.css">
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+      integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <body>
    <div class="grid-container">
 
@@ -66,13 +69,7 @@ if (isset($_GET['delete'])) {
          <div class="menu-icon" onclick="openSidebar()">
             <span class="material-icons-outlined">menu</span>
          </div>
-         <div class="class-left">
-            <span class="material-icons-outlined"> search </span>
-         </div>
-         <div class="class-right">
-            <span class="material-icons-outlined">account_circle </a></span>
 
-         </div>
       </header>
       <!-- end header -->
 
@@ -144,16 +141,16 @@ if (isset($_GET['delete'])) {
                      ?>
                   </select>
                   <label for="">Fullname</label>
-                  <input type="text"name="candidate_name" class="box">
+                  <input type="text" name="candidate_name" class="box">
                   <label for="">Address</label>
-                  <input type="text"  name="candidate_address" class="box">
+                  <input type="text" name="candidate_address" class="box">
                   <label for="">Email</label>
                   <input type="email" name="candidate_email" class="box">
                   <label for="">Photo</label>
                   <input type="file" accept="image/jpg, image/png, image/jpeg" placeholder="Upload the image"
                      name="candidate_photo" class="box" required>
                   <label for="">Bio</label>
-                  <textarea name="candidate_bio"  class="box" cols="0" rows="0"></textarea>
+                  <textarea name="candidate_bio" class="box" cols="0" rows="0"></textarea>
                   <input type="submit" class="btn" name="add_candidate" value="add_candidate">
                </form>
             </div>
@@ -214,7 +211,8 @@ if (isset($_GET['delete'])) {
                         </td>
                         <td>
                            <a href="updatecandidate.php?edit=<?php echo $row['id']; ?>" class="box-btn"> Edit</a>
-                           <a href="addcandidate.php?delete=<?php echo $row['id']; ?>" class="box-btn" id="delete" onclick="conformation(event)"> Delete</a>
+                           <a href="addcandidate.php?delete=<?php echo $row['id']; ?>" class="box-btn" id="delete"
+                              onclick="conformation(event)"> Delete</a>
                         </td>
                      </tr>
                      <?php
@@ -241,27 +239,27 @@ if (isset($_GET['delete'])) {
    <script src="../assets/js/first.js"></script>
    <script src="../assets/js/drop_down.js"></script>
 
-   <!-- for delete conform -->
    <script>
-    function conformation(ev) {
-        ev.preventDefault();
+      function conformation(ev) {
+         ev.preventDefault();
 
-        var urlToRedirect = ev.currentTarget.getAttribute('href');
-        swal({
+         var urlToRedirect = ev.currentTarget.getAttribute('href');
+         swal({
             title: "Are you sure to delete this?",
             text: "You won't be able to revert this delete",
             icon: "warning",
             buttons: true,
             dangerMode: true,
-        }).then((willCancel) => {
+         }).then((willCancel) => {
             if (willCancel) {
-                window.location.href = urlToRedirect;
+               window.location.href = urlToRedirect;
             }
-        });
-    }
+         });
+      }
 
 
-    
-</script>
+
+   </script>
 </body>
+
 </html>

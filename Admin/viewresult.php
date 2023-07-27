@@ -173,8 +173,9 @@ $result = mysqli_fetch_assoc($query);
 
                 foreach ($winners as $winner) {
                   echo '<div class="winner">';
+                
+                  echo '<img src="upload_image/' . $winner['candidate_photo'] . '">';
                   echo '<p>' . $winner['candidate_name'] . '</p>';
-                  echo '<img src="upload_image/' . $winner['candidate_photo'] . '" height="100" style="border-radius: 20px;">';
                   echo '<p>Total Votes: ' . $winner['votes'] . '</p>';
                   echo '</div>';
                 }

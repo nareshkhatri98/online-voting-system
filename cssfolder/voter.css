@@ -68,15 +68,29 @@ table thead tr{
   flex-wrap: wrap;
   gap: 1px;
   justify-content: space-around;
+  
  
 }
 
 .winner {
-  margin: 10px;
-  text-align: center;
+  margin-top: 20px;
+  flex-basis: 200px;
+  padding: 10px;
+  min-width: 50px;
+  margin-bottom: 50px;
+  transition: transform 0.5s;
+  box-shadow: 5px 10px 8px 10px #888888
+}
+.winner>img{
+  margin-left:20%;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  padding: 3px;
+  background: #7d2ae8;
 }
 .winners-container .winner >p{
-  font-weight: 500;
+  font-weight: 700;
   font-size: 1rem;
 
 }
