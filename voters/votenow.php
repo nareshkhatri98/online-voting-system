@@ -54,6 +54,7 @@ while ($data = mysqli_fetch_assoc($fetchingElections)) {
   <link rel="stylesheet" href="../cssfolder/voter.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
   <!-- SweetAlert Library -->
+  
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 </head>
 
@@ -90,10 +91,10 @@ while ($data = mysqli_fetch_assoc($fetchingElections)) {
             <span class="material-icons-outlined">event</span> Election Available
         </li>
         <li class="sidebar-list-item">
-          <a href="logut.php">
+          <a href="logut.php" onclick="logout(event)">
             <span class="material-icons-outlined">account_circle</span>
+            Logout
           </a>
-          Logout
         </li>
       </ul>
     </aside>
@@ -235,7 +236,10 @@ while ($data = mysqli_fetch_assoc($fetchingElections)) {
         }
       });
     }
+
+
   </script>
+
 
   <!-- Custom JS -->
   <script src="../assets/js/dashobrd.js"></script>
@@ -244,5 +248,23 @@ while ($data = mysqli_fetch_assoc($fetchingElections)) {
   <!-- jQuery Library -->
   <script src="../assets/js/jquery.min.js"></script>
 </body>
+<script>
+    
+    function logout(ev) {
+    ev.preventDefault();
 
+    var urlToRedirect = ev.currentTarget.getAttribute('href');
+    swal({
+      position: 'top',
+      title: "Are you sure to logout?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willCancel) => {
+      if (willCancel) {
+        window.location.href = urlToRedirect;
+      }
+    });
+  }
+  </script>
 </html>

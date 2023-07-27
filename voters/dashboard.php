@@ -83,7 +83,7 @@ if ($counteElection) {
             <span class="material-icons-outlined">home</span> Home
         </li></a>
         <li class="sidebar-list-item">
-          <a href="votenow.php"> <span class="material-icons-outlined">event</span> election Avaliable
+          <a href="votenow.php"> <span class="material-icons-outlined">event</span> Election Avaliable
           </a>
         </li>
 
