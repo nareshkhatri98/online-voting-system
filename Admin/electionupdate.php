@@ -3,6 +3,23 @@
 
 $id = $_GET['edit'];
 $message = array();
+function getElectionStatus($starting_date, $ending_date)
+{
+    $current_date = new DateTime();
+    $start_date = new DateTime($starting_date);
+    $end_date = new DateTime($ending_date);
+
+    // We need to add 1 day to the end date to include the entire ending date in the comparison
+    $end_date->add(new DateInterval('P1D'));
+
+    if ($start_date <= $current_date && $end_date > $current_date) {
+        return "Active";
+    } elseif ($end_date < $current_date) {
+        return "Expired";
+    } else {
+        return "Inactive";
+    }
+}
 
 if (isset($_POST['update_product'])) {
   $election_topic = mysqli_real_escape_string($conn, $_POST['election_topic']);
@@ -14,14 +31,7 @@ if (isset($_POST['update_product'])) {
   $diff = date_diff($date1, $date2);
 
   // Compare the starting date with the current date
-  $current_date = date("Y-m-d");
-  if ($starting_date !== $current_date) {
-    $status = "Inactive";
-  } elseif ((int) $diff->format("%R%a") <= 0) {
-    $status = "Inactive";
-  } else {
-    $status = "active";
-  }
+  $status = getElectionStatus($starting_date, $ending_date);
 
   if (empty($election_topic) || empty($number_of_candidates) || empty($starting_date) || empty($ending_date)) {
     $message[] = 'Please fill out all fields.';
