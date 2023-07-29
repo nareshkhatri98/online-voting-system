@@ -21,14 +21,14 @@ if (isset($_POST['add_candidate'])) {
 
   if (mysqli_query($conn, $update_query)) {
     // Candidate details updated successfully
+    $_SESSION['success_message'] = 'Candiate details updated successfully.. .';
     header('location:addcandidate.php');
-    echo "Candidate details updated successfully.";
+
   } else {
     // Error updating candidate details
-    echo "Error updating candidate details: " . mysqli_error($conn);
-  }
+   echo $_SESSION['success_message'] = 'Error updating data. Please try again.';
 }
-
+}
 // Display the details of the candidate
 $display = mysqli_query($conn, "SELECT * FROM candidate_details WHERE id='$id'");
 $Data = mysqli_fetch_array($display);
@@ -47,6 +47,16 @@ $Data = mysqli_fetch_array($display);
   <!-- For icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
   <link rel="stylesheet" href="../cssfolder/election.css">
+  <style>
+    .success-msg {
+      color: green;
+      background-color: #e2f1dd;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>
@@ -103,6 +113,14 @@ $Data = mysqli_fetch_array($display);
     <main class="main-container">
       <div class="form-container">
         <div class="admin-product-form-container">
+        <?php
+                    // Check if the success message is set
+                    if (isset($_SESSION['success_message'])) {
+                        echo '<div class="success-msg">' . $_SESSION['success_message'] . '</div>';
+                        // Clear the success message after displaying it
+                        unset($_SESSION['success_message']);
+                    }
+                    ?>
           <form action="Updatecandidate.php?edit=<?php echo $id; ?>" method="post" enctype="multipart/form-data">
             <h3>Update Candidate</h3>
             <label for="">Choose Election Topic</label>

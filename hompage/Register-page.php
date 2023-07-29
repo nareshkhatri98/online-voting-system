@@ -2,6 +2,7 @@
 include "../Admin/inc/connection.php";
 
 $error = array(); // Initialize the error array
+$successMessage = ""; // Initialize the success message
 
 if (isset($_POST['submit'])) {
   $name = mysqli_real_escape_string($conn, $_POST['name']);
@@ -22,13 +23,15 @@ if (isset($_POST['submit'])) {
     if (empty($error)) {
       // Insert the data into the database
       $insert = "INSERT INTO users(fullname, phone, password, user_role) VALUES('$name','$phone','$password','$user_role')";
-      mysqli_query($conn, $insert);
-      if ($insert) {
-        $error[] = "Registration successful";
-        header("location:login_page.php");
+      $result = mysqli_query($conn, $insert);
+      if ($result) {
+        // Registration successful
+        $successMessage = "Registration successful";
+        // Wait for 2 seconds before redirecting to the login page
+        echo '<script>setTimeout(function(){ window.location.href = "login_page.php"; }, 2000);</script>';
       } else {
-        $error[] = "Something went wrong";
-        header("location:Register-page.php");
+        $error[] = "Something went wrong with the database query: " . mysqli_error($conn);
+        // You may also log or handle the error differently if needed
       }
     }
   } else {
@@ -78,25 +81,26 @@ if (isset($_POST['submit'])) {
     <div class="container header-section flex">
       <div class="header-left">
         <div class="form-container">
-          <form action="Register-page.php" method="post" class="form-only" style=" margin-bottom: -10%; " onsubmit=" return myfun()">
+          <form action="Register-page.php" method="post" class="form-only" style=" margin-bottom: -10%; " onsubmit="return myfun()">
             <h3>Register</h3>
             <?php
             if (!empty($error)) {
-              echo '<span class="error-msg">' . implode("<br>", $error) . '</span>';
+              echo '<span class="error-msg" style="color:red;">' . implode("<br>", $error) . '</span>';
+            } else if (!empty($successMessage)) {
+              echo '<span class="success-msg" style="color:red;">' . $successMessage . '</span>';
             }
             ?>
-            <p id="success-message" style="color: green;"></p>
-
             <label for="">Fullname</label>
             <input type="text" name="name" pattern="^[a-zA-Z]+ [a-zA-Z]+$" required placeholder="Enter your name">
             <label for="">Phone</label>
             <input type="text" name="phone" id="phonenumber"> <span id="message" style="color:red;"></span>
 
             <label for="">Password</label>
-            <span id="messages" style="color:red;"></span>
+            <span id="password-message" style="color:red;"></span>
             <input type="password" name="password" id="password">
+
             <label for="">Confirm_Password</label>
-            <span id="messages" style="color:red;"></span>
+            <span id="confirm-password-message" style="color:red;"></span>
             <input type="password" name="cpassword" id="passwords">
 
             <input type="submit" name="submit" value="Register now" class="form-btn">
@@ -134,45 +138,45 @@ if (isset($_POST['submit'])) {
 
       var password = document.getElementById("password").value;
       if (password == "") {
-        document.getElementById("messages").innerHTML = "*Please fill in the password";
+        document.getElementById("password-message").innerHTML = "*Please fill in the password";
         return false;
       }
       if (password.length <= 5) {
-        document.getElementById("messages").innerHTML = "**Password must be at least 5 characters long";
+        document.getElementById("password-message").innerHTML = "**Password must be at least 5 characters long";
         return false;
       }
       if (password.length > 10) {
-        document.getElementById("messages").innerHTML = "**Password must be less than 10 characters long";
+        document.getElementById("password-message").innerHTML = "**Password must be less than 10 characters long";
         return false;
       }
 
       var uppercaseRegex = /[A-Z]/;
       if (!uppercaseRegex.test(password)) {
-        document.getElementById("messages").innerHTML = "**Password must include at least one capital letter";
+        document.getElementById("password-message").innerHTML = "**Password must include at least one capital letter";
         return false;
       }
 
       var lowercaseRegex = /[a-z]/;
       if (!lowercaseRegex.test(password)) {
-        document.getElementById("messages").innerHTML = "**Password must include at least one lowercase letter";
+        document.getElementById("password-message").innerHTML = "**Password must include at least one lowercase letter";
         return false;
       }
 
       var numberRegex = /[0-9]/;
       if (!numberRegex.test(password)) {
-        document.getElementById("messages").innerHTML = "**Password must include at least one number";
+        document.getElementById("password-message").innerHTML = "**Password must include at least one number";
         return false;
       }
 
       var specialCharRegex = /[!@#$%^&*]/;
       if (!specialCharRegex.test(password)) {
-        document.getElementById("messages").innerHTML = "**Password must include at least one special character (!, @, #, $, %, ^, &, *)";
+        document.getElementById("password-message").innerHTML = "**Password must include at least one special character (!, @, #, $, %, ^, &, *)";
         return false;
       }
 
       var cpassword = document.getElementById("passwords").value;
       if (password != cpassword) {
-        document.getElementById("messages").innerHTML = "**Passwords do not match";
+        document.getElementById("confirm-password-message").innerHTML = "**Passwords do not match";
         return false;
       }
 

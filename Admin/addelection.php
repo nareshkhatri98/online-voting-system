@@ -27,26 +27,24 @@ if (isset($_POST['add_election'])) {
     $ending_date = mysqli_real_escape_string($conn, $_POST['ending_date']);
     $inserted_by = $_SESSION['admin'];
     $inserted_on = date("Y-m-d");
- 
 
     $status = getElectionStatus($starting_date, $ending_date);
 
     if (empty($election_topic) || empty($number_of_candidates) || empty($starting_date) || empty($ending_date)) {
-        echo '<script>
-            alert("Please fill out all fields.");
-            window.location = "addelection.php";
-        </script>';
+        header('location:addelection.php');
+        exit; // Always exit after redirect
     } else {
         $insert = "INSERT INTO elections (election_topic, no_of_candidates, starting_date, ending_date, status, inserted_by, inserted_on) 
         VALUES ('$election_topic', '$number_of_candidates', '$starting_date', '$ending_date', '$status', '$inserted_by', '$inserted_on')";
         $upload = mysqli_query($conn, $insert);
         if ($upload) {
-            echo '<script>
-                alert("New Election added successfully.");
-                window.location = "addelection.php";
-            </script>';
+            $_SESSION['success_message'] = "Election added successfully!";
+            header('location:addelection.php');
+            exit; // Always exit after redirect
         } else {
-            $message[] = 'Could not add the election.';
+            $_SESSION['error_message'] = "Could not add the election.";
+            header('location:addelection.php');
+            exit; // Always exit after redirect
         }
     }
 }
@@ -54,9 +52,12 @@ if (isset($_POST['add_election'])) {
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     mysqli_query($conn, "DELETE FROM elections WHERE election_id = $id");
+    $_SESSION['success_message'] = "Election deleted successfully!";
     header('location:addelection.php');
+    exit; // Always exit after redirect
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -71,8 +72,20 @@ if (isset($_GET['delete'])) {
     <!-- For icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="../cssfolder/election.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        /* Style for the success message */
+        .success-msg {
+            color: green;
+            background-color: #e2f1dd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
@@ -117,7 +130,8 @@ if (isset($_GET['delete'])) {
                 <li class="sidebar-list-item"><a href="viewresult.php"><span
                             class="material-icons-outlined">visibility</span> View Result </a></li>
 
-                <li class="sidebar-list-item"> <a href="notify.php"><span class="material-icons-outlined">settings </span>
+                <li class="sidebar-list-item"> <a href="notify.php"><span class="material-icons-outlined">settings
+                        </span>
                         Notify</a></li>
 
             </ul>
@@ -127,6 +141,14 @@ if (isset($_GET['delete'])) {
         <main class="main-container">
             <div class="form-container">
                 <div class="admin-product-form-container">
+                    <?php
+                    // Check if the success message is set
+                    if (isset($_SESSION['success_message'])) {
+                        echo '<div class="success-msg">' . $_SESSION['success_message'] . '</div>';
+                        // Clear the success message after displaying it
+                        unset($_SESSION['success_message']);
+                    }
+                    ?>
                     <form action="addelection.php" method="post" enctype="multipart/form-data">
                         <h3>add a new election</h3>
                         <label for="">Election Topic</label>
@@ -166,12 +188,24 @@ if (isset($_GET['delete'])) {
                                         $election_id = $row['election_id'];
                                         ?>
                                         <tr>
-                                            <td><?php echo $sno++; ?></td>
-                                            <td><?php echo $row['election_topic']; ?></td>
-                                            <td><?php echo $row['no_of_candidates']; ?></td>
-                                            <td><?php echo $row['starting_date']; ?></td>
-                                            <td><?php echo $row['ending_date']; ?></td>
-                                            <td><?php echo $row['status']; ?></td>
+                                            <td>
+                                                <?php echo $sno++; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $row['election_topic']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $row['no_of_candidates']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $row['starting_date']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $row['ending_date']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $row['status']; ?>
+                                            </td>
                                             <td>
                                                 <a href="electionupdate.php?edit=<?php echo $row['election_id']; ?>"
                                                     class="box-btn"> Edit </a>
@@ -185,11 +219,11 @@ if (isset($_GET['delete'])) {
                                 </tbody>
                             </table>
                         </div>
-                    <?php
+                        <?php
                     } else {
                         ?>
                         <div style="text-align:center; margin-top:100px;">No any election is added yet.</div>
-                    <?php
+                        <?php
                     }
                     ?>
                 </div>
@@ -201,26 +235,26 @@ if (isset($_GET['delete'])) {
     <script src="../assets/js/dashobrd.js"></script>
     <script src="../assets/js/first.js"></script>
     <script src="../assets/js/drop_down.js"></script>
-    
-    <script>
-    function conformation(ev) {
-        ev.preventDefault();
 
-        var urlToRedirect = ev.currentTarget.getAttribute('href');
-        swal({
-            title: "Are you sure to delete this?",
-            text: "You won't be able to revert this delete",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        }).then((willCancel) => {
-            if (willCancel) {
-                window.location.href = urlToRedirect;
-            }
-        });
-    }
-</script>
-</script>
+    <script>
+        function conformation(ev) {
+            ev.preventDefault();
+
+            var urlToRedirect = ev.currentTarget.getAttribute('href');
+            swal({
+                title: "Are you sure to delete this?",
+                text: "You won't be able to revert this delete",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willCancel) => {
+                if (willCancel) {
+                    window.location.href = urlToRedirect;
+                }
+            });
+        }
+    </script>
+    </script>
 </body>
 
 </html>

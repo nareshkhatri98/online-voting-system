@@ -33,17 +33,15 @@ if (isset($_POST['add_candidate'])) {
    }
 }
 
-
-
-
 if (isset($_GET['delete'])) {
    $id = $_GET['delete'];
    mysqli_query($conn, "DELETE FROM candidate_details WHERE id = $id");
+   $_SESSION['success_message'] = "Candidates deleted successfully!";
    header('location:addcandidate.php');
+   exit; // Always exit after redirect
 }
-;
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,6 +58,18 @@ if (isset($_GET['delete'])) {
    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
       integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <style>
+      /* Style for the success message */
+      .success-msg {
+         color: green;
+         background-color: #e2f1dd;
+         padding: 10px;
+         border-radius: 5px;
+         margin-bottom: 20px;
+         text-align: center;
+      }
+   </style>
+</head>
 
 <body>
    <div class="grid-container">
@@ -110,6 +120,14 @@ if (isset($_GET['delete'])) {
 
          <div class="form-container">
             <div class="admin-product-form-container">
+               <?php
+               // Check if the success message is set
+               if (isset($_SESSION['success_message'])) {
+                  echo '<div class="success-msg">' . $_SESSION['success_message'] . '</div>';
+                  // Clear the success message after displaying it
+                  unset($_SESSION['success_message']);
+               }
+               ?>
                <form action="addcandidate.php" method="post" enctype="multipart/form-data">
                   <h3>Add Candidates</h3>
                   <select class="box" name="election_id" required>
@@ -155,7 +173,6 @@ if (isset($_GET['delete'])) {
                </form>
             </div>
          </div>
-
 
          <?php
          $select = mysqli_query($conn, "SELECT * FROM candidate_details");
@@ -229,15 +246,27 @@ if (isset($_GET['delete'])) {
             </table>
          </div>
 
+      </main>
+   </div>
 
-   </div>
-   </main>
-   <!-- end main -->
-   </div>
+   <!-- ... Your existing JavaScript code ... -->
+
+   <?php
+   // Check if the success message is set
+   if (isset($_SESSION['success_message'])) {
+      echo '<div class="success-msg">' . $_SESSION['success_message'] . '</div>';
+      // Clear the success message after displaying it
+      unset($_SESSION['success_message']);
+   }
+   ?>
+
    <!-- custom js -->
    <script src="../assets/js/dashobrd.js"></script>
    <script src="../assets/js/first.js"></script>
    <script src="../assets/js/drop_down.js"></script>
+
+
+
 
    <script>
       function conformation(ev) {
@@ -256,9 +285,6 @@ if (isset($_GET['delete'])) {
             }
          });
       }
-
-
-
    </script>
 </body>
 
