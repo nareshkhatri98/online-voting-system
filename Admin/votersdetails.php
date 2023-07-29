@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "inc/connection.php";
 
 // Retrieve the admin user data
@@ -13,6 +14,7 @@ $fetchingActiveElections = mysqli_query($conn, "SELECT * FROM elections WHERE st
 if (isset($_GET['delete'])) {
   $id = $_GET['delete'];
   mysqli_query($conn, "DELETE FROM votings WHERE id = '$id'");
+  $_SESSION['success-message'] = "votres details deleted successfully";
   header('Location: votersdetails.php');
   exit;
 }
@@ -46,6 +48,16 @@ if (isset($_GET['delete'])) {
       font-size: 1 rem;
       padding: 1rem 3rem;
       background: red;
+      text-align: center;
+    }
+
+    .sucess-message
+    {
+      color: green;
+      background-color: #E8FFCE;
+      padding: 10px;
+      border-radius: 10px;
+      border-bottom: 20px;
       text-align: center;
     }
   </style>
@@ -115,6 +127,16 @@ if (isset($_GET['delete'])) {
 
     <section class="voting">
       <div class="candidate_list">
+        <!-- success message -->
+        <?php
+        if(isset($_SESSION['success-message']))
+        {
+          echo '<div class="sucess-message">' .$_SESSION['success-message'].'</div>';
+          unset($_SESSION['success-message']);
+        }
+        
+        
+        ?>
         <h3 style="text-align: center;">Voter Details</h3>
 
         <?php

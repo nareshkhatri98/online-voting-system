@@ -18,19 +18,21 @@ if (isset($_POST['submit'])) {
     $sql = "INSERT INTO notice (Title, content, inserted_by) VALUES ('$title', '$content', '$admin')";
     $result = $conn->query($sql);
     if ($result) {
+      $_SESSION['success-message']  = "Notice is added successfully..";
       header('location: notify.php');
     }
   }
 }
 ?>
-    <?php
-    //delte Query
-    if (isset($_GET['delete'])) {
-   $id = $_GET['delete'];
-   mysqli_query($conn, "DELETE FROM notice WHERE Notice_id  = $id");
-   header('location:notify.php');
+<?php
+//delte Query
+if (isset($_GET['delete'])) {
+  $id = $_GET['delete'];
+  mysqli_query($conn, "DELETE FROM notice WHERE Notice_id  = $id");
+  $_SESSION['success-message'] = "Notice is added successfully..";
+  header('location:notify.php');
 }
-
+  
 ?>
 
 <!DOCTYPE html>
@@ -46,7 +48,19 @@ if (isset($_POST['submit'])) {
   <link rel="stylesheet" href="../cssfolder/notice.css">
   <!-- For icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+    integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+   .success-message {
+      color: green;
+      background-color: #E8FFCE;
+      padding: 10px;
+      border-radius: 10px;
+      border-bottom: 20px;
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>
@@ -80,7 +94,7 @@ if (isset($_POST['submit'])) {
       <ul class="sidebar-list">
         <li class="sidebar-list-item">
           <a href="dashboard.php">
-          <span class="material-icons-outlined">dashboard</span> Dashboard</a>
+            <span class="material-icons-outlined">dashboard</span> Dashboard</a>
         </li>
         <li class="sidebar-list-item">
           <a href="addelection.php">
@@ -107,7 +121,7 @@ if (isset($_POST['submit'])) {
       </ul>
     </aside>
     <!-- end sidebar -->
-    
+
 
     <!-- main -->
     <main class="main-container">
@@ -116,7 +130,12 @@ if (isset($_POST['submit'])) {
       <div class="form-container">
 
         <div class="admin-product-form-container">
-
+          <?php
+          if (isset($_SESSION['success-message'])) {
+            echo '<div class="success-message">' . $_SESSION['success-message'] . '</div>';
+            unset($_SESSION['success-message']);
+          }
+          ?>
           <form method="post" enctype="multipart/form-data">
 
             <h3>Notice Form</h3>
@@ -161,7 +180,8 @@ if (isset($_POST['submit'])) {
 
         <td>
           <a href="updatenotice.php?edit=<?php echo $noticeData['Notice_id']; ?>" class="box-btn">edit </a>
-          <a href="notify.php?delete=<?php echo $noticeData['Notice_id']; ?>" class="box-btn" onclick="conformation(event)"> delete </a>
+          <a href="notify.php?delete=<?php echo $noticeData['Notice_id']; ?>" class="box-btn"
+            onclick="conformation(event)"> delete </a>
         </td>
         </td>
       </tr>
@@ -179,23 +199,23 @@ if (isset($_POST['submit'])) {
   <script src="../assets/js/dashobrd.js"></script>
   <script src="../assets/js/first.js"></script>
   <script src="../assets/js/drop_down.js"></script>
- <!-- conform delte -->
- <script>
+  <!-- conform delte -->
+  <script>
     function conformation(ev) {
-        ev.preventDefault();
+      ev.preventDefault();
 
-        var urlToRedirect = ev.currentTarget.getAttribute('href');
-        swal({
-            title: "Are you sure to delete this?",
-            text: "You won't be able to revert this delete",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        }).then((willCancel) => {
-            if (willCancel) {
-                window.location.href = urlToRedirect;
-            }
-        });
+      var urlToRedirect = ev.currentTarget.getAttribute('href');
+      swal({
+        title: "Are you sure to delete this?",
+        text: "You won't be able to revert this delete",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willCancel) => {
+        if (willCancel) {
+          window.location.href = urlToRedirect;
+        }
+      });
     }
 
   </script>

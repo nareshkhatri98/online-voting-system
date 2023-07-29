@@ -58,9 +58,9 @@ if ($counteElection) {
 
       <div class="class-right">
 
-        <h1>Welcome- <smaLL>
+        <h2>Welcome- <smaLL>
             <?php echo $_SESSION['User'] ?>
-          </smaLL></h1>
+          </smaLL></h2>
 
       </div>
       <div class="class-left">

@@ -31,6 +31,7 @@ if (isset($_POST['add_election'])) {
     $status = getElectionStatus($starting_date, $ending_date);
 
     if (empty($election_topic) || empty($number_of_candidates) || empty($starting_date) || empty($ending_date)) {
+        $_SESSION['success_message'] = "Please fill the all fields";
         header('location:addelection.php');
         exit; // Always exit after redirect
     } else {
@@ -42,7 +43,7 @@ if (isset($_POST['add_election'])) {
             header('location:addelection.php');
             exit; // Always exit after redirect
         } else {
-            $_SESSION['error_message'] = "Could not add the election.";
+            $_SESSION['success_message'] = "Could not add the election.";
             header('location:addelection.php');
             exit; // Always exit after redirect
         }

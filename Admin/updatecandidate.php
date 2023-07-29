@@ -112,6 +112,7 @@ $Data = mysqli_fetch_array($display);
 
     <main class="main-container">
       <div class="form-container">
+     
         <div class="admin-product-form-container">
         <?php
                     // Check if the success message is set
@@ -122,6 +123,7 @@ $Data = mysqli_fetch_array($display);
                     }
                     ?>
           <form action="Updatecandidate.php?edit=<?php echo $id; ?>" method="post" enctype="multipart/form-data">
+        
             <h3>Update Candidate</h3>
             <label for="">Choose Election Topic</label>
             <select class="box" name="election_id" required>

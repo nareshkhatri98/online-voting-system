@@ -23,7 +23,7 @@ while ($data = mysqli_fetch_assoc($fetchingElections)) {
     $date2 = date_create($ending_date);
     $diff = date_diff($date1, $date2);
 
-    if ((int)$diff->format("%R%a") < 0) {
+    if ((int) $diff->format("%R%a") < 0) {
       // Update!
       mysqli_query($conn, "UPDATE elections SET status = 'Expired' WHERE election_id = '" . $election_id . "'") or die(mysqli_error($conn));
     }
@@ -32,7 +32,7 @@ while ($data = mysqli_fetch_assoc($fetchingElections)) {
     $date2 = date_create($stating_date);
     $diff = date_diff($date1, $date2);
 
-    if ((int)$diff->format("%R%a") <= 0) {
+    if ((int) $diff->format("%R%a") <= 0) {
       // Update!
       mysqli_query($conn, "UPDATE elections SET status = 'Active' WHERE election_id = '" . $election_id . "'") or die(mysqli_error($conn));
     }
@@ -55,6 +55,16 @@ while ($data = mysqli_fetch_assoc($fetchingElections)) {
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
   <!-- SweetAlert Library -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+  <style>
+    .success-message {
+      color: green;
+      background-color: #E8FFCE;
+      padding: 10px;
+      border-radius: 10px;
+      border-bottom: 20px;
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>
@@ -66,7 +76,9 @@ while ($data = mysqli_fetch_assoc($fetchingElections)) {
       </div>
 
       <div class="class-right">
-        <h1>Welcome-<?php echo  $_SESSION['User'];?><smaLL></smaLL></h1>
+        <h2>Welcome-
+          <?php echo $_SESSION['User']; ?><smaLL></smaLL>
+        </h2>
       </div>
     </header>
     <!-- End Header -->
@@ -97,13 +109,17 @@ while ($data = mysqli_fetch_assoc($fetchingElections)) {
         </li>
       </ul>
     </aside>
-
-    <section class="voting">
       <div class="candidate_list">
-        <h1>Candidates list</h1>
+      <?php
+      if (isset($_SESSION['success-message'])) {
+        echo '<div class="success-message">' . $_SESSION['success-message'] . '</div>';
+        unset($_SESSION['success-message']);
+      }
+      ?>
+        <h3 style="text-align:center;">Candidates list</h3>
         <?php
         $election_id = null; // Declare $election_id variable
-
+        
         $fetchingActiveElections = mysqli_query($conn, "SELECT * FROM elections WHERE status = 'Active'") or die(mysqli_error($conn));
         $totalActiveElections = mysqli_num_rows($fetchingActiveElections);
 
@@ -144,12 +160,24 @@ while ($data = mysqli_fetch_assoc($fetchingElections)) {
                     ?>
                     <tr>
                       <td><img src="../Admin/upload_image/<?php echo $row['candidate_photo']; ?>" height="100"></td>
-                      <td><?php echo $row['candidate_name']; ?></td>
-                      <td><?php echo $row['address']; ?></td>
-                      <td><?php echo $row['email']; ?></td>
-                      <td><?php echo $row['Bio']; ?></td>
-                      <td><?php echo $election_topic; ?></td>
-                      <td><?php echo isset($totalVotes) ? $totalVotes : 0; ?></td>
+                      <td>
+                        <?php echo $row['candidate_name']; ?>
+                      </td>
+                      <td>
+                        <?php echo $row['address']; ?>
+                      </td>
+                      <td>
+                        <?php echo $row['email']; ?>
+                      </td>
+                      <td>
+                        <?php echo $row['Bio']; ?>
+                      </td>
+                      <td>
+                        <?php echo $election_topic; ?>
+                      </td>
+                      <td>
+                        <?php echo isset($totalVotes) ? $totalVotes : 0; ?>
+                      </td>
                       <td>
                         <?php
                         $checkIfVoteCasted = mysqli_query($conn, "SELECT * FROM votings WHERE voters_id = '" . $_SESSION['id'] . "' AND election_id = '" . $election_id . "'") or die(mysqli_error($conn));
@@ -172,15 +200,15 @@ while ($data = mysqli_fetch_assoc($fetchingElections)) {
                   }
                 } else {
                   ?>
-                  <tr>
-                    <td colspan="8">No candidates yet.</td>
-                  </tr>
+                <tr>
+                  <td colspan="8">No candidates yet.</td>
+                </tr>
                 <?php
                 }
                 ?>
               </tbody>
             </table>
-          <?php
+            <?php
           }
         }
         ?>
@@ -204,11 +232,13 @@ while ($data = mysqli_fetch_assoc($fetchingElections)) {
         if (result.isConfirmed) {
           // User clicked "Yes, vote now" button, proceed to cast the vote
           CastVote(election_id, candidate_id, voters_id);
+          
         } else {
           // User clicked "No, cancel" button, do nothing
         }
       });
     }
+// ajax
 
     const CastVote = (election_id, candidate_id, voters_id) => {
       // Get the client's local date and time
@@ -226,9 +256,11 @@ while ($data = mysqli_fetch_assoc($fetchingElections)) {
           vote_date: vote_date,
           vote_time: vote_time
         },
-        success: function(response) {
+        success: function (response) {
           if (response === "Success") {
+            
             location.assign("votenow.php?voteCasted=1");
+        
           } else {
             location.assign("votenow.php?voteNotCasted=1");
           }
