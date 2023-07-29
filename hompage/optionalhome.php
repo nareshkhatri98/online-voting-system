@@ -41,7 +41,7 @@
 </nav>
 <!-- header section -->
 <header>
- <div class="container header-section flex">
+ <div class="container header-section ">
   <div class="header-left">
     <h1>Online voting system</h1>
     <p>An online voting system is a software platform that allows groups to securely conduct votes and elections.
