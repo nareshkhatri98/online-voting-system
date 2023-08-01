@@ -49,7 +49,7 @@ include_once('inc/connection.php');
     while ($row = mysqli_fetch_assoc($details)) {
       ?>
     
-      <p style="margin-top:-11px">
+      <p style="margin-top:-101px">
         
         <?php echo $row['content'] ; }?>
         </p>
@@ -60,7 +60,7 @@ include_once('inc/connection.php');
 }
 else{
   ?>
-  <p style="margin-top:-11px">No notice available.</p>
+  <p style="margin-top:-101px">No notice available.</p>
   <?php
 }
 ?>

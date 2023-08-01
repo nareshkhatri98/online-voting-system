@@ -68,7 +68,7 @@ $details = $conn->query($sql);
       }
     } else {
       ?>
-      <h3 style="margin-top:100px;">No candidates available.</h3>
+      <p style="margin-top:-10px;">No candidates available.</p>
     <?php
     } ?>
   </div>
