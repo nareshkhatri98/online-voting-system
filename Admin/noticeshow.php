@@ -27,7 +27,7 @@ include_once('inc/connection.php');
     <div class="nav-links">
      <ul class="flex">
       <li><a href="../hompage/optionalhome.php" class="hover-links">Home</a></li>
-      <li><a href="" class="hover-links">Candidates</a></li>
+      <li><a href="candidate.php" class="hover-links">Candidates</a></li>
       <li><a href="noticeshow.php" class="hover-links">Notice</a></li>
       <li><a href="../hompage/login_page.php" class="hover-links secondary-btn">Login</a></li>
       <li><a href="../hompage/Register-page.php" class="hover-links primary-btn">Register</a></li>
@@ -49,14 +49,22 @@ include_once('inc/connection.php');
     while ($row = mysqli_fetch_assoc($details)) {
       ?>
     
-      <p style="margin-top:100px">
+      <p style="margin-top:-11px">
         
         <?php echo $row['content'] ; }?>
         </p>
         </div>
   
     <?php
-}?>
+   
+}
+else{
+  ?>
+  <p style="margin-top:-11px">No notice available.</p>
+  <?php
+}
+?>
+
 </div>
   
  </div>
