@@ -4,35 +4,46 @@ session_start();
 if (!isset($_SESSION['admin'])) {
   header('location:../hompage/login_page.php');
 }
-?>
-<!-- # for data collection -->
-<?php
+
+function isValidTitle($title) {
+  // Regular expression to check if the title contains only characters (A-Z, a-z) and spaces
+  return preg_match('/^[A-Za-z ]+$/', $title);
+}
+
+// For data collection
 if (isset($_POST['submit'])) {
   $title = $_POST['Title'];
   $content = $_POST['content'];
   $admin = $_SESSION['admin'];
 
   if (empty($title) || empty($content)) {
-    echo '<div class="danger" id="danger">Fields cannot be empty!</div>';
+    $_SESSION['error-message'] = "Please fill all the fields.";
+  } elseif (!isValidTitle($title)) {
+    $_SESSION['error-message'] = "Title should only contain characters  and spaces.";
   } else {
-    $sql = "INSERT INTO notice (Title, content, inserted_by) VALUES ('$title', '$content', '$admin')";
-    $result = $conn->query($sql);
-    if ($result) {
-      $_SESSION['success-message']  = "Notice is added successfully..";
-      header('location: notify.php');
+    // Use prepared statement to safely insert data
+    $sql = "INSERT INTO notice (Title, content, inserted_by) VALUES (?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sss", $title, $content, $admin);
+    if ($stmt->execute()) {
+      $_SESSION['success-message'] = "Notice is added successfully.";
+    } else {
+      $_SESSION['error-message'] = "Something went wrong while adding the notice.";
     }
+    header('location: notify.php');
+    exit; // Add exit after header to stop executing the rest of the code.
   }
 }
 ?>
+
 <?php
-//delte Query
+// Delete Query
 if (isset($_GET['delete'])) {
   $id = $_GET['delete'];
-  mysqli_query($conn, "DELETE FROM notice WHERE Notice_id  = $id");
-  $_SESSION['success-message'] = "Notice is added successfully..";
+  mysqli_query($conn, "DELETE FROM notice WHERE Notice_id = $id");
+  $_SESSION['success-message'] = "Notice is deleted successfully.";
   header('location:notify.php');
 }
-  
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +63,15 @@ if (isset($_GET['delete'])) {
     integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
-   .success-message {
+    .success-message {
+      color: green;
+      background-color: #E8FFCE;
+      padding: 10px;
+      border-radius: 10px;
+      border-bottom: 20px;
+      text-align: center;
+    }
+    .error-message{
       color: green;
       background-color: #E8FFCE;
       padding: 10px;
@@ -85,8 +104,6 @@ if (isset($_GET['delete'])) {
         <div class="sidebar-brand">
           <a href="dashboard.php">
             <span class="material-icons-outlined">how_to_vote</span> </a>Go Vote
-
-
         </div>
         <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
       </div>
@@ -106,7 +123,7 @@ if (isset($_GET['delete'])) {
             <span class="material-icons-outlined">groups</span> Candidates
           </a>
         </li>
-        <li class="sidebar-list-item"><a href="votersdetails.php"><span class="material-icons-outlined"> groups</span>
+        <li class="sidebar-list-item"><a href="votersdetails.php"><span class="material-icons-outlined">groups</span>
             Voterlist</a></li>
         <li class="sidebar-list-item">
           <a href="viewresult.php">
@@ -122,28 +139,27 @@ if (isset($_GET['delete'])) {
     </aside>
     <!-- end sidebar -->
 
-
     <!-- main -->
     <main class="main-container">
-
-
       <div class="form-container">
-
         <div class="admin-product-form-container">
-          <?php
-          if (isset($_SESSION['success-message'])) {
-            echo '<div class="success-message">' . $_SESSION['success-message'] . '</div>';
-            unset($_SESSION['success-message']);
-          }
-          ?>
-          <form method="post" enctype="multipart/form-data">
-
+        <?php
+      if (isset($_SESSION['success-message'])) {
+        echo '<div class="success-message">' . $_SESSION['success-message'] . '</div>';
+        unset($_SESSION['success-message']);
+      }
+      if (isset($_SESSION['error-message'])) {
+        echo '<div class="error-message">' . $_SESSION['error-message'] . '</div>';
+        unset($_SESSION['error-message']);
+      }
+      ?>
+          <form method="post" enctype="multipart/form-data" onsubmit="return myfun()">
             <h3>Notice Form</h3>
-            <label for="">Title</label>
-            <input type="text" name="Title" class="box">
+            <label for="" id="title">Title</label>
+            <input type="text" name="Title" class="box"><span id="message" style="color:red;"></span>
             <label for="">Content</label>
             <textarea name="content" id="" cols="30" rows="10"></textarea>
-            <button type="submit" class="submit-box" name="submit" value="submit"> Submit</button>
+            <button type="submit" class="submit-box" name="submit" value="submit">Submit</button>
           </form>
 
           <div class="product-display">
@@ -156,50 +172,45 @@ if (isset($_GET['delete'])) {
                   <th>Action</th>
                 </tr>
               </thead>
-
+              <tbody>
+                <?php
+                $noticeQuery = mysqli_query($conn, "SELECT * FROM notice") or die(mysqli_error($conn));
+                $sn = 1;
+                while ($noticeData = mysqli_fetch_assoc($noticeQuery)) {
+                  ?>
+                  <tr>
+                    <td>
+                      <?php echo $sn++; ?>
+                    </td>
+                    <td>
+                      <?php echo $noticeData['Title']; ?>
+                    </td>
+                    <td>
+                      <?php echo $noticeData['content']; ?>
+                    </td>
+                    <td>
+                      <a href="updatenotice.php?edit=<?php echo $noticeData['Notice_id']; ?>" class="box-btn">Edit</a>
+                      <a href="notify.php?delete=<?php echo $noticeData['Notice_id']; ?>" class="box-btn"
+                        onclick="conformation(event)">Delete</a>
+                    </td>
+                  </tr>
+                  <?php
+                }
+                ?>
+              </tbody>
+            </table>
           </div>
-
         </div>
+      </div>
     </main>
     <!-- end main -->
-    <?php
-    $noticeQuery = mysqli_query($conn, "SELECT * FROM notice") or die(mysqli_error($conn));
-    $sn = 1;
-    while ($noticeData = mysqli_fetch_assoc($noticeQuery)) {
-      ?>
-      <tr>
-        <td>
-          <?php echo $sn++; ?>
-        </td>
-        <td>
-          <?php echo $noticeData['Title']; ?>
-        </td>
-        <td>
-          <?php echo $noticeData['content']; ?>
-        </td>
-
-        <td>
-          <a href="updatenotice.php?edit=<?php echo $noticeData['Notice_id']; ?>" class="box-btn">edit </a>
-          <a href="notify.php?delete=<?php echo $noticeData['Notice_id']; ?>" class="box-btn"
-            onclick="conformation(event)"> delete </a>
-        </td>
-        </td>
-      </tr>
-      <?php
-    }
-    ?>
-    </tbody>
-    </table>
-  </div>
-  </main>
-  <!-- end main -->
   </div>
 
   <!-- custom js -->
   <script src="../assets/js/dashobrd.js"></script>
   <script src="../assets/js/first.js"></script>
   <script src="../assets/js/drop_down.js"></script>
-  <!-- conform delte -->
+  <!-- conform delete -->
   <script>
     function conformation(ev) {
       ev.preventDefault();
@@ -217,7 +228,6 @@ if (isset($_GET['delete'])) {
         }
       });
     }
-
   </script>
 </body>
 

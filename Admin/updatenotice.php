@@ -1,3 +1,4 @@
+// PHP code for updating the notice
 <?php
 include "inc/connection.php";
 session_start();
@@ -5,25 +6,43 @@ $id = $_GET['edit'];
 if (!isset($_SESSION['admin'])) {
   header('location:../hompage/login_page.php');
 }
-?>
-<!-- # for data collection -->
-<?php
+
+
+
+
+function isValidTitle($title) {
+  // Regular expression to check if the title contains only characters (A-Z, a-z) and spaces
+  return preg_match('/^[A-Za-z ]+$/', $title);
+}
+
 if (isset($_POST['update_notice'])) {
   $title = $_POST['Title'];
   $content = $_POST['content'];
   $admin = $_SESSION['admin'];
 
   if (empty($title) || empty($content)) {
-    echo '<div class="danger" id="danger">Fields cannot be empty!</div>';
+    $_SESSION['error-message'] = "Fields cannot be empty!";
+  } elseif (!isValidTitle($title)) {
+    $_SESSION['error-message'] = "Title should only contain characters (A-Z, a-z) and spaces.";
   } else {
-    $update = "UPDATE notice SET Title ='$title', content ='$content', inserted_by ='$admin' where Notice_id = '$id'";
-    $result = $conn->query($update);
-    if ($result) {
+    // Use prepared statement
+    // update cQuery..
+    $update_query = "UPDATE notice SET Title = ?, content = ?, inserted_by = ? WHERE Notice_id = ?";
+    $stmt = $conn->prepare($update_query);
+    $stmt->bind_param("sssi", $title, $content, $admin, $id);
+    
+    if ($stmt->execute()) {
+      $_SESSION['success-message'] = "Notice is updated successfully.";
       header('location: notify.php');
+      exit();
+    } else {
+      $_SESSION['error-message'] = "Something went wrong while updating the notice.";
     }
   }
 }
 ?>
+
+
 <?php
 //to diapya the content of notice....
  
@@ -44,6 +63,24 @@ if (isset($_POST['update_notice'])) {
   <link rel="stylesheet" href="../cssfolder/notice.css">
   <!-- For icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+<style>
+  .success-message {
+      color: green;
+      background-color: #E8FFCE;
+      padding: 10px;
+      border-radius: 10px;
+      border-bottom: 20px;
+      text-align: center;
+    }
+    .error-message{
+      color: green;
+      background-color: #E8FFCE;
+      padding: 10px;
+      border-radius: 10px;
+      border-bottom: 20px;
+      text-align: center;
+    }
+</style>
 </head>
 
 <body>
@@ -113,8 +150,17 @@ if (isset($_POST['update_notice'])) {
       <div class="form-container">
 
         <div class="admin-product-form-container">
-
-          <form method="post" enctype="multipart/form-data">
+          
+        <?php
+          if (isset($_SESSION['success-message'])) {
+            echo '<div class="success-message">' . $_SESSION['success-message'] . '</div>';
+            unset($_SESSION['success-message']);
+          }
+          if (isset($_SESSION['error-message'])) {
+            echo '<div class="error-message">' . $_SESSION['error-message'] . '</div>';
+            unset($_SESSION['error-message']);
+          }
+          ?>          <form method="post" enctype="multipart/form-data">
 
             <h3>Notice Form</h3>
             <label for="">Title</label>

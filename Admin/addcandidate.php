@@ -2,6 +2,21 @@
 session_start();
 @include 'inc/connection.php';
 
+function isValidEmail($email)
+{
+   // Use filter_var to validate the email format
+   return filter_var($email, FILTER_VALIDATE_EMAIL);
+}
+function isValidFullName($candidate_name)
+{
+   // Use regex to match only characters and spaces
+   return preg_match('/^[A-Za-z ]+$/', $candidate_name);
+}
+function isValidAddress($candidate_address)
+{
+   return preg_match('/^[A-Za-z0-9\s@+\-_$.]+$/', $candidate_address);
+}
+
 if (isset($_POST['add_candidate'])) {
    $election_id = $_POST['election_id'];
    $candidate_name = $_POST['candidate_name'];
@@ -14,25 +29,87 @@ if (isset($_POST['add_candidate'])) {
    $inserted_by = $_SESSION['admin'];
    $inserted_on = date("Y-m-d");
 
+   // Perform validation
    if (empty($candidate_name) || empty($candidate_address) || empty($candidate_email) || empty($candidate_photo) || empty($candidate_bio) || empty($election_id) || $election_id == '0') {
+      $_SESSION['success_message'] = "Please fill all the fields.";
       header('location:addcandidate.php');
-      exit; // Always exit after redirect
+      exit;
+   } elseif (!isValidEmail($candidate_email)) {
+      $_SESSION['success_message'] = "Invalid email address.";
+      header('location:addcandidate.php');
+      exit;
+   } elseif (!isValidFullName($candidate_name)) {
+      $_SESSION['success_message'] = "Invalid name format. Only characters and spaces are allowed.";
+      header('location:addcandidate.php');
+      exit;
+   } elseif (!isValidAddress($candidate_address)) {
+      $_SESSION['success_message'] = "Invalid address format. Only characters, spaces, and numbers are allowed.";
+      header('location:addcandidate.php');
+      exit;
    } else {
+      // Check if the image file is uploaded successfully
+      if (!isset($_FILES['candidate_photo']['error']) || $_FILES['candidate_photo']['error'] !== UPLOAD_ERR_OK) {
+         $_SESSION['success_message'] = "Failed to upload candidate photo.";
+         header('location:addcandidate.php');
+         exit;
+      }
+
+      // Check file type and size
+      $allowed_extensions = array('jpg', 'jpeg', 'png');
+      $file_extension = strtolower(pathinfo($candidate_photo, PATHINFO_EXTENSION));
+      if (!in_array($file_extension, $allowed_extensions)) {
+         $_SESSION['success_message']  = "Invalid file format. Only JPG, JPEG, and PNG files are allowed.";
+         header('location:addcandidate.php');
+         exit;
+      }
+      $max_file_size = 1 * 1024 * 1024; // 1 MB in bytes
+      if ($_FILES['candidate_photo']['size'] > $max_file_size) {
+         $_SESSION['success_message']   = "The image size should not larger tha 1 MB.";
+         header('location:addcandidate.php');
+         exit;
+      }
+
+      // Check if the image file exists in the destination folder with the same name
+      $full_candidate_image_path = $candidate_image_folder;
+      if (file_exists($full_candidate_image_path)) {
+         $_SESSION['success_message'] = "The image is already exists. Please upload a different image.";
+         header('location:addcandidate.php');
+         exit;
+      }
+      // Check if the email already exists in the database
+      $existing_email_query = "SELECT * FROM candidate_details WHERE email = '$candidate_email'";
+      $existing_email_result = mysqli_query($conn, $existing_email_query);
+      if (mysqli_num_rows($existing_email_result) > 0) {
+         $_SESSION['success_message'] = "The email already exists. Please use a different email address.";
+         header('location:addcandidate.php');
+         exit;
+      }
+
+      // Perform the insertion
       $insert = "INSERT INTO candidate_details (election_id, candidate_name, address, email, candidate_photo, Bio, inserted_by, inserted_on) VALUES ('$election_id', '$candidate_name', '$candidate_address', '$candidate_email', '$candidate_photo', '$candidate_bio', '$inserted_by', '$inserted_on')";
       $upload = mysqli_query($conn, $insert);
+
       if ($upload) {
-         move_uploaded_file($candidate_photo_tmp_name, $candidate_image_folder);
-         $_SESSION['success_message'] = "Candidate added successfully!";
-         header('location:addcandidate.php');
-         exit; // Always exit after redirect
+         // Move the uploaded image to the destination folder
+         if (move_uploaded_file($candidate_photo_tmp_name, $full_candidate_image_path)) {
+            $_SESSION['success_message'] = "Candidate added successfully!";
+            header('location:addcandidate.php');
+            exit;
+         } else {
+            $_SESSION['success_message'] = "Failed to upload candidate photo.";
+            header('location:addcandidate.php');
+            exit;
+         }
       } else {
-         $_SESSION['error_message'] = "Failed to add candidate.";
+         $_SESSION['success_message'] = "Failed to add candidate.";
          header('location:addcandidate.php');
-         exit; // Always exit after redirect
+         exit;
       }
+
    }
 }
-
+?>
+<?php
 if (isset($_GET['delete'])) {
    $id = $_GET['delete'];
    mysqli_query($conn, "DELETE FROM candidate_details WHERE id = $id");
@@ -60,7 +137,16 @@ if (isset($_GET['delete'])) {
       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
    <style>
       /* Style for the success message */
-      .success-msg {
+      .success-message {
+         color: green;
+         background-color: #e2f1dd;
+         padding: 10px;
+         border-radius: 5px;
+         margin-bottom: 20px;
+         text-align: center;
+      }
+
+      .error-message {
          color: green;
          background-color: #e2f1dd;
          padding: 10px;
@@ -111,7 +197,8 @@ if (isset($_GET['delete'])) {
             <li class="sidebar-list-item"><a href="viewresult.php"><span
                      class="material-icons-outlined">visibility</span> View Result </a></li>
 
-            <li class="sidebar-list-item"> <span class="material-icons-outlined">settings </span> Notify</li>
+            <li class="sidebar-list-item"> <a href="notify.php"> <span class="material-icons-outlined">settings </span>
+                  Notify</a></li>
 
          </ul>
       </aside>
@@ -121,13 +208,13 @@ if (isset($_GET['delete'])) {
          <div class="form-container">
             <div class="admin-product-form-container">
                <?php
-               // Check if the success message is set
                if (isset($_SESSION['success_message'])) {
-                  echo '<div class="success-msg">' . $_SESSION['success_message'] . '</div>';
+                  echo '<div class="success-message">' . $_SESSION['success_message'] . '</div>';
                   // Clear the success message after displaying it
                   unset($_SESSION['success_message']);
                }
                ?>
+
                <form action="addcandidate.php" method="post" enctype="multipart/form-data">
                   <h3>Add Candidates</h3>
                   <select class="box" name="election_id" required>
@@ -153,8 +240,8 @@ if (isset($_GET['delete'])) {
                         }
                      } else {
                         ?>
-                     <option value="">Please add an election first</option>
-                     <?php
+                        <option value="">Please add an election first</option>
+                        <?php
                      }
                      ?>
                   </select>
@@ -163,7 +250,7 @@ if (isset($_GET['delete'])) {
                   <label for="">Address</label>
                   <input type="text" name="candidate_address" class="box">
                   <label for="">Email</label>
-                  <input type="email" name="candidate_email" class="box">
+                  <input type="text" name="candidate_email" class="box">
                   <label for="">Photo</label>
                   <input type="file" accept="image/jpg, image/png, image/jpeg" placeholder="Upload the image"
                      name="candidate_photo" class="box" required>
@@ -236,10 +323,10 @@ if (isset($_GET['delete'])) {
                   }
                } else {
                   ?>
-               <tr>
-                  <td colspan="8">No candidates yet.</td>
-               </tr>
-               <?php
+                  <tr>
+                     <td colspan="8">No candidates yet.</td>
+                  </tr>
+                  <?php
                }
 
                ?>
@@ -249,7 +336,7 @@ if (isset($_GET['delete'])) {
       </main>
    </div>
 
-   <!-- ... Your existing JavaScript code ... -->
+
 
    <?php
    // Check if the success message is set

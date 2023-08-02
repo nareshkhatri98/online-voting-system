@@ -1,6 +1,9 @@
 <?php
 @include 'inc/connection.php';
 session_start();
+function isValidtopice($election_topic){
+   return preg_match('/^[A-Za-z ]+$/', $election_topic);
+}
 
 function getElectionStatus($starting_date, $ending_date)
 {
@@ -31,10 +34,17 @@ if (isset($_POST['add_election'])) {
     $status = getElectionStatus($starting_date, $ending_date);
 
     if (empty($election_topic) || empty($number_of_candidates) || empty($starting_date) || empty($ending_date)) {
-        $_SESSION['success_message'] = "Please fill the all fields";
+        $_SESSION['success_message'] = "Please fill all the fields.";
         header('location:addelection.php');
-        exit; // Always exit after redirect
-    } else {
+        exit;
+    } elseif (!isValidtopice($election_topic)) {
+        $_SESSION['success_message'] = "Title should only contain characters and spaces.";
+        header('location:addelection.php');
+        exit;
+    }
+    
+     
+    else {
         $insert = "INSERT INTO elections (election_topic, no_of_candidates, starting_date, ending_date, status, inserted_by, inserted_on) 
         VALUES ('$election_topic', '$number_of_candidates', '$starting_date', '$ending_date', '$status', '$inserted_by', '$inserted_on')";
         $upload = mysqli_query($conn, $insert);
@@ -223,7 +233,7 @@ if (isset($_GET['delete'])) {
                         <?php
                     } else {
                         ?>
-                        <div style="text-align:center; margin-top:100px;">No any election is added yet.</div>
+                        <div style="text-align:center; margin-top:100px;font-weight:700;">No any election is added yet.</div>
                         <?php
                     }
                     ?>
