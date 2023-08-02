@@ -85,7 +85,7 @@ if (isset($_POST['submit'])) {
             <h3>Register</h3>
             <?php
             if (!empty($error)) {
-              echo '<span class="error-msg" style="color:red;">' . implode("<br>", $error) . '</span>';
+              echo '<span class="error-msg" style="color:white;">' . implode("<br>", $error) . '</span>';
             } else if (!empty($successMessage)) {
               echo '<span class="success-msg" style="color:red;">' . $successMessage . '</span>';
             }
