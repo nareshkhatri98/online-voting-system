@@ -77,7 +77,7 @@ if (isset($_POST['submit'])) {
 <header>
  <div class="container header-section flex">
   <div class="header-left">
-  <div class="form-container">
+  <div class="form-container ">
    <form action="login_page.php" method="post" class="form-only" >
       <h3>login</h3>
       <?php
@@ -94,6 +94,7 @@ if (isset($_POST['submit'])) {
       <p>don't have an account? <a href="Register-page.php">register here</a></p>
    </form>
    </div>
+   
   </div>
   
  </div>

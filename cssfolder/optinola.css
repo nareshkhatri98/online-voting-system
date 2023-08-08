@@ -152,6 +152,7 @@ header{
   margin-top: 20px;
 }.header-left > p{
   margin-top: 2px;
+  padding: 12 px;
 }
 .get-start-btn{
   margin-top: 20px;
