@@ -1,3 +1,10 @@
 <?php
-$conn=mysqli_connect("localhost","root","","onlinevoting")or die("connection failed");
+$db_host = 'localhost';
+$db_user = 'root';
+$db_password = '';
+$db_name = 'evoting';
+
+$conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
+
+
 ?>

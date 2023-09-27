@@ -40,7 +40,7 @@ if (isset($_POST['submit'])) {
 // Delete Query
 if (isset($_GET['delete'])) {
   $id = $_GET['delete'];
-  mysqli_query($conn, "DELETE FROM notice WHERE Notice_id = $id");
+  mysqli_query($conn, "DELETE FROM notice WHERE id = $id");
   $_SESSION['success-message'] = "Notice is deleted successfully.";
   header('location:notify.php');
 }
@@ -189,8 +189,8 @@ if (isset($_GET['delete'])) {
                       <?php echo $noticeData['content']; ?>
                     </td>
                     <td>
-                      <a href="updatenotice.php?edit=<?php echo $noticeData['Notice_id']; ?>" class="box-btn">Edit</a>
-                      <a href="notify.php?delete=<?php echo $noticeData['Notice_id']; ?>" class="box-btn"
+                      <a href="updatenotice.php?edit=<?php echo $noticeData['id']; ?>" class="box-btn">Edit</a>
+                      <a href="notify.php?delete=<?php echo $noticeData['id']; ?>" class="box-btn"
                         onclick="conformation(event)">Delete</a>
                     </td>
                   </tr>

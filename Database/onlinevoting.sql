@@ -119,8 +119,7 @@ CREATE TABLE `votings` (
 --
 -- Indexes for table `candidate_details`
 --
-ALTER TABLE `candidate_details`
-  ADD PRIMARY KEY (`id`);
+ 
 
 --
 -- Indexes for table `elections`

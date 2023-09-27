@@ -1,4 +1,4 @@
-// PHP code for updating the notice
+
 <?php
 include "inc/connection.php";
 session_start();
@@ -27,7 +27,7 @@ if (isset($_POST['update_notice'])) {
   } else {
     // Use prepared statement
     // update cQuery..
-    $update_query = "UPDATE notice SET Title = ?, content = ?, inserted_by = ? WHERE Notice_id = ?";
+    $update_query = "UPDATE notice SET Title = ?, content = ?, inserted_by = ? WHERE id = ?";
     $stmt = $conn->prepare($update_query);
     $stmt->bind_param("sssi", $title, $content, $admin, $id);
     
@@ -46,7 +46,7 @@ if (isset($_POST['update_notice'])) {
 <?php
 //to diapya the content of notice....
  
- $dispay = mysqli_query($conn, "SELECT *FROM notice where Notice_id='$id'");
+ $dispay = mysqli_query($conn, "SELECT *FROM notice where id='$id'");
  $row =mysqli_fetch_assoc($dispay); 
   ?>
 
