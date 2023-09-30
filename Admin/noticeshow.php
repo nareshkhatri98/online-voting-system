@@ -25,7 +25,7 @@ include_once('inc/connection.php');
       padding: 10px;
       margin: 10px;
       border-radius: 5px;
-      flex: 0 0 calc(33.33% - 30px); /* Adjust the width of each notice box as per your requirement */
+      flex: 0 0 calc(33.33%  30px); /* Adjust the width of each notice box as per your requirement */
     }
 
     /* Additional styles for notice content */

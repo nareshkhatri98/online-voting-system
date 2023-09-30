@@ -28,8 +28,8 @@
       <li><a href="optionalhome.php" class="hover-links">Home</a></li>
       <li><a href="../Admin/candidate.php" class="hover-links">Candidates</a></li>
       <li><a href="../Admin/noticeshow.php" class="hover-links">Notice</a></li>
-      <li><a href="login_page.php" class="hover-links secondary-btn">Sign in</a></li>
-      <li><a href="Register-page.php" class="hover-links primary-btn">Sing up</a></li>
+      <li><a href="login_page.php" class="hover-links secondary-btn">Login</a></li>
+      <li><a href="Register-page.php" class="hover-links primary-btn">Register</a></li>
      </ul>
      <div class="activeBar">
       <img src="../images/menu.png" class="menu-icon">
