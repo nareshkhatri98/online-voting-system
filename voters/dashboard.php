@@ -17,15 +17,18 @@ if ($result) {
 
 <?php
 // election avaliable....
-$election = "SELECT COUNT(*) AS total_election From elections WHERE status ='active'";
+$election = "SELECT COUNT(*) AS total_election, GROUP_CONCAT(election_topic) AS election_topics FROM elections WHERE status ='active'";
 $counteElection = mysqli_query($conn, $election);
+
 if ($counteElection) {
   $Data = mysqli_fetch_assoc($counteElection);
   $Totalelection = $Data['total_election'];
+  $electionTopics = explode(",", $Data['election_topics']); // Split the comma-separated topics into an array
 } else {
-  echo "No election avaliable.";
+  echo "No election available.";
 }
 ?>
+
 
 
 
@@ -123,6 +126,17 @@ if ($counteElection) {
           <span class="text-primary font-weight-bold">
             Avaliable election:
             <?php echo $Totalelection; ?>
+            <br>
+            Election topic:
+            <?php
+            if (!empty($electionTopics)) {
+              foreach ($electionTopics as $topic) {
+                echo $topic . "<br>";
+              }
+            } else {
+              echo "No election topics available.";
+            }
+            ?>
           </span>
 
         </div>
