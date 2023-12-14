@@ -70,13 +70,13 @@ if (isset($_POST['add_candidate'])) {
       header('location:addcandidate.php');
       exit;
     }
-    $existing_email_query = "SELECT * FROM candidate_details WHERE email = '$candidate_email'";
-    $existing_email_result = mysqli_query($conn, $existing_email_query);
-    if (mysqli_num_rows($existing_email_result) > 0) {
-       $_SESSION['success_message'] = "The email already exists. Please use a different email address.";
-       header('location:addcandidate.php');
-       exit;
-    }
+    //$existing_email_query = "SELECT * FROM candidate_details WHERE email = '$candidate_email'";
+    // //$existing_email_result = mysqli_query($conn, $existing_email_query);
+    // if (mysqli_num_rows($existing_email_result) > 0) {
+    //    $_SESSION['success_message'] = "The email already exists. Please use a different email address.";
+    //    header('location:addcandidate.php');
+    //    exit;
+    // }
 
     // Perform the update
     $update_query = "UPDATE candidate_details SET candidate_name = '$candidate_name', address = '$candidate_address', email = '$candidate_email', candidate_photo = '$candidate_photo', Bio = '$candidate_bio', inserted_by = '$inserted_by', inserted_on = '$inserted_on' WHERE id = '$id'";

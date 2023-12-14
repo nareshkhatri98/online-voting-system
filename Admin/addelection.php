@@ -62,7 +62,13 @@ if (isset($_POST['add_election'])) {
 
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
+
+    // Delete dependent records from the votings table first
+    mysqli_query($conn, "DELETE FROM votings WHERE election_id = $id");
+
+    // Now, you can safely delete the election record
     mysqli_query($conn, "DELETE FROM elections WHERE election_id = $id");
+
     $_SESSION['success_message'] = "Election deleted successfully!";
     header('location:addelection.php');
     exit; // Always exit after redirect
