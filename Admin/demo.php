@@ -24,14 +24,6 @@ include_once('inc/connection.php');
 
 
 }
-.notice-section{
-  margin-top: -100px;
-}
-.notice-section li {
-    cursor: pointer; /* Add this line to set cursor to pointer on hover */
-    margin-top: 10px;
-    font-size: 20px;
-  }
 .popup .content {
   position: absolute;
   top: 50%;
@@ -99,38 +91,27 @@ include_once('inc/connection.php');
   <header>
     <div class="container header-section flex">
       <div class="header-left">
-      <div class="notice-section">
-       
+    
+  <div class="header-left">
+    <div class="notice-section">
       <?php
       $sql = "SELECT * FROM notice";
       $details = $conn->query($sql);
       $totalNotices = mysqli_num_rows($details);
-      
 
       if ($totalNotices > 0) {
-        ?>
-        
-        <p>Avabile Notice are</p>
-        <?php
+        echo "<ul>"; // Start the list
+
         while ($row = mysqli_fetch_assoc($details)) {
-          $popupId = "popup-" . $row['id']; // Assuming 'id' is a unique identifier in your notice table
+          $popupId = "popup" . $row['id']; // Assuming 'id' is a unique identifier in your notice table
           ?>
-      
-       
-      
           <li onclick="togglePopup('<?php echo $popupId; ?>')">
             <?php echo $row['Title']; ?>
           </li>
-          <div class="popup" id="<?php echo $popupId; ?>">
-            <div class="overlay"></div>
-            <div class="content">
-              <div class="close-btn" onclick="togglePopup('<?php echo $popupId; ?>')">&times;</div>
-              <h1><?php echo $row['Title']; ?></h1>
-              <p><?php echo $row['content']; ?></p>
-            </div>
-          </div>
           <?php
         }
+
+        echo "</ul>"; // End the list
       } else {
         ?>
         <p>No notice available.</p>
@@ -138,9 +119,8 @@ include_once('inc/connection.php');
       }
       ?>
     </div>
- 
   </div>
-      </div>
+
     </div>
     <div class="custom-shape-divider-bottom-1688894802">
       <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
@@ -151,14 +131,9 @@ include_once('inc/connection.php');
     </div>
   </header>
   <script>
-   function togglePopup() {
-      // Toggle the first popup, you may need to adjust this if you have specific requirements
-      document.querySelector(".popup").classList.toggle("active");
-    }
-
-    function togglePopup(popupId) {
-      document.getElementById(popupId).classList.toggle("active");
-    }
+    function togglePopup(){
+  document.getElementById("popup").classList.toggle("active");
+}
   </script>
 </body>
 </html>
