@@ -4,24 +4,29 @@ session_start();
 function isValidtopice($election_topic){
    return preg_match('/^[A-Za-z ]+$/', $election_topic);
 }
-
 function getElectionStatus($starting_date, $ending_date)
 {
     $current_date = new DateTime();
     $start_date = new DateTime($starting_date);
     $end_date = new DateTime($ending_date);
 
+    // Debug output
+    echo "Current Date: " . $current_date->format('Y-m-d') . "<br>";
+    echo "Start Date: " . $start_date->format('Y-m-d') . "<br>";
+    echo "End Date: " . $end_date->format('Y-m-d') . "<br>";
+
     // We need to add 1 day to the end date to include the entire ending date in the comparison
     $end_date->add(new DateInterval('P1D'));
 
-    if ($start_date <= $current_date && $end_date > $current_date) {
+    if ($current_date >= $start_date && $current_date <= $end_date) {
         return "Active";
-    } elseif ($end_date < $current_date) {
+    } elseif ($current_date > $end_date) {
         return "Expired";
     } else {
         return "Inactive";
     }
 }
+
 
 if (isset($_POST['add_election'])) {
     $election_topic = mysqli_real_escape_string($conn, $_POST['election_topic']);

@@ -12,61 +12,63 @@ include_once('inc/connection.php');
   <link rel="stylesheet" href="../cssfolder/optinola.css">
   <style>
     /* CSS for the notice section */
-    .popup .overlay {
-  position:  fixed;
-  top: 0px;
-  left:  0px;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.7);
-  z-index:1 ;
-  display: none;
-
-
-}
-.notice-section{
-  margin-top: -100px;
-}
-.notice-section li {
-    cursor: pointer; /* Add this line to set cursor to pointer on hover */
-    margin-top: 10px;
-    font-size: 20px;
+    .accordion-container {
+      margin: 40px auto;
+      width: 600px;
+    }
+    
+  .notice-section{
+    margin-top: -150px;
   }
-.popup .content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  background: #fff;
-  width: 450px;
-  z-index: 2;
-  text-align: center;
-  padding: 20px;
-  box-sizing: border-box;
-}
-.popup .close-btn{
-  cursor: pointer;
-  position:absolute;
-  right: 20px;
-  top: 20px;
-  width: 30px;
-  background: #222;
-  color: #fff;
-  font-size: 25px;
-  line-height: 30px;
-  text-align: center;
-  border-radius: 50%;
+    .accordion-container li {
+      list-style: none;
+      width: 100%;
+      margin: 20px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #e3edf7;
+      box-shadow: 6px 6px 10px -1px rgba(0, 0, 0, 0.15),
+      -6px -6px 10px -1px rgba(225, 225, 225, 0.7);
+    }
 
-}
+    .accordion-container li label {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+     
+      font-size: 20px;
+      font-weight: 500;
+      cursor: pointer;
+    }
 
-.popup.active .overlay{
-  display: block;
-}
+    label::before {
+      content: '+';
+      margin-right: 10px;
+      font-size: 25px;
+      font-weight: 600;
+    }
 
-.popup.active .content {
-  transition: all 300ms ease-in-out;
-  transform: translate(-50%, -50%) scale(1);
-}
+    input[type="radio"] {
+      display: none;
+    }
+
+    .accordion-container .content {
+      color: #555;
+      padding: 0 10px;
+      line-height: 26px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s, padding 0.5s;
+    }
+    
+    .accordion-container input[type="radio"]:checked+label+.content {
+      max-height: 400px;
+      padding: 10px 10px 20px;
+    }
+
+    .accordion-container input[type="radio"]:checked+label::before {
+      content: '-';
+    }
   </style>
 </head>
 
@@ -99,66 +101,49 @@ include_once('inc/connection.php');
   <header>
     <div class="container header-section flex">
       <div class="header-left">
-      <div class="notice-section">
-       
-      <?php
-      $sql = "SELECT * FROM notice";
-      $details = $conn->query($sql);
-      $totalNotices = mysqli_num_rows($details);
-      
+        <div class="notice-section">
 
-      if ($totalNotices > 0) {
-        ?>
-        
-        <p>Avabile Notice are</p>
-        <?php
-        while ($row = mysqli_fetch_assoc($details)) {
-          $popupId = "popup-" . $row['id']; // Assuming 'id' is a unique identifier in your notice table
-          ?>
-      
-       
-      
-          <li onclick="togglePopup('<?php echo $popupId; ?>')">
-            <?php echo $row['Title']; ?>
-          </li>
-          <div class="popup" id="<?php echo $popupId; ?>">
-            <div class="overlay"></div>
-            <div class="content">
-              <div class="close-btn" onclick="togglePopup('<?php echo $popupId; ?>')">&times;</div>
-              <h1><?php echo $row['Title']; ?></h1>
-              <p><?php echo $row['content']; ?></p>
-            </div>
-          </div>
           <?php
-        }
-      } else {
-        ?>
-        <p>No notice available.</p>
-        <?php
-      }
-      ?>
-    </div>
- 
-  </div>
+          $sql = "SELECT * FROM notice";
+          $details = $conn->query($sql);
+          $totalNotices = mysqli_num_rows($details);
+
+          if ($totalNotices > 0) {
+          ?>
+            <p style="text-align:center">Available Notices:</p>
+            <ul class="accordion-container">
+              <?php
+              while ($row = mysqli_fetch_assoc($details)) {
+              ?>
+                <li>
+                  <input type="radio" name="accordion" id="notice_<?php echo $row['id']; ?>" checked>
+                  <label for="notice_<?php echo $row['id']; ?>"><?php echo $row['Title'] ?></label>
+                  <div class="content">
+                    <p>
+                      <?php echo $row['content'] ?>
+                    </p>
+                  </div>
+                </li>
+              <?php
+              }
+              ?>
+            </ul>
+          <?php
+          } else {
+          ?>
+            <p>No notices available.</p>
+          <?php
+          }
+          ?>
+        </div>
       </div>
     </div>
     <div class="custom-shape-divider-bottom-1688894802">
       <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-        <path
-          d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
-          class="shape-fill"></path>
+        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
       </svg>
     </div>
   </header>
-  <script>
-   function togglePopup() {
-      // Toggle the first popup, you may need to adjust this if you have specific requirements
-      document.querySelector(".popup").classList.toggle("active");
-    }
-
-    function togglePopup(popupId) {
-      document.getElementById(popupId).classList.toggle("active");
-    }
-  </script>
 </body>
+
 </html>

@@ -91,7 +91,7 @@ if (isset($_POST['submit'])) {
             }
             ?>
             <label for="">Fullname</label>
-            <input type="text" name="name" pattern="^[a-zA-Z]+ [a-zA-Z]+$" required placeholder="Enter your name">
+            <input type="text" name="name" id = "name" > <span id="message" style="color:red;"></span>
             <label for="">Phone</label>
             <input type="text" name="phone" id="phonenumber"> <span id="message" style="color:red;"></span>
 
@@ -118,65 +118,80 @@ if (isset($_POST['submit'])) {
 
   <script>
     function myfun() {
+      var name = document.getElementById('name').value;
+
+      // Check if the name is an empty string
+      if (name === "") {
+        document.getElementById("message").innerHTML = "**Please fill the full name*";
+        return false;
+      }
+
+      // Check if the name matches the specified pattern
+      var namePattern = /^[a-zA-Z]+ [a-zA-Z]+$/;
+      if (!namePattern.test(name)) {
+        document.getElementById("message").innerHTML = "*Please enter a valid full name**";
+        return false;
+      }
+
       var mobile = document.getElementById("phonenumber").value;
       if (mobile == "") {
-        document.getElementById("message").innerHTML = "*Please fill in the number";
+        document.getElementById("message").innerHTML = "**Please fill in the number**";
         return false;
       }
       if (isNaN(mobile)) {
-        document.getElementById("message").innerHTML = "**Only numbers are allowed";
+        document.getElementById("message").innerHTML = "**Only numbers are allowed**";
         return false;
       }
       if (mobile.length !== 10) {
-        document.getElementById("message").innerHTML = "**Mobile number must be 10 digits";
+        document.getElementById("message").innerHTML = "**Mobile number must be 10 digits**";
         return false;
       }
       if (mobile.charAt(0) != '9') {
-        document.getElementById("message").innerHTML = "**Mobile number must start with 9";
+        document.getElementById("message").innerHTML = "**Mobile number must start with 9**";
         return false;
       }
 
       var password = document.getElementById("password").value;
       if (password == "") {
-        document.getElementById("password-message").innerHTML = "*Please fill in the password";
+        document.getElementById("password-message").innerHTML = "**Please fill in the password**";
         return false;
       }
       if (password.length <= 5) {
-        document.getElementById("password-message").innerHTML = "**Password must be at least 5 characters long";
+        document.getElementById("password-message").innerHTML = "**Password must be at least 5 characters long**";
         return false;
       }
       if (password.length > 10) {
-        document.getElementById("password-message").innerHTML = "**Password must be less than 10 characters long";
+        document.getElementById("password-message").innerHTML = "**Password must be less than 10 characters long**";
         return false;
       }
 
       var uppercaseRegex = /[A-Z]/;
       if (!uppercaseRegex.test(password)) {
-        document.getElementById("password-message").innerHTML = "**Password must include at least one capital letter";
+        document.getElementById("password-message").innerHTML = "**Password must include at least one capital letter**";
         return false;
       }
 
       var lowercaseRegex = /[a-z]/;
       if (!lowercaseRegex.test(password)) {
-        document.getElementById("password-message").innerHTML = "**Password must include at least one lowercase letter";
+        document.getElementById("password-message").innerHTML = "**Password must include at least one lowercase letter**";
         return false;
       }
 
       var numberRegex = /[0-9]/;
       if (!numberRegex.test(password)) {
-        document.getElementById("password-message").innerHTML = "**Password must include at least one number";
+        document.getElementById("password-message").innerHTML = "**Password must include at least one number**";
         return false;
       }
 
       var specialCharRegex = /[!@#$%^&*]/;
       if (!specialCharRegex.test(password)) {
-        document.getElementById("password-message").innerHTML = "**Password must include at least one special character (!, @, #, $, %, ^, &, *)";
+        document.getElementById("password-message").innerHTML = "**Password must include at least one special character (!, @, #, $, %, ^, &, *)**";
         return false;
       }
 
       var cpassword = document.getElementById("passwords").value;
       if (password != cpassword) {
-        document.getElementById("confirm-password-message").innerHTML = "**Passwords do not match";
+        document.getElementById("confirm-password-message").innerHTML = "**Passwords do not match**";
         return false;
       }
 
